@@ -33,7 +33,7 @@ def shorten_name(name, letters=16, max_length=20):
     return name
 
 
-def check_width(text: str, font: pe.pygame.Font):
+def check_width(text: str, font: pe.pygame.font.Font):
     metrics = font.metrics(text)
     x = 0
     for metric in metrics:
