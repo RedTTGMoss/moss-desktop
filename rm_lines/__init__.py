@@ -20,16 +20,28 @@ def get_children(sequence: CrdtSequence):
     ]
 
 
-def rm_bytes_to_svg(data: bytes, track_xy: DocumentSizeTracker = None):
+def read_rm_bytes(data: bytes):
     tree = read_tree(BytesIO(data))
 
     if settings.config.debug_lines:
         print("RM file tree: ", end='')
         pprint(get_children(tree.root))
 
+    return tree
+
+
+def rm_bytes_to_svg(data: bytes, track_xy: DocumentSizeTracker = None):
+    tree = read_tree(data)
+
     with StringIO() as f:
         tree_to_svg(tree, f, track_xy)
         return f.getvalue()
+
+
+def rm_bytes_to_chunks(data: bytes, track_xy: DocumentSizeTracker = None):
+    tree = read_tree(data)
+
+    return
 
 
 def blank_document(author_uuid=None) -> Iterator[Block]:
