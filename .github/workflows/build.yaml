@@ -40,10 +40,10 @@ jobs:
       - name: Get pygame directory
         shell: bash
         run: |
-          PYGAME_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.pygame.__file__))')
-          EXTISM_DIR=$(python -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
-          echo "PYGAME_DIR=${PYGAME_DIR}" >> $GITHUB_ENV
-          echo "EXTISM_DIR=${EXTISM_DIR}" >> $GITHUB_ENV
+               PYGAME_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.pygame.__file__))')
+          #          EXTISM_DIR=$(python -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
+               echo "PYGAME_DIR=${PYGAME_DIR}" >> $GITHUB_ENV
+      #          echo "EXTISM_DIR=${EXTISM_DIR}" >> $GITHUB_ENV
 
       - name: Build
         uses: Nuitka/Nuitka-Action@main
@@ -61,11 +61,11 @@ jobs:
           include-data-dir: |
             assets=assets
           include-data-files: |
-            LICENSE=LICENSE
-            ${{ env.EXTISM_DIR }}/extism_sys.so=extism_sys/extism_sys.so
-            ${{ matrix.os == 'windows-latest' && format('{0}/libpng16-16.dll=libpng16-16.dll', env.PYGAME_DIR) || '' }}
-          nofollow-import-to: |
-            pymupdf.mupdf
+                                LICENSE=LICENSE
+            #            ${{ env.EXTISM_DIR }}/extism_sys.so=extism_sys/extism_sys.so
+                                ${{ matrix.os == 'windows-latest' && format('{0}/libpng16-16.dll=libpng16-16.dll', env.PYGAME_DIR) || '' }}
+      #          nofollow-import-to: |
+      #            pymupdf.mupdf
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
