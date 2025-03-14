@@ -77,9 +77,9 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
     def text(self):
         return self.field.text.text
 
-    def close(self, button=True):
+    def close(self, cancelled=True):
         self.api.remove_hook(self.EVENT_HOOK_NAME.format(id(self)))
-        if self.on_cancel and button:
+        if self.on_cancel and cancelled:
             self.on_cancel()
         del self.screens.queue[-1]
 
