@@ -19,7 +19,7 @@ class ContextMenu(ContextBar, ABC):
         self.left, self.top = topleft
         self.is_closed = False
         self.waiting_for_let_go = True
-        self.rect = pe.Rect(0, 0, 0, 0)
+        self.rect = pe.Rect(0, 0, 10, 10)
 
         super().__init__(parent)
 
