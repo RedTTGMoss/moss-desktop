@@ -91,6 +91,7 @@ class Defaults(metaclass=DefaultsMeta):
 
     XML_TITLE_FONT = ROBOTO_MEDIUM_FONT
     XML_SUBTITLE_FONT = ROBOTO_REGULAR_FONT
+    XML_TEXT_FONT = TITLE_FONT
     XML_FULL_TEXT_FONT = TITLE_FONT
 
     BACKGROUND = pe.colors.white

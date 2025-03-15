@@ -131,8 +131,9 @@ class Ratios:
         self.xml_subtitle_padding_x = int(30 * scale)
         self.xml_subtitle_padding_y = 0
 
-        self.xml_subtitle_size = int(20 * scale)
-        self.xml_subtitle_padding = int(15 * scale)
+        self.xml_text_size = int(15 * scale)
+        self.xml_text_padding_x = int(10 * scale)
+        self.xml_text_padding_y = int(20 * scale)
 
         self.xml_full_text_size = int(14 * scale)
 
