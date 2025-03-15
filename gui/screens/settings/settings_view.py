@@ -38,10 +38,10 @@ class SettingsView(ScrollableView):
         self.bottom = y
 
     def handle_resize(self):
-        for element in self.elements:
-            element.on_resize()
-
         self.resize((
             self.settings.width - self.settings.ratios.main_menu_side_bar_width,
             self.settings.height
         ))
+
+        for element in self.elements:
+            element.on_resize()
