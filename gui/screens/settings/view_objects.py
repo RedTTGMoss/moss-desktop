@@ -43,6 +43,7 @@ class GenericText(ViewObject, ABC):
     SIZE = 'xml_title_size'
     PADDING = 'xml_title_padding'
     FONT = 'XML_TITLE_FONT'
+    COLORS = 'TEXT_COLOR'
 
     text: pe.Text
 
@@ -54,13 +55,13 @@ class GenericText(ViewObject, ABC):
         formatted = dynamic_text(
             self.element.text,
             self.font, self.size,
-            self.settings_view.width - self.padding_x,
+            self.settings_view.width - self.padding_x - self.padding_end,
             new_line=True
         )
         self.text = pe.Text(
             formatted,
             self.font, self.size,
-            colors=Defaults.TEXT_COLOR
+            colors=self.colors
         )
 
     def on_resize(self):
@@ -71,8 +72,16 @@ class GenericText(ViewObject, ABC):
         return getattr(self.gui.ratios, f'{self.PADDING}_x')
 
     @property
+    def padding_end(self):
+        return 0
+
+    @property
     def padding_y(self):
         return getattr(self.gui.ratios, f'{self.PADDING}_y')
+
+    @property
+    def padding_bottom(self):
+        return 0
 
     @property
     def size(self):
@@ -82,10 +91,14 @@ class GenericText(ViewObject, ABC):
     def font(self):
         return getattr(Defaults, self.FONT)
 
+    @property
+    def colors(self):
+        return getattr(Defaults, self.COLORS)
+
     def display(self, x, y):
         self.text.rect.topleft = (x + self.padding_x, y + self.padding_y)
         self.text.display()
-        return self.text.rect.height + self.padding_y
+        return self.text.rect.height + self.padding_y + self.padding_bottom
 
 
 class Title(GenericText):
@@ -102,3 +115,10 @@ class Text(GenericText):
     SIZE = 'xml_text_size'
     PADDING = 'xml_text_padding'
     FONT = 'XML_TEXT_FONT'
+
+
+class Subtext(GenericText):
+    SIZE = 'xml_subtext_size'
+    PADDING = 'xml_subtext_padding'
+    FONT = 'XML_SUBTEXT_FONT'
+    COLORS = 'DOCUMENT_SUBTITLE_COLOR'
