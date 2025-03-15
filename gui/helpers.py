@@ -41,12 +41,7 @@ def check_width(text: str, font: pe.pygame.font.Font):
     return x
 
 
-def dynamic_text(name, font_filename, fontsize, width):
-    font = pe.text.get_font(font_filename, fontsize)
-
-    if check_width(name, font) <= width:
-        return name
-
+def dotted_dynamic_text(name: str, font: pe.pygame.Font, width: int):
     center = len(name) // 2
     left = center
     right = center
@@ -56,6 +51,32 @@ def dynamic_text(name, font_filename, fontsize, width):
         right += 1
 
     return name[:left] + '...' + name[right:]
+
+
+def new_lined_dynamic_text(name: str, font: pe.pygame.Font, width: int):
+    lines = []
+    words = name.split(' ')
+    line = []
+    for word in words:
+        word = word.replace('\n', '').strip()
+        if not word:
+            continue
+        if check_width(' '.join(line + [word]), font) > width:
+            lines.append(' '.join(line))
+            line = [word]
+        else:
+            line.append(word)
+    return '\n'.join(lines)
+
+
+def dynamic_text(name: str, font_filename: str, fontsize: int, width: int, new_line: bool = False):
+    font = pe.text.get_font(font_filename, fontsize)
+    if check_width(name, font) <= width:
+        return name
+    if new_line:
+        return new_lined_dynamic_text(name, font, width)
+    else:
+        return dotted_dynamic_text(name, font, width)
 
 
 def shorten_path(path, letters=26, max_length=30):
