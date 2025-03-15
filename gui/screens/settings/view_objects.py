@@ -5,6 +5,7 @@ import pygameextra as pe
 
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
+from . import xml_tools as tools
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -44,10 +45,12 @@ class GenericText(ViewObject, ABC):
     PADDING = 'xml_title_padding'
     FONT = 'XML_TITLE_FONT'
     COLORS = 'TEXT_COLOR'
+    ALPHA = 255
 
     text: pe.Text
 
     def __init__(self, element, settings_view):
+        self.inverted = element.get("inverted")
         super().__init__(element, settings_view)
         self.make_texts()
 
@@ -63,6 +66,8 @@ class GenericText(ViewObject, ABC):
             self.font, self.size,
             colors=self.colors
         )
+        if self.ALPHA != 255:
+            self.text.obj.set_alpha(self.ALPHA)
 
     def on_resize(self):
         self.make_texts()
@@ -93,7 +98,24 @@ class GenericText(ViewObject, ABC):
 
     @property
     def colors(self):
-        return getattr(Defaults, self.COLORS)
+        fore, back = getattr(Defaults, self.COLORS)
+        different_fore = self.element.get('fore')
+        different_back = self.element.get('back')
+
+        if different_fore:
+            fore = tools.get_single_color(different_fore)
+        if different_back:
+            back = tools.get_single_color(different_back)
+
+        if self.inverted:
+            return fore if different_fore else tuple(
+                255 - c if i < 3 else c
+                for i, c in enumerate(fore)
+            ), back if different_back else tuple(
+                255 - c if i < 3 else c
+                for i, c in enumerate(back)
+            )
+        return fore, back
 
     def display(self, x, y):
         self.text.rect.topleft = (x + self.padding_x, y + self.padding_y)
@@ -121,4 +143,4 @@ class Subtext(GenericText):
     SIZE = 'xml_subtext_size'
     PADDING = 'xml_subtext_padding'
     FONT = 'XML_SUBTEXT_FONT'
-    COLORS = 'DOCUMENT_SUBTITLE_COLOR'
+    ALPHA = 150
