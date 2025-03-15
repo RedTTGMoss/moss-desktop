@@ -10,6 +10,7 @@ class SettingsView(ScrollableView):
     VIEW_OBJECTS = {
         'title': Title,
         'subtitle': Subtitle,
+        'text': Text,
     }
 
     def __init__(self, settings: 'Settings', xml_tree, interactor=None):
