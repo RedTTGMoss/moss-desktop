@@ -1,0 +1,111 @@
+from abc import abstractmethod, ABC
+from typing import TYPE_CHECKING
+
+import pygameextra as pe
+
+from gui.defaults import Defaults
+from gui.helpers import dynamic_text
+from ...pp_helpers import FullTextPopup
+
+if TYPE_CHECKING:
+    from gui import GUI
+    from .settings_view import SettingsView
+
+
+class ViewObject(ABC):
+    def __init__(self, element, settings_view: 'SettingsView'):
+        self.gui: 'GUI' = settings_view.settings.parent_context
+        self.settings_view = settings_view
+        self.element = element
+
+    def on_resize(self):
+        ...
+
+    @abstractmethod
+    def display(self, x, y) -> int:
+        """
+        Display the object at the given x and y coordinates
+        :param x: x coordinate
+        :param y: y coordinate
+        :return: The height of the object
+        """
+        ...
+
+    def make_full_text(self, text):
+        return pe.Text(
+            text,
+            Defaults.XML_FULL_TEXT_FONT,
+            self.gui.ratios.xml_full_text_size,
+            colors=Defaults.TEXT_COLOR
+        )
+
+
+class GenericText(ViewObject, ABC):
+    SIZE = 'xml_title_size'
+    PADDING = 'xml_title_padding'
+    FONT = 'XML_TITLE_FONT'
+
+    text: pe.Text
+    full_text: pe.Text
+
+    def __init__(self, element, settings_view):
+        super().__init__(element, settings_view)
+        self.make_texts()
+
+    def make_texts(self):
+        self.full_text = self.make_full_text(self.element.text)
+        short_text = dynamic_text(
+            self.element.text,
+            self.font, self.size,
+            self.settings_view.width - self.padding_x
+        )
+        self.text = pe.Text(
+            short_text,
+            self.font, self.size,
+            colors=Defaults.TEXT_COLOR
+        )
+
+    def on_resize(self):
+        self.make_texts()
+
+    def render_full_text(self):
+        FullTextPopup.create(self.gui, self.full_text, self.text)()
+
+    @property
+    def padding_x(self):
+        return getattr(self.gui.ratios, f'{self.PADDING}_x')
+
+    @property
+    def padding_y(self):
+        return getattr(self.gui.ratios, f'{self.PADDING}_y')
+
+    @property
+    def size(self):
+        return getattr(self.gui.ratios, self.SIZE)
+
+    @property
+    def font(self):
+        return getattr(Defaults, self.FONT)
+
+    def display(self, x, y):
+        self.text.rect.topleft = (x + self.padding_x, y + self.padding_y)
+        self.text.display()
+        if self.text.text != self.full_text.text:
+            pe.button.action(self.text.rect, hover_action=self.render_full_text, name=f'xml_text[{id(self)}]_full')
+        return self.text.rect.height + self.padding_y
+
+
+class Title(GenericText):
+    pass
+
+
+class Subtitle(GenericText):
+    SIZE = 'xml_subtitle_size'
+    PADDING = 'xml_subtitle_padding'
+    FONT = 'XML_SUBTITLE_FONT'
+
+
+class Text(GenericText):
+    SIZE = 'xml_text_size'
+    PADDING = 'xml_text_padding'
+    FONT = 'XML_TEXT_FONT'

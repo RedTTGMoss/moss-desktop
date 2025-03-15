@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class FullTextPopup(pe.ChildContext):
-    LAYER = pe.AFTER_LOOP_LAYER
+    LAYER = pe.AFTER_POST_LAYER
     EXISTING = {}
 
     def __init__(self, parent: 'GUI', text: pe.Text, referral_text: pe.Text = None):
