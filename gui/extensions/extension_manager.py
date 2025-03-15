@@ -195,7 +195,8 @@ class ExtensionManager:
             'wasm': [{
                 'data': source
             }],
-            'allowed_paths': allowed_paths
+            'allowed_paths': allowed_paths,
+            'allowed_hosts': []
         }, True, functions=[
             fn for fn in HOST_FN_REGISTRY if getattr(fn, 'moss', False)
         ])
