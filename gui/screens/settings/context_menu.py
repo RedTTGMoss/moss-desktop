@@ -77,7 +77,6 @@ class SettingsContextMenu(ContextMenu):
                 'inverted_id': item['action']
             } for item in menu
         ]
-        self._currently_inverted = None
         # Add space for the back button and initialize the buttons
         super().__init__(settings, (0, self.settings.ratios.main_menu_top_height))
 
@@ -108,11 +107,11 @@ class SettingsContextMenu(ContextMenu):
 
     @property
     def currently_inverted(self):
-        return self._currently_inverted
+        return self.settings.sidebar.currently_inverted
 
     @currently_inverted.setter
     def currently_inverted(self, value):
-        self._currently_inverted = value
+        self.settings.sidebar.currently_inverted = value
 
     def __getattr__(self, item):
         if item.startswith('xml_settings'):
@@ -131,6 +130,8 @@ class SettingsSidebarChain(pe.Context):
         self.transitioning = False
         self.transitioning_back = False
         self.transitioning_time: Optional[float] = None
+
+        self.currently_inverted = None
 
         self.stack.append(SettingsContextMenu(settings, self.settings.MENUS))
 
