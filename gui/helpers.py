@@ -62,7 +62,7 @@ def new_lined_dynamic_text(name: str, font: pe.pygame.Font, width: int):
         if not word:
             continue
         if check_width(' '.join(line + [word]), font) > width:
-            lines.append(' '.join(line))
+            lines.append(' '.join(line).strip())
             line = [word]
         else:
             line.append(word)
@@ -70,6 +70,9 @@ def new_lined_dynamic_text(name: str, font: pe.pygame.Font, width: int):
 
 
 def dynamic_text(name: str, font_filename: str, fontsize: int, width: int, new_line: bool = False):
+    name = name.strip()
+    if name.endswith('\n'):
+        name = name[:-1]
     font = pe.text.get_font(font_filename, fontsize)
     if check_width(name, font) <= width:
         return name
