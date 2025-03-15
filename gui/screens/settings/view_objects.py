@@ -5,7 +5,6 @@ import pygameextra as pe
 
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
-from ...pp_helpers import FullTextPopup
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -46,30 +45,26 @@ class GenericText(ViewObject, ABC):
     FONT = 'XML_TITLE_FONT'
 
     text: pe.Text
-    full_text: pe.Text
 
     def __init__(self, element, settings_view):
         super().__init__(element, settings_view)
         self.make_texts()
 
     def make_texts(self):
-        self.full_text = self.make_full_text(self.element.text)
-        short_text = dynamic_text(
+        formatted = dynamic_text(
             self.element.text,
             self.font, self.size,
-            self.settings_view.width - self.padding_x
+            self.settings_view.width - self.padding_x,
+            new_line=True
         )
         self.text = pe.Text(
-            short_text,
+            formatted,
             self.font, self.size,
             colors=Defaults.TEXT_COLOR
         )
 
     def on_resize(self):
         self.make_texts()
-
-    def render_full_text(self):
-        FullTextPopup.create(self.gui, self.full_text, self.text)()
 
     @property
     def padding_x(self):
@@ -90,8 +85,6 @@ class GenericText(ViewObject, ABC):
     def display(self, x, y):
         self.text.rect.topleft = (x + self.padding_x, y + self.padding_y)
         self.text.display()
-        if self.text.text != self.full_text.text:
-            pe.button.action(self.text.rect, hover_action=self.render_full_text, name=f'xml_text[{id(self)}]_full')
         return self.text.rect.height + self.padding_y
 
 
