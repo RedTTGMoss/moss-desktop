@@ -11,6 +11,7 @@ class SettingsView(ScrollableView):
         'title': Title,
         'subtitle': Subtitle,
         'text': Text,
+        'subtext': Subtext,
     }
 
     def __init__(self, settings: 'Settings', xml_tree, interactor=None):
