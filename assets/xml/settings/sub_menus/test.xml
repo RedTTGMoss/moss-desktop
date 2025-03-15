@@ -3,6 +3,19 @@
     <subtitle>Sub title</subtitle>
     <text>Text</text>
     <subtext>Subtext</subtext>
+    <text fore="hex:ff0000">Text</text>
+    <subtext fore="hex:ff0000">Subtext</subtext>
+    <text back="pe:blue">Text</text>
+    <subtext back="pe:blue">Subtext</subtext>
+
+    <title inverted="1">Title</title>
+    <subtitle inverted="1">Sub title</subtitle>
+    <text inverted="1">Text</text>
+    <subtext inverted="1">Subtext</subtext>
+    <text fore="hex:ff0000" inverted="1">Text</text>
+    <subtext fore="hex:ff0000" inverted="1">Subtext</subtext>
+    <text back="pe:blue" inverted="1">Text</text>
+    <subtext back="pe:blue" inverted="1">Subtext</subtext>
 
     <title>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
