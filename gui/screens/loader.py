@@ -48,6 +48,7 @@ AcceptedLoadTypes = Union[str, ReusedIcon, ResizedIcon, InvertedIcon, TreatAsDat
 class Loader(pe.ChildContext, LogoMixin):
     TO_LOAD = {
         # Icons and Images
+        'moss': os.path.join(Defaults.ICON_DIR, 'moss.svg'),
         'tablet': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'tablet.svg')),
         'desktop': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'desktop.svg')),
         'folder': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'folder.svg')),
@@ -58,6 +59,7 @@ class Loader(pe.ChildContext, LogoMixin):
         'tag': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'tag.svg')),
         'chevron_down': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'chevron_down.svg')),
         'chevron_right': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'chevron_right.svg')),
+        'chevron_left': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'chevron_left.svg')),
         'small_chevron_down': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'small_chevron_down.svg')),
         'small_chevron_right': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'small_chevron_right.svg')),
         'cloud': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'cloud.svg')),
@@ -101,7 +103,15 @@ class Loader(pe.ChildContext, LogoMixin):
             f"templates/{template.rsplit('.', 1)[0]}":
                 TreatAsData(os.path.join(Defaults.DATA_DIR, 'templates', template))
             for template in os.listdir(os.path.join(Defaults.DATA_DIR, 'templates'))
-        }
+        },
+
+        # Settings
+        'xml_settings': os.path.join(Defaults.XML_DIR, 'settings', 'settings_menu.xml'),
+        **{
+            f"xml_settings/{settings_sub_menu.rsplit('.', 1)[0]}":
+                TreatAsData(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus', settings_sub_menu))
+            for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus'))
+        },
 
     }
 

@@ -122,6 +122,20 @@ class Ratios:
         self.popup_description_size = int(15 * scale)
         self.popup_description_padding = int(10 * scale)
 
+        # Settings / XML
+        self.xml_title_size = int(30 * scale)
+        self.xml_title_padding_x = int(15 * scale)
+        self.xml_title_padding_y = int(25 * scale)
+
+        self.xml_subtitle_size = int(20 * scale)
+        self.xml_subtitle_padding_x = int(30 * scale)
+        self.xml_subtitle_padding_y = 0
+
+        self.xml_subtitle_size = int(20 * scale)
+        self.xml_subtitle_padding = int(15 * scale)
+
+        self.xml_full_text_size = int(14 * scale)
+
     def pixel(self, value):
         return max(1, int(value * self.scale))
 

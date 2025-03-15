@@ -15,7 +15,6 @@ from gui.file_prompts import notebook_prompt, import_debug
 from gui.pp_helpers import ContextMenu, DocumentDebugPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
-from gui.screens.settings import Settings
 from gui.screens.viewer import DocumentViewer
 from rm_api import make_hash
 from rm_api.models import Document, DocumentCollection, Content, Metadata
@@ -414,6 +413,7 @@ class SideBar(ContextMenu):
         self.close()
 
     def settings(self):
+        from gui.screens.settings import Settings
         self.add_screen(Settings(self.parent_context))
         self.close()
 

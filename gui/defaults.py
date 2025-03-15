@@ -48,7 +48,7 @@ class Defaults(metaclass=DefaultsMeta):
     ASSET_DIR = os.path.join(BASE_ASSET_DIR, 'assets')
     INSTALLED = os.path.exists(os.path.join(BASE_ASSET_DIR, 'installed'))
 
-    HTML_DIR = os.path.join(ASSET_DIR, 'html')
+    XML_DIR = os.path.join(ASSET_DIR, 'xml')
     ICON_DIR = os.path.join(ASSET_DIR, 'icons')
     IMAGES_DIR = os.path.join(ASSET_DIR, 'images')
     DATA_DIR = os.path.join(ASSET_DIR, 'data')
@@ -88,6 +88,10 @@ class Defaults(metaclass=DefaultsMeta):
     CODE_FONT = MONO_FONT
     DEBUG_FONT = MONO_FONT
     GUIDES_FONT = ROBOTO_REGULAR_FONT
+
+    XML_TITLE_FONT = CUSTOM_FONT
+    XML_SUBTITLE_FONT = ROBOTO_REGULAR_FONT
+    XML_FULL_TEXT_FONT = TITLE_FONT
 
     BACKGROUND = pe.colors.white
 
