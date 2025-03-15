@@ -414,7 +414,7 @@ class SideBar(ContextMenu):
         self.close()
 
     def settings(self):
-        self.screens.put(Settings(self.parent_context))
+        self.add_screen(Settings(self.parent_context))
         self.close()
 
     def debug(self):

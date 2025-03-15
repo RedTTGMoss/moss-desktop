@@ -3,9 +3,9 @@ import shutil
 import subprocess
 import sys
 import threading
+from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
-from typing import TYPE_CHECKING, Dict
 
 from gui.events import ResizeEvent
 from gui.screens.mixins import LogoMixin
@@ -115,7 +115,7 @@ class Installer(pe.ChildContext, LogoMixin):
 
     def cancel(self):
         self.api.remove_hook(self.EVENT_HOOK_NAME)
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def install_thread(self):
         self.installing = True

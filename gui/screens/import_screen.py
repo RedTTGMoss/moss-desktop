@@ -153,7 +153,7 @@ class ImportScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
     def close(self):
         self.parent_context.import_screen = None
         self.api.remove_hook(self.EVENT_HOOK_NAME.format(id(self)))
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def full_import(self):
         threading.Thread(

@@ -123,7 +123,7 @@ class IntegrityChecker(pe.ChildContext, LogoMixin):
 
     def close(self):
         self.api.remove_hook('version_checker_resize_check')
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def loop(self):
         self.logo.display()

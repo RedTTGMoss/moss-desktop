@@ -82,7 +82,7 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         if self.on_cancel and cancelled:
             self.on_cancel()
         print("A text box runs del")
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def ok(self):
         if self.on_submit:

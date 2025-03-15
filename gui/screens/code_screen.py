@@ -1,23 +1,22 @@
-import os.path
 import threading
 import time
 import webbrowser
 from queue import Queue
+from typing import TYPE_CHECKING
 
 import pygameextra as pe
 from pyperclip import paste as pyperclip_paste
-from typing import TYPE_CHECKING
 
+from gui.defaults import Defaults
 from gui.events import ResizeEvent
-from gui.pp_helpers.popups import WarningPopup, Popup, ConfirmPopup
+from gui.gui import APP_NAME
+from gui.pp_helpers.popups import ConfirmPopup
 from gui.rendering import render_button_using_text
+from gui.screens.loader import Loader
 from gui.screens.mixins import ButtonReadyMixin
 from gui.screens.name_field_screen import NameFieldScreen
 from rm_api import DEFAULT_REMARKABLE_URI, DEFAULT_REMARKABLE_DISCOVERY_URI
 from rm_api.auth import FailedToGetToken, MissingTabletLink
-from gui.defaults import Defaults
-from gui.screens.loader import Loader
-from gui.gui import APP_NAME
 
 if TYPE_CHECKING:
     from gui.gui import GUI
@@ -29,6 +28,7 @@ class CloudPopup(ConfirmPopup):
         **ConfirmPopup.BUTTON_TEXTS,
         'confirm': "Use custom cloud",
     }
+
 
 class MissingTabletPopup(ConfirmPopup):
     CLOSE_TEXT = "Link as a desktop (will need to link your tablet first)"
@@ -166,13 +166,13 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
     def check_code_thread(self):
         try:
             self.api.get_token("".join(self.code), self.remarkable)
-            self.screens.put(self.loader)
+            self.add_screen(self.loader)
             self.api.remove_hook(self.EVENT_HOOK_NAME)
-            del self.screens.queue[0]
+            del self.screens[0]
         except MissingTabletLink:
             self.warning = MissingTabletPopup(
-                self.parent_context, 
-                "Your tablet is not linked yet.", 
+                self.parent_context,
+                "Your tablet is not linked yet.",
                 f"{APP_NAME} typically identifies as a desktop app.\n"
                 "However it can identify as a tablet to pass this check\n"
                 "Would you like to identify as a tablet. You have to get a new pair code.\n"
@@ -278,7 +278,6 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
     def _change_cloud(self, cloud):
         self.set_cloud(cloud, cloud)
 
-
     def set_cloud(self, uri, discovery_uri):
         self.api.uri = uri
         self.api.discovery_uri = discovery_uri
@@ -290,8 +289,6 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
         self.get_website_info()
         self.update_code_text_positions()
         self.api.reconnect()
-
-
 
     def post_loop(self):
         if not self.warning:

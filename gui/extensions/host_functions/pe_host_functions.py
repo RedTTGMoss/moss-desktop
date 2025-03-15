@@ -61,8 +61,7 @@ def moss_pe_register_screen(screen: Annotated[TScreen, Json]):
 
         def close(self):
             d.api.remove_hook(self.event_hook_id)
-            del d.gui.screens.queue[-1]
-            del self
+            self.close_screen()
 
     CustomScreen.__name__ = screen.key
 
@@ -81,7 +80,7 @@ def moss_pe_open_screen(key: str, initial_values: Annotated[dict, Json]) -> int:
 
 @d.host_fn(signature=([], []))
 def moss_pe_close_screen(*args):
-    current_screen = d.gui.screens.queue[-1]
+    current_screen = d.gui.current_screen
     if close_function := getattr(current_screen, "close", None):
         close_function()
     else:
@@ -91,14 +90,14 @@ def moss_pe_close_screen(*args):
 @d.host_fn()
 @d.unpack
 def moss_pe_set_screen_value(key: str, value: Annotated[dict, Json]):
-    screen = d.gui.screens.queue[-1]
+    screen = d.gui.current_screen
     screen.values[key] = value
 
 
 @d.host_fn()
 @d.transform_to_json
 def moss_pe_get_screen_value(key: str):
-    screen = d.gui.screens.queue[-1]
+    screen = d.gui.current_screen
     if key == 'id':
         return id(screen)
     try:

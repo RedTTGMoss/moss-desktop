@@ -276,7 +276,7 @@ class MainMenu(pe.ChildContext):
 
     @property
     def loading(self):
-        loader: 'Loader' = self.parent_context.screens.queue[0]
+        loader: 'Loader' = self.parent_context.screens[0]
         return loader.files_to_load is not None or \
             loader.loading_feedback or \
             self.file_sync_operation and not self.file_sync_operation.finished
@@ -302,7 +302,7 @@ class MainMenu(pe.ChildContext):
             return
 
         # Draw sync operation from loader
-        loader: 'Loader' = self.parent_context.screens.queue[0]  # The loader is always the first screen
+        loader: 'Loader' = self.parent_context.screens[0]  # The loader is always the first screen
         if loader.files_to_load is not None:
             self.previous_t = draw_bottom_loading_bar(self.parent_context, loader.files_loaded, loader.files_to_load,
                                                       self.previous_t)
