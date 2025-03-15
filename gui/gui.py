@@ -5,7 +5,6 @@ import os
 import time
 from numbers import Number
 from os import makedirs
-from queue import Queue
 from typing import TypedDict, Union, TYPE_CHECKING
 
 import appdirs
@@ -234,7 +233,7 @@ class GUI(pe.GameContext):
         self.api.last_root = self.config.last_root
         self.api.debug = self.config.debug
         self.extension_manager = ExtensionManager(self)
-        self.screens = Queue()
+        self.screens = []
         self.ratios = Ratios(self.config.scale)
         self.icons = {}
         self.data = {}
@@ -246,14 +245,14 @@ class GUI(pe.GameContext):
 
         if self.api.token or self.api.offline_mode:
             from gui.screens.loader import Loader
-            self.screens.put(Loader(self))
+            self.add_screen(Loader(self))
         else:
             from gui.screens.code_screen import CodeScreen
-            self.screens.put(CodeScreen(self))
+            self.add_screen(CodeScreen(self))
         if not pe.settings.indev and not self.config.debug and not self.config.portable_mode and not Defaults.INSTALLED:
             from gui.screens.installer import Installer
-            self.screens.put(Installer(self))
-        self.screens.put(IntegrityChecker(self))
+            self.add_screen(Installer(self))
+        self.add_screen(IntegrityChecker(self))
         self.running = True
         self.quit_next = False
         self.warning: 'GUIConfirmPopup' = None
@@ -269,6 +268,17 @@ class GUI(pe.GameContext):
         makedirs(Defaults.TEMP_DIR, exist_ok=True)
         makedirs(Defaults.OPTIONS_DIR, exist_ok=True)
         makedirs(Defaults.THUMB_FILE_PATH, exist_ok=True)
+
+    def add_screen(self, screen):
+        self.screens.append(screen)
+
+    def close_screen(self):
+        _ = self.screens.pop()
+        del _
+
+    @property
+    def current_screen(self):
+        return self.screens[-1]
 
     @property
     def api_kwargs(self):
@@ -294,13 +304,13 @@ class GUI(pe.GameContext):
             elif self.warning.closed:
                 self.warning = None
         if self.config.enable_fake_screen_refresh and (len(
-                self.screens.queue) != self.last_screen_count or not self.reset_fake_screen_refresh):
+                self.screens) != self.last_screen_count or not self.reset_fake_screen_refresh):
             self.doing_fake_screen_refresh = True
             if self.reset_fake_screen_refresh:
                 self.fake_screen_refresh_timer = time.time()
             else:
                 self.reset_fake_screen_refresh = True
-            self.last_screen_count = len(self.screens.queue)
+            self.last_screen_count = len(self.screens)
             smaller_size = tuple(v * .8 for v in self.size)
 
             self.original_screen_refresh_surface = pe.Surface(self.size)
@@ -332,7 +342,7 @@ class GUI(pe.GameContext):
             self.display_quit_screen()
             return
         if not self.warning or not getattr(self.warning, 'wait', False):
-            self.screens.queue[-1]()
+            self.current_screen()
         if getattr(self, 'extension_manager'):
             self.extension_manager.loop()
 
@@ -355,7 +365,7 @@ class GUI(pe.GameContext):
         elif section < 1.5:
             pe.fill.full(pe.colors.black)
         elif section < 2.5:
-            self.screens.queue[-1]()
+            self.current_screen()
             self.doing_fake_screen_refresh = False
             self.reset_fake_screen_refresh = False
         elif section < 3.5:
@@ -372,7 +382,7 @@ class GUI(pe.GameContext):
     def post_loop(self):
         if not self.running:
             return
-        if len(self.screens.queue) == 0:
+        if len(self.screens) == 0:
             self.quit_check()
             return
 
@@ -414,8 +424,8 @@ class GUI(pe.GameContext):
             self.shift_hold = False
         if pe.event.resize_check():
             self.api.spread_event(ResizeEvent(pe.display.get_size()))
-        if self.screens.queue[-1].handle_event != self.handle_event:
-            self.screens.queue[-1].handle_event(e)
+        if self.current_screen.handle_event != self.handle_event:
+            self.current_screen.handle_event(e)
         if self.ctrl_hold and pe.event.key_DOWN(pe.K_s):
             self.screenshot = True
         self.extra_event(e)
@@ -466,7 +476,7 @@ class GUI(pe.GameContext):
         if self._import_screen is not None:
             return self._import_screen
         from .screens.import_screen import ImportScreen
-        self.screens.put(ImportScreen(self))
+        self.add_screen(ImportScreen(self))
         return self.import_screen
 
     @import_screen.setter
@@ -482,9 +492,9 @@ class GUI(pe.GameContext):
             if hook == 'GUI':
                 continue
             self.api.remove_hook(hook)
-        self.screens.queue.clear()
+        self.screens.clear()
         from gui.screens.loader import Loader
-        self.screens.put(Loader(self))
+        self.add_screen(Loader(self))
         self.extension_manager.init()
 
     @property

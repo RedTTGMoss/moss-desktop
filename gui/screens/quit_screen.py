@@ -36,7 +36,7 @@ class QuitScreen(pe.ChildContext, LogoMixin):
             self.icon_rect.left += self.ratios.pixel(10)
 
     def close(self):
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def loop(self):
         self.logo.display()

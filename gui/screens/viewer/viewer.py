@@ -544,7 +544,7 @@ class DocumentViewer(pe.ChildContext):
             threading.Thread(target=self.api.upload, args=(self.document,), kwargs={'unload': True}).start()
         else:
             self.document.unload_files()
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def draw_close_indicator(self):
         # Handles the closing indicator when pulling down

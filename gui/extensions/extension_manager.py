@@ -369,7 +369,7 @@ class ExtensionManager:
         return {
             'width': self.gui.width,
             'height': self.gui.height,
-            'current_screen': self.gui.screens.queue[-1].__class__.__name__ if self.gui.screens.queue else "",
+            'current_screen': self.gui.current_screen.__class__.__name__ if self.gui.screens else "",
             'opened_context_menus': self.opened_context_menus,
             'icons': list(self.gui.icons.keys()),
         }

@@ -33,7 +33,7 @@ class Injector(pe.ChildContext):
             from .loader import InjectorLoader
             if self.parent_context.main_menu is None:
                 return
-            if isinstance(self.parent_context.screens.queue[-1], InjectorLoader):
+            if isinstance(self.parent_context.current_screen, InjectorLoader):
                 return
             self.parent_context.screens.put(InjectorLoader(self))
             return

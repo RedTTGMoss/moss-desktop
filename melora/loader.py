@@ -4,13 +4,11 @@ import threading
 from traceback import print_exc
 from typing import TYPE_CHECKING
 
+import pygameextra as pe
 from box import BoxKeyError
 
 from gui.defaults import Defaults
 from gui.screens.mixins import LogoMixin
-
-import pygameextra as pe
-
 from melora.common import INJECTOR_COLOR
 from melora.extension_base import ExtensionBase
 
@@ -47,7 +45,7 @@ class InjectorLoader(pe.ChildContext, LogoMixin):
             self.load_extension(file)
             self.done += 1
         self.injector.injected = True
-        del self.screens.queue[-1]
+        self.close_screen()
 
     def load_extension(self, file):
         module_name = os.path.splitext(file)[0]

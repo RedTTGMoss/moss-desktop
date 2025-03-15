@@ -1,8 +1,9 @@
-import pygameextra as pe
 from typing import TYPE_CHECKING, Dict
 
-from gui.screens.mixins import LogoMixin
+import pygameextra as pe
+
 from gui.defaults import Defaults
+from gui.screens.mixins import LogoMixin
 
 if TYPE_CHECKING:
     from gui.gui import GUI
@@ -73,4 +74,4 @@ class MultiSync(pe.ChildContext, LogoMixin):
     def close(self):
         self.document_renderer.close()
         self.api.remove_hook(self.EVENT_HOOK)
-        del self.screens.queue[-1]
+        del self.close_screen()
