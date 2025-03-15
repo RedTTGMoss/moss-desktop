@@ -37,7 +37,7 @@ class SettingsView(ScrollableView):
         y = self.top
         for element in self.elements:
             y += element.display(0, y)
-        self.bottom = y
+        self.bottom = y - self.top
 
     def handle_resize(self):
         self.resize((
