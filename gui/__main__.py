@@ -7,7 +7,7 @@ def run_gui():
         try:
             gui()
         except KeyboardInterrupt:
-            gui.running = False
+            gui.quit_check()
 
 
 if __name__ == "__main__":
