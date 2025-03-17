@@ -39,6 +39,9 @@ class ContextBar(pe.ChildContext, ABC):
         self.texts_inverted = []
         self.main_menu = parent
         self.initialized = False
+        self.check_hover = True
+        self.x_offset = 0
+        self.y_offset = 0
         self.context_menu_count = 0
         parent.quick_refresh()
         super().__init__(parent.parent_context)
@@ -186,8 +189,20 @@ class ContextBar(pe.ChildContext, ABC):
             self.handle_scales()
             self.initialized = True
 
-    def loop(self):
+    def post_loop(self):
+        self.x_offset = 0
+        self.y_offset = 0
+
+    def loop(self, x_offset: int = 0, y_offset: int = 0):
+        x_offset = x_offset or self.x_offset
+        y_offset = y_offset or self.y_offset
         for button, button_meta, button_text, button_text_inverted in self.button_data_zipped:
+            if x_offset or y_offset:
+                button.area.move_ip(x_offset, y_offset)
+                button_meta['icon_rect'].move_ip(x_offset, y_offset)
+                button_meta['context_menu_icon_rect'].move_ip(x_offset, y_offset)
+                button_text.rect.move_ip(x_offset, y_offset)
+                button_text_inverted.rect.move_ip(x_offset, y_offset)
             if inverted_id := button_meta.get('inverted_id'):
                 is_inverted = (self.INVERT or inverted_id == self.currently_inverted)
             else:
@@ -201,7 +216,12 @@ class ContextBar(pe.ChildContext, ABC):
                 button.active_resource = Defaults.BUTTON_ACTIVE_COLOR_INVERTED
             else:
                 button.active_resource = Defaults.BUTTON_ACTIVE_COLOR
-            pe.button.check_hover(button)
+
+            if self.check_hover:
+                pe.button.check_hover(button)
+            else:
+                button.hovered = False
+                button.render()
 
             if is_inverted:
                 button_text_inverted.display()
@@ -243,3 +263,10 @@ class ContextBar(pe.ChildContext, ABC):
                 if context_menu.is_closed:
                     self.handle_context_menu_closed(button, button_meta)
                 context_menu()
+
+            if x_offset or y_offset:
+                button.area.move_ip(-x_offset, -y_offset)
+                button_meta['icon_rect'].move_ip(-x_offset, -y_offset)
+                button_meta['context_menu_icon_rect'].move_ip(-x_offset, -y_offset)
+                button_text.rect.move_ip(-x_offset, -y_offset)
+                button_text_inverted.rect.move_ip(-x_offset, -y_offset)

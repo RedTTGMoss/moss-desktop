@@ -43,13 +43,12 @@ class Settings(pe.ChildContext):
             self.xml_interactor.handle_resize()
 
     def loop(self):
+        # Display the back button
+        self.back_button()
         self.sidebar()
         self.xml_interactor()
 
     def post_loop(self):
-        # Display the back button
-        self.back_button()
-
         # Draw a separator line between the sidebar and the settings menu
         pe.draw.line(
             Defaults.OUTLINE_COLOR,
