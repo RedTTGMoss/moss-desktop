@@ -7,6 +7,7 @@ from lxml import etree
 from lxml.etree import Element
 
 from gui.pp_helpers import ContextMenu
+from gui.screens.scrollable_view import ScrollableView
 from .settings_view import SettingsView
 from ...extensions.shared_types import TContextButton
 
@@ -91,14 +92,16 @@ class SettingsContextMenu(ContextMenu):
             button.area.top = y
             y += button.area.height
 
-        self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, self.height)
+            button.display_reference = self.settings.sidebar.surface
+
+        self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, y)
 
     def open_sub(self, item):
         xml, root_tag = parse_menu_xml(self.data.get(item))
         if root_tag == 'menu':
             self.settings.sidebar.transitioning = True
             self.settings.sidebar.transitioning_time = time.time()
-            self.settings.sidebar.stack.append(
+            self.settings.sidebar.append(
                 SettingsContextMenu(self.settings, xml)
             )
         else:
@@ -119,7 +122,7 @@ class SettingsContextMenu(ContextMenu):
         return super().__getattr__(item)
 
 
-class SettingsSidebarChain(pe.Context):
+class SettingsSidebarChain(ScrollableView):
     LAYER = pe.BEFORE_LOOP_LAYER
     TRANSITION_TIME = 0.2
 
@@ -133,15 +136,16 @@ class SettingsSidebarChain(pe.Context):
 
         self.currently_inverted = None
 
-        self.stack.append(SettingsContextMenu(settings, self.settings.MENUS))
-
         self.AREA = (
             0, 0,
             self.settings.ratios.main_menu_side_bar_width,
             self.settings.height
         )
-        super().__init__()
 
+        super().__init__(settings.parent_context)
+
+        self.append(SettingsContextMenu(settings, self.settings.MENUS))
+    
     def get_surface(self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)):
         surface = pe.Surface(self.size)
         surface.pos = position
@@ -150,6 +154,11 @@ class SettingsSidebarChain(pe.Context):
                 getattr(context_menu, 'KEY', context_menu.__class__.__name__))
             context_menu.parent_hooking()
         return surface
+    
+    def append(self, context_menu: ContextMenu):
+        self.stack.append(context_menu)
+        context_menu.handle_scales()
+        self.extra_buttons.extend(context_menu.buttons)
 
     def loop(self):
         # Get the current and previous context menus
@@ -174,14 +183,15 @@ class SettingsSidebarChain(pe.Context):
             if t >= 1 or self.transitioning_back and t <= 0:
                 self.transitioning = False
                 self.transitioning_time = None
+                self.reset_top()
                 if self.transitioning_back:
                     self.stack.pop()
                     self.transitioning_back = False
 
             # Calculate the positions of the two context menus
-            pos1 = (-self.settings.ratios.main_menu_side_bar_width * t, 0)
+            pos1 = (-self.settings.ratios.main_menu_side_bar_width * t, 0 if self.transitioning_back else self.top)
             pos2 = (
-                self.settings.ratios.main_menu_side_bar_width - self.settings.ratios.main_menu_side_bar_width * t, 0)
+                self.settings.ratios.main_menu_side_bar_width - self.settings.ratios.main_menu_side_bar_width * t, self.top if self.transitioning_back else 0)
 
             # Prepare both context menus
             surface1 = self.get_surface(previous, pos1)
@@ -200,7 +210,3 @@ class SettingsSidebarChain(pe.Context):
             self.settings.ratios.main_menu_side_bar_width,
             self.settings.height
         ))
-
-    @property
-    def BACKGROUND(self):
-        return self.settings.BACKGROUND
