@@ -79,7 +79,7 @@ class SettingsContextMenu(ContextMenu):
             } for item in menu
         ]
         # Add space for the back button and initialize the buttons
-        super().__init__(settings, (0, self.settings.ratios.main_menu_top_height))
+        super().__init__(settings, (0, 0))
 
     def finalize_button_rect(self, buttons, width, height):
         # Rescale and position the buttons
@@ -92,7 +92,7 @@ class SettingsContextMenu(ContextMenu):
             button.area.top = y
             y += button.area.height
 
-            button.display_reference = self.settings.sidebar.surface
+            # button.display_reference = self.settings.sidebar.surface
 
         self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, y)
 
@@ -137,28 +137,25 @@ class SettingsSidebarChain(ScrollableView):
         self.currently_inverted = None
 
         self.AREA = (
-            0, 0,
+            0, self.settings.ratios.main_menu_top_height,
             self.settings.ratios.main_menu_side_bar_width,
-            self.settings.height
+            self.settings.height - self.settings.ratios.main_menu_top_height
         )
 
         super().__init__(settings.parent_context)
 
         self.append(SettingsContextMenu(settings, self.settings.MENUS))
-    
+
     def get_surface(self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)):
-        surface = pe.Surface(self.size)
-        surface.pos = position
+        context_menu.check_hover = self.in_focus
+        surface = pe.Surface(context_menu.rect.size)
         with surface:
-            self.settings.extension_manager.opened_context_menus.append(
-                getattr(context_menu, 'KEY', context_menu.__class__.__name__))
-            context_menu.parent_hooking()
+            context_menu.draw_with_offset(*position)
         return surface
-    
+
     def append(self, context_menu: ContextMenu):
         self.stack.append(context_menu)
         context_menu.handle_scales()
-        self.extra_buttons.extend(context_menu.buttons)
 
     def loop(self):
         # Get the current and previous context menus
@@ -167,7 +164,9 @@ class SettingsSidebarChain(ScrollableView):
 
         if not self.transitioning:
             # Display the current context menu by default
-            surface = self.get_surface(current)
+            pos = (0, self.top)
+            surface = self.get_surface(current, pos)
+            self.bottom = surface.height
             pe.display.blit(surface)
         elif self.transitioning_back and not previous:
             # If we are on the main menu and back is pressed just exit the settings
@@ -191,7 +190,8 @@ class SettingsSidebarChain(ScrollableView):
             # Calculate the positions of the two context menus
             pos1 = (-self.settings.ratios.main_menu_side_bar_width * t, 0 if self.transitioning_back else self.top)
             pos2 = (
-                self.settings.ratios.main_menu_side_bar_width - self.settings.ratios.main_menu_side_bar_width * t, self.top if self.transitioning_back else 0)
+                self.settings.ratios.main_menu_side_bar_width - self.settings.ratios.main_menu_side_bar_width * t,
+                self.top if self.transitioning_back else 0)
 
             # Prepare both context menus
             surface1 = self.get_surface(previous, pos1)
@@ -202,11 +202,11 @@ class SettingsSidebarChain(ScrollableView):
             surface2.set_alpha(255 * t)
 
             # Display both context menus
-            pe.display.blit(surface1, pos1)
-            pe.display.blit(surface2, pos2)
+            pe.display.blit(surface1, (pos1[0], 0))
+            pe.display.blit(surface2, (pos2[0], 0))
 
     def handle_resize(self):
         self.resize((
             self.settings.ratios.main_menu_side_bar_width,
-            self.settings.height
+            self.settings.height - self.settings.ratios.main_menu_top_height
         ))

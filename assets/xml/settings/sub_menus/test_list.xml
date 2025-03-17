@@ -99,4 +99,54 @@
         <icon>moss</icon>
         <action>xml_settings/test_list</action>
     </item>
+    <item>
+        <text>Meow 21</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 22</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 23</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 24</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 25</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 26</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 27</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 28</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 29</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
+    <item>
+        <text>Meow 30</text>
+        <icon>moss</icon>
+        <action>xml_settings/test_list</action>
+    </item>
 </menu>

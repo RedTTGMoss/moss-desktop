@@ -48,6 +48,7 @@ class ContextMenu(ContextBar, ABC):
             self.close()
 
     def post_loop(self):
+        super().post_loop()
         if self.waiting_for_let_go:
             if not any(pe.mouse.clicked()):
                 self.waiting_for_let_go = False
@@ -87,6 +88,11 @@ class ContextMenu(ContextBar, ABC):
             self.left, self.top = self.rect.topleft
             self.finalize_button_rect(buttons, width, height)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self):
         self.extension_manager.opened_context_menus.append(getattr(self, 'KEY', self.__class__.__name__))
-        super().__call__(*args, **kwargs)
+        super().__call__()
+
+    def draw_with_offset(self, x_offset: int = 0, y_offset: int = 0):
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.parent_hooking()
