@@ -426,8 +426,14 @@ class GUI(pe.GameContext):
             self.api.spread_event(ResizeEvent(pe.display.get_size()))
         if self.current_screen.handle_event != self.handle_event:
             self.current_screen.handle_event(e)
-        if self.ctrl_hold and pe.event.key_DOWN(pe.K_s):
+        if self.ctrl_hold and pe.event.key_DOWN(pe.K_p):
             self.screenshot = True
+        if (
+                self.ctrl_hold and pe.event.key_DOWN(pe.K_s) and
+                self.main_menu and self.current_screen is self.main_menu
+        ):
+            # Quickly trigger the settings if currently on the main menu
+            self.main_menu.side_bar.settings()
         self.extra_event(e)
         super().handle_event(e)
 
