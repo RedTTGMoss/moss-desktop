@@ -210,3 +210,9 @@ class SettingsSidebarChain(ScrollableView):
             self.settings.ratios.main_menu_side_bar_width,
             self.settings.height - self.settings.ratios.main_menu_top_height
         ))
+
+    def handle_event(self, event):
+        super().handle_event(event)
+        if pe.event.key_DOWN(pe.K_ESCAPE) or pe.event.key_DOWN(pe.KSCAN_ESCAPE):
+            # Go back through the settings when pressing the escape button
+            self.settings.back_button.back()
