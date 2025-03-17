@@ -9,4 +9,9 @@
         <icon>cog</icon>
         <action>xml_settings/test</action>
     </item>
+    <item>
+        <text>Test List</text>
+        <icon>cog</icon>
+        <action>xml_settings/test_list</action>
+    </item>
 </menu>
