@@ -116,7 +116,7 @@ def open_document(gui: 'GUI', document_uuid: str):
     if not document or document.provision:
         return
     try:
-        gui.screens.put(DocumentViewer(gui, document_uuid))
+        gui.add_screen(DocumentViewer(gui, document_uuid))
     except CannotRenderDocument:
         pass
 

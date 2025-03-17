@@ -70,7 +70,7 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         )
         self.field.focus()
 
-        gui.screens.put(self)
+        gui.add_screen(self)
         self.api.add_hook(self.EVENT_HOOK_NAME.format(id(self)), self.resize_check_hook)
 
     @property
