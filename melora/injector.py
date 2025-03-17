@@ -35,7 +35,7 @@ class Injector(pe.ChildContext):
                 return
             if isinstance(self.parent_context.current_screen, InjectorLoader):
                 return
-            self.parent_context.screens.put(InjectorLoader(self))
+            self.parent_context.add_screen(InjectorLoader(self))
             return
 
     def create_temp_collection(self, name: str):
