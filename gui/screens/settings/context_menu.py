@@ -24,7 +24,8 @@ def parse_menu_xml(data: bytes):
             menu_item = {
                 'text': item.findtext('text'),
                 'icon': item.findtext('icon'),
-                'action': item.findtext('action')
+                'action': item.findtext('action') or 'moss',
+                'data': item.findtext('data')
             }
             menu_items.append(menu_item)
         return menu_items, root_tag
@@ -75,7 +76,7 @@ class SettingsContextMenu(ContextMenu):
         self.BUTTONS = [
             {
                 **item,
-                'inverted_id': item['action']
+                'inverted_id': item['data']
             } for item in menu
         ]
         # Add space for the back button and initialize the buttons
@@ -117,8 +118,8 @@ class SettingsContextMenu(ContextMenu):
         self.settings.sidebar.currently_inverted = value
 
     def __getattr__(self, item):
-        if item.startswith('xml_settings'):
-            return partial(self.open_sub, item)
+        if item == 'moss':
+            return self.open_sub
         return super().__getattr__(item)
 
 

@@ -20,7 +20,8 @@ class Settings(pe.ChildContext):
         {
             'text': f'{APP_NAME} Settings',
             'icon': 'moss',
-            'action': 'xml_settings',
+            'action': 'moss',
+            'data': 'xml_settings',
         }
     ]
 

@@ -2,16 +2,19 @@
     <item>
         <text>Moss</text>
         <icon>moss</icon>
-        <action>xml_settings/moss</action>
+        <action>moss</action>
+        <data>xml_settings/moss</data>
     </item>
     <item>
         <text>Test view</text>
         <icon>cog</icon>
-        <action>xml_settings/test</action>
+        <action>moss</action>
+        <data>xml_settings/test</data>
     </item>
     <item>
         <text>Test List</text>
         <icon>cog</icon>
-        <action>xml_settings/test_list</action>
+        <action>moss</action>
+        <data>xml_settings/test_list</data>
     </item>
 </menu>
