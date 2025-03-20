@@ -1,4 +1,4 @@
 <view>
     <title>Welcome to the moss settings.</title>
-    <subtitle>Navigate using the sidebar in order to modify settings</subtitle>
+    <description>Navigate using the sidebar in order to modify settings</description>
 </view>
