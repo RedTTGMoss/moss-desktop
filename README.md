@@ -1,4 +1,5 @@
 # Moss desktop app
+
 An app for working with your documents in the reMarkable cloud
 
 [![using](https://img.shields.io/badge/using-Extism-4c30fc.svg?subject=using&status=Extism&color=4c30fc)](https://extism.org)
@@ -19,9 +20,10 @@ An open-source app for working with your documents in the reMarkable cloud
 You'll find builds under releases. The executable contains the app and an installer.
 
 ## Usage notes
+
 Using this app to access your reMarkable cloud
 may cause reMarkable to take action on your account.
-So use this app at your own discretion! 
+So use this app at your own discretion!
 
 The app supports the api completely!
 
@@ -29,7 +31,7 @@ For information on how you can use moss check out the [docs](https://redttg.gitb
 
 ## Extensions
 
-Moss uses [extism](https://extism.org/) to support user extensions. 
+Moss uses [extism](https://extism.org/) to support user extensions.
 
 There are several examples available:
 
@@ -41,7 +43,8 @@ There are several examples available:
 
 [Moonbit](https://github.com/furesoft/moos-sdk-tester)
 
-A brief instruction how to write your own extensions in the language of your choice can be found at the [docs](https://redttg.gitbook.io/moss/extensions/getting-started).
+A brief instruction how to write your own extensions in the language of your choice can be found at
+the [docs](https://redttg.gitbook.io/moss/extensions/getting-started).
 
 Here are some planned extensions We will create!
 
@@ -56,6 +59,7 @@ Here are some planned extensions We will create!
 - Wikipedia crawler
 
 ## Contribution
+
 This section describes the steps for contributors to best setup their work environment
 
 **Moss is tested with python 3.9**
@@ -67,11 +71,14 @@ This section describes the steps for contributors to best setup their work envir
 4. Wait for the initial sync
 5. Please note that if you are developing changes to the cache system, all cached files are stored in sync folder
 6. Make changes and test a new feature
-The look and feel of this feature has to be paper-like
-- Use the config.json, you can set `debug` to `true` in there! 
+   The look and feel of this feature has to be paper-like
+
+- Use the config.json, you can set `debug` to `true` in there!
+
 7. Make your pull request.
 
 A few things will be checked
+
 - Different screen resolution support
 - API compatibility
 - etc.
