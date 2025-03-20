@@ -6,6 +6,10 @@ if TYPE_CHECKING:
     from gui import GUI
 
 
+def remove_excess_spaces(text: str):
+    return " ".join(text.strip().split())
+
+
 def shorten_name(name, letters=16, max_length=20):
     half = letters // 2
     # Account for the ellipsis
@@ -66,13 +70,17 @@ def new_lined_dynamic_text(name: str, font: pe.pygame.Font, width: int):
             line = [word]
         else:
             line.append(word)
+    if line:
+        lines.append(' '.join(line).strip())
     return '\n'.join(lines)
 
 
 def dynamic_text(name: str, font_filename: str, fontsize: int, width: int, new_line: bool = False):
-    name = name.strip()
+    name = remove_excess_spaces(name)
     if name.endswith('\n'):
         name = name[:-1]
+    if new_line:
+        name = name.replace('\n', ' ').strip()
     font = pe.text.get_font(font_filename, fontsize)
     if check_width(name, font) <= width:
         return name
