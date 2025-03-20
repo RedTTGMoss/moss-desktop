@@ -31,6 +31,10 @@ class ViewObject(ABC):
         """
         ...
 
+    @property
+    def id(self) -> str:
+        return self.element.get('id')
+
     def make_full_text(self, text):
         return pe.Text(
             text,
@@ -38,6 +42,9 @@ class ViewObject(ABC):
             self.gui.ratios.xml_full_text_size,
             colors=Defaults.TEXT_COLOR
         )
+
+    def get_value(self, key):
+        return self.settings_view.settings.get_value(key)
 
 
 class GenericText(ViewObject, ABC):

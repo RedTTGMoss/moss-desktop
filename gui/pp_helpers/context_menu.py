@@ -89,7 +89,10 @@ class ContextMenu(ContextBar, ABC):
             self.finalize_button_rect(buttons, width, height)
 
     def __call__(self):
-        self.extension_manager.opened_context_menus.append(getattr(self, 'KEY', self.__class__.__name__))
+        try:
+            self.extension_manager.opened_context_menus.append(getattr(self, 'KEY', self.__class__.__name__))
+        except AttributeError:
+            pass
         super().__call__()
 
     def draw_with_offset(self, x_offset: int = 0, y_offset: int = 0):

@@ -213,7 +213,10 @@ class GUI(pe.GameContext):
         setattr(pe.settings, 'indev', False)
 
         from .defaults import Defaults
-        from gui.extensions import ExtensionManager
+        try:
+            from gui.extensions import ExtensionManager
+        except:
+            pass
         super().__init__()
 
         if self.config.debug:
@@ -232,7 +235,10 @@ class GUI(pe.GameContext):
             self.api = API(**self.api_kwargs)
         self.api.last_root = self.config.last_root
         self.api.debug = self.config.debug
-        self.extension_manager = ExtensionManager(self)
+        try:
+            self.extension_manager = ExtensionManager(self)
+        except:
+            pass
         self.screens = []
         self.ratios = Ratios(self.config.scale)
         self.icons = {}
@@ -343,8 +349,10 @@ class GUI(pe.GameContext):
             return
         if not self.warning or not getattr(self.warning, 'wait', False):
             self.current_screen()
-        if getattr(self, 'extension_manager'):
+        try:
             self.extension_manager.loop()
+        except AttributeError:
+            pass
 
     def save_config(self):
         with open("config.json", "w") as f:
@@ -352,8 +360,11 @@ class GUI(pe.GameContext):
         self.dirty_config = False
 
     def save_config_if_dirty(self):
-        if getattr(self, 'extension_manager') and self.extension_manager.dirty_configs:
-            self.extension_manager.save_configs()
+        try:
+            if self.extension_manager.dirty_configs:
+                self.extension_manager.save_configs()
+        except AttributeError:
+            pass
         if self.dirty_config:
             self.save_config()
 

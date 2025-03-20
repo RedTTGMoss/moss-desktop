@@ -208,6 +208,8 @@ class Loader(pe.ChildContext, LogoMixin):
     def load_extensions(self):
         try:
             self.extension_manager.load()
+        except AttributeError:
+            pass
         except:
             print_exc()
 
@@ -243,17 +245,31 @@ class Loader(pe.ChildContext, LogoMixin):
         with open(file, 'rb') as f:
             self.data[key] = f.read()
 
+    @property
+    def extensions_loaded(self):
+        try:
+            return self.extension_manager.extensions_loaded
+        except AttributeError:
+            return 0
+
+    @property
+    def extension_count(self):
+        try:
+            return self.extension_manager.extension_count
+        except AttributeError:
+            return 0
+
     def progress(self):
         if self.files_to_load is None and self.config.wait_for_everything_to_load and not self.current_progress:
             # Before we know the file count, just return 0 progress
             return 0
         try:
             base_division_a = (
-                    self.extension_manager.extensions_loaded +
+                    self.extensions_loaded +
                     self.items_loaded
             )
             base_division_b = (
-                    self.extension_manager.extension_count +
+                    self.extension_count +
                     self.to_load
             )
             if not self.config.wait_for_everything_to_load:
@@ -284,10 +300,10 @@ class Loader(pe.ChildContext, LogoMixin):
             progress_rect.width *= progress
             pe.draw.rect(Defaults.SELECTED, progress_rect, 0, edge_rounding=self.ratios.loader_loading_bar_rounding)
             if self.config.debug:
-                if self.extension_manager.extension_count:
+                if self.extension_count:
                     extensions_rect = self.line_rect.copy()
                     extensions_rect.width *= (
-                            self.extension_manager.extensions_loaded / self.extension_manager.extension_count)
+                            self.extensions_loaded / self.extension_count)
                     pe.draw.rect(Defaults.TEXT_ERROR_COLOR[0], extensions_rect,
                                  self.ratios.loader_loading_bar_thickness * 3,
                                  edge_rounding=self.ratios.loader_loading_bar_rounding)
@@ -301,7 +317,10 @@ class Loader(pe.ChildContext, LogoMixin):
             self.add_screen(MainMenu(self.parent_context))  # Open the main menu
             self.api.connect_to_notifications()  # Connect to the reMarkable websocket
             self.api.add_hook('loader', self.loader_hook)  # Add api event hook for loader
-            self.extension_manager.extra_items.clear()  # Allow extensions to finally loop
+            try:
+                self.extension_manager.extra_items.clear()  # Allow extensions to finally loop
+            except AttributeError:
+                pass
 
     def loader_hook(self, event):
         if isinstance(event, SyncCompleted):

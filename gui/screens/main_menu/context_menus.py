@@ -269,6 +269,13 @@ class CustomExtensionsMenu(ContextMenu):
             "action": None
         },
     )
+    NO_EXTENSION_MANAGER = (
+        {
+            "text": "Extension manager failed to load",
+            "icon": "puzzle",
+            "action": None
+        },
+    )
 
     def __init__(self, parent: 'MainMenu', midright: Tuple[int, int]):
         self.previously_hashed_buttons = None
@@ -309,7 +316,10 @@ class CustomExtensionsMenu(ContextMenu):
 
     @property
     def BUTTONS(self):
-        buttons = self.extension_manager.extension_buttons or self.DEFAULT_BUTTONS
+        try:
+            buttons = self.extension_manager.extension_buttons or self.DEFAULT_BUTTONS
+        except AttributeError:
+            buttons = self.NO_EXTENSION_MANAGER
         current_hash = hashlib.sha1()
         for button in buttons:
             current_hash.update(id(button).to_bytes(8, 'big'))
