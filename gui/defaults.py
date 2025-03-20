@@ -136,6 +136,7 @@ class Defaults(metaclass=DefaultsMeta):
 
     # General colors
     RED = (255, 50, 50)
+    ORANGE = (255, 155, 0)
     TRANSPARENT_COLOR = (0, 0, 0, 0)
 
     # Define a thumbnail preview size for documents
