@@ -1,0 +1,10 @@
+﻿<view>
+    <title>Debug Settings</title>
+    <subtitle>These settings are only for debugging purpose</subtitle>
+
+    <toggle key="debug"></toggle>
+    <toggle key="debug_viewer"></toggle>
+    <toggle key="debug_lines"></toggle>
+    <toggle key="debug_disable_lines_alignment"></toggle>
+    <toggle key="debug_log"></toggle>
+</view>

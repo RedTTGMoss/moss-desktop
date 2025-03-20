@@ -1,3 +1,15 @@
 <view>
     <title>Moss</title>
+
+    <toggle key="enable_fake_screen_refresh"></toggle>
+    <toggle key="portable_mode"></toggle>
+    <toggle key="allow_statistics"></toggle>
+    <toggle key="add_ext_to_raw_exports"></toggle>
+    <toggle key="format_raw_exports"></toggle>
+    <toggle key="save_after_close"></toggle>
+    <toggle key="save_last_opened_folder"></toggle>
+    <toggle key="download_last_opened_page_to_make_preview"></toggle>
+    <toggle key="download_everything"></toggle>
+    <toggle key="maintain_aspect_size"></toggle>
+    <toggle key="wait_for_everything_to_load"></toggle>
 </view>
