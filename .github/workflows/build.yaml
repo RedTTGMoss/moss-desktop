@@ -12,7 +12,7 @@ env:
   APP_NAME: "Moss Desktop"
 
 jobs:
-  cef-build:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
