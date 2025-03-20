@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from rm_api import API
 
 
+# TODO: Use and finish implementing multisync implementation
+# This is meant to be used for exporting / rendering documents
+# to a pdf or images and should serve multiple stages of progress
 class MultiSync(pe.ChildContext, LogoMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     icons: Dict[str, pe.Image]

@@ -1,14 +1,12 @@
 import __main__
 import os.path
+from pprint import pformat
+
+import pygameextra as pe
+from colorama import Fore
 
 from gui import USER_DATA_DIR
 from rm_lines.inker.writing_tools import remarkable_palette
-
-try:
-    from cefpython3 import cefpython as cef
-except Exception:
-    cef = None
-import pygameextra as pe
 
 
 def get_asset_path():
@@ -17,6 +15,7 @@ def get_asset_path():
         if pe.settings.config.debug:
             print("Running as a Nuitka bundle")
         base_asset_dir = os.path.dirname(__main__.__file__)
+        # noinspection PyUnresolvedReferences
         script_dir = __compiled__.containing_dir
     else:
         if pe.settings.config.debug:
@@ -44,10 +43,12 @@ class DefaultsMeta(type):
 
 
 class Defaults(metaclass=DefaultsMeta):
+    # Figure out where Moss is located and check if it is installed
     BASE_ASSET_DIR, SCRIPT_DIR = get_asset_path()
     ASSET_DIR = os.path.join(BASE_ASSET_DIR, 'assets')
     INSTALLED = os.path.exists(os.path.join(BASE_ASSET_DIR, 'installed'))
 
+    # Get asset directories
     XML_DIR = os.path.join(ASSET_DIR, 'xml')
     ICON_DIR = os.path.join(ASSET_DIR, 'icons')
     IMAGES_DIR = os.path.join(ASSET_DIR, 'images')
@@ -56,17 +57,21 @@ class Defaults(metaclass=DefaultsMeta):
 
     if INSTALLED:
         SCRIPT_DIR = USER_DATA_DIR
+
+    # Get API storage file paths
     TOKEN_FILE_PATH = os.path.join(SCRIPT_DIR, 'token')
     CONFIG_FILE_PATH = pe.settings.config_file_path  # The GUI handles the path for this
     SYNC_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync')
     THUMB_FILE_PATH = os.path.join(SCRIPT_DIR, 'thumbnails')
     LOG_FILE = os.path.join(SCRIPT_DIR, 'moss.log')
 
+    # Get user data directories
     CONTENT_DIR = os.path.join(SCRIPT_DIR, 'content')
     TEMP_DIR = os.path.join(CONTENT_DIR, '.temporary')
     EXTENSIONS_DIR = os.path.join(CONTENT_DIR, 'extensions')
     OPTIONS_DIR = os.path.join(CONTENT_DIR, 'options')
 
+    # Get font paths
     CUSTOM_FONT = os.path.join(FONT_DIR, 'Imperator.ttf')
     CUSTOM_FONT_BOLD = os.path.join(FONT_DIR, 'Imperator Bold.ttf')
     MONO_FONT = os.path.join(FONT_DIR, 'JetBrainsMono-Bold.ttf')
@@ -74,6 +79,7 @@ class Defaults(metaclass=DefaultsMeta):
     ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
     TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
 
+    # Main fonts
     PATH_FONT = ROBOTO_REGULAR_FONT
     FOLDER_TITLE_FONT = TITLE_FONT
     DOCUMENT_TITLE_FONT = TITLE_FONT
@@ -81,6 +87,7 @@ class Defaults(metaclass=DefaultsMeta):
     INSTALLER_FONT = ROBOTO_REGULAR_FONT
     BUTTON_FONT = ROBOTO_REGULAR_FONT
 
+    # Unique fonts
     LOGO_FONT = CUSTOM_FONT_BOLD
     MAIN_MENU_FONT = CUSTOM_FONT_BOLD
     MAIN_MENU_BAR_FONT = ROBOTO_MEDIUM_FONT
@@ -89,6 +96,7 @@ class Defaults(metaclass=DefaultsMeta):
     DEBUG_FONT = MONO_FONT
     GUIDES_FONT = ROBOTO_REGULAR_FONT
 
+    # Settings fonts
     XML_TITLE_FONT = ROBOTO_MEDIUM_FONT
     XML_SUBTITLE_FONT = ROBOTO_REGULAR_FONT
     XML_TEXT_FONT = TITLE_FONT
@@ -96,34 +104,41 @@ class Defaults(metaclass=DefaultsMeta):
     XML_OPTION_FONT = MONO_FONT
     XML_FULL_TEXT_FONT = TITLE_FONT
 
+    # The main colors
     BACKGROUND = pe.colors.white
-
-    TEXT_COLOR = (pe.colors.black, BACKGROUND)
     SELECTED = (10, 10, 10)
+
+    # Main text colors
+    TEXT_COLOR = (pe.colors.black, BACKGROUND)
+    TEXT_COLOR_T = (TEXT_COLOR[0], None)
+    TEXT_COLOR_H = (BACKGROUND, None)
     TEXT_ERROR_COLOR = (pe.colors.red, None)
     TEXT_COLOR_CODE = (pe.colors.darkaqua, None)
     TEXT_COLOR_LINK = (pe.colors.darkblue, None)
+
+    # Unique text colors
     DOCUMENT_TITLE_COLOR = ((20, 20, 20), BACKGROUND)
     DOCUMENT_TITLE_COLOR_INVERTED = ((235, 235, 235), SELECTED)
     DOCUMENT_SUBTITLE_COLOR = ((100, 100, 100), BACKGROUND)
-    TEXT_COLOR_T = (TEXT_COLOR[0], None)
-    TEXT_COLOR_H = (BACKGROUND, None)
     CODE_COLOR = ((120, 120, 120), None)
+
+    # UI colors
+    OUTLINE_COLOR = pe.colors.black
     LINE_GRAY = (88, 88, 88)
     LINE_GRAY_LIGHT = (167, 167, 167)
     DOCUMENT_GRAY = (184, 184, 184)
     DOCUMENT_BACKGROUND = BACKGROUND
-    TRANSPARENT_COLOR = (0, 0, 0, 0)
-    BUTTON_ACTIVE_COLOR = (0, 0, 0, 25)
     BUTTON_ACTIVE_COLOR_INVERTED = (255, 255, 255, 50)
     BUTTON_DISABLED_COLOR = (0, 0, 0, 100)
     BUTTON_DISABLED_LIGHT_COLOR = (*BACKGROUND, 150)
+    BUTTON_ACTIVE_COLOR = (0, 0, 0, 25)
 
-    PREVIEW_SIZE = (312, 416)
-
-    # Colors
-    OUTLINE_COLOR = pe.colors.black
+    # General colors
     RED = (255, 50, 50)
+    TRANSPARENT_COLOR = (0, 0, 0, 0)
+
+    # Define a thumbnail preview size for documents
+    PREVIEW_SIZE = (312, 416)
 
     # Key bindings
     NAVIGATION_KEYS = {
@@ -131,12 +146,15 @@ class Defaults(metaclass=DefaultsMeta):
         "previous": [pe.K_LEFT],
     }
 
+    # Get the icon paths
     APP_ICON = os.path.join(ICON_DIR, 'moss.png')
     ICO_APP_ICON = os.path.join(ICON_DIR, 'moss.ico')
 
+    # File select data
     IMPORT_TYPES = ['.rm', '.pdf', '.epub']
     ALL_TYPES = [*IMPORT_TYPES, '.content', '.metadata', '.json']
 
+    # TODO: Explain this for multisync operations not yet added
     PROGRESS_ORDER = [
         "total",
     ]
@@ -145,9 +163,10 @@ class Defaults(metaclass=DefaultsMeta):
     }
 
 
+# If in debug mode just display the defaults in the terminal for easy reference
 if pe.settings.config.debug:
-    print("\nDefaults:")
+    print(f"\n{Fore.MAGENTA}Defaults:{Fore.RESET}")
     for key, value in Defaults.__dict__.items():
         if not key.startswith("__"):
-            print(f"{key}: {value}")
-    print("^ Defaults ^\n")
+            print(f"{Fore.YELLOW}{key}: {Fore.CYAN}{pformat(value)}{Fore.RESET}")
+    print(f"{Fore.MAGENTA}^ Defaults ^{Fore.RESET}\n")
