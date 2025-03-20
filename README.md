@@ -1,18 +1,27 @@
 # Moss desktop app
+An app for working with your documents in the reMarkable cloud
 
 [![using](https://img.shields.io/badge/using-Extism-4c30fc.svg?subject=using&status=Extism&color=4c30fc)](https://extism.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/RedTTGMoss/moss-desktop/total)
 ![GitHub Repo stars](https://img.shields.io/github/stars/RedTTGMoss/moss-desktop)
+[![wakatime](https://wakatime.com/badge/github/RedTTGMoss/moss-desktop.svg)](https://wakatime.com/badge/github/RedTTGMoss/moss-desktop)
+
+### [Docs](https://redttg.gitbook.io/moss/)
+
+This project is entirely open source.
+If you encounter any issues, you can use the github issues to let the contributors know!
 
 An open-source app for working with your documents in the reMarkable cloud
 
-## Installation
+## Installation & Portable mode
 
 You'll find builds under releases. The executable contains the app and an installer.
 
 ## Usage notes
-Using this app to access your reMarkable cloud may cause reMarkable to take action on your account. So use this app at your own discretion! 
+Using this app to access your reMarkable cloud
+may cause reMarkable to take action on your account.
+So use this app at your own discretion! 
 
 The app supports the api completely!
 
@@ -65,3 +74,4 @@ The look and feel of this feature has to be paper-like
 A few things will be checked
 - Different screen resolution support
 - API compatibility
+- etc.

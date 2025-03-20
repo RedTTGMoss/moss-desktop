@@ -46,7 +46,7 @@ You can run moss with `python moss.py` it should start without issues, if you ge
 ### Development warning messages
 
 Moss will bring up a few messages to warn you if it detects that it's code is nearby.\
-One of these will become quickly obviously if you pulled newer changes, particularly if `pygameextra` is noticed to have been bumped in the requirements file, you will see a warning to update it.\\
+One of these will become quickly obviously if you pulled newer changes, particularly if `pygameextra` is noticed to have been bumped in the requirements file, you will see a warning to update it.
 
 <figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption><p>Moss complaining about pygameextra</p></figcaption></figure>
 
@@ -59,7 +59,7 @@ If you so desire you can remove this check and not push the commits.
 
 ## Using the Moss debug mode
 
-By enabling debug mode in the config file for Moss, you can toggle a few things, you can also define your own checks for debug mode by simply checking if it is turned on.\\
+By enabling debug mode in the config file for Moss, you can toggle a few things, you can also define your own checks for debug mode by simply checking if it is turned on.
 
 ### Debug button rects
 
@@ -67,7 +67,7 @@ You may have also noticed the `debug_button_rects` option in the config, this is
 
 <figure><img src=".gitbook/assets/screenshot (2).png" alt="" width="506"><figcaption><p>Moss button rect debug</p></figcaption></figure>
 
-As you can this mode isn't necessarily pleasing but if your buttons are missing the red outline and you can see it showing up somewhere else it may help you figure out what's going on. \\
+As you can this mode isn't necessarily pleasing but if your buttons are missing the red outline can allow you to see it showing up somewhere else and it may help you figure out what's going on.&#x20;
 
 You can test if the red box matches your button if your button has a hover color and the red outline triggers it then it means that's the thing that is wrong with your button.\\
 
@@ -111,6 +111,8 @@ Here's a little in-depth explanation into the api or more over, how your documen
 The very top of your cloud is the root file, you'll see this mentioned here and there and it's one of the most important files, because it registers every single document and collection! What's worse is you can erase this file by telling the api that you want to use a nonexistent file as your root, typically Moss and the api object handle this, by cancelling the operation if they see anything wrong, if this happens Moss will crash before damaging the root file, but if it does then it will recreate it upon connecting and seeing this mishap.
 
 However now all your files are gone! Moss has a dirty way of fixing this by pretty much restoring from it's own memory. Run `root_fixer.py` it will look through and find all previous root files that Moss synced and saved, it'll sort them for you by last modified and you can pick whichever one you think is accurate.
+
+If you loose any data **PLEASE CONTACT REMARKABLE IMMEDIATELY!!**
 
 #### The root file
 
