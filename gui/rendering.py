@@ -228,9 +228,11 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
 
     # Render the availability cloud icon
     is_problematic = not document.content.usable or document.uuid in DocumentViewer.PROBLEMATIC_DOCUMENTS
-    if is_problematic or not document.available:
+    if is_problematic or not document.available or document.provision:
         if document.downloading:
             cloud_icon: pe.Image = gui.icons['cloud_download']
+        elif document.provision:
+            cloud_icon: pe.Image = gui.icons['export']
         elif is_problematic:
             cloud_icon: pe.Image = gui.icons['warning_circle']
         else:
