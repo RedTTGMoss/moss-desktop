@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class ViewObject(ABC):
+    VALUE_TYPE_KEY = 'any'
+
     def __init__(self, element, settings_view: 'SettingsView'):
         self.gui: 'GUI' = settings_view.settings.parent_context
         self.settings_view = settings_view
@@ -35,6 +37,10 @@ class ViewObject(ABC):
     def id(self) -> str:
         return self.element.get('id')
 
+    @property
+    def key(self) -> str:
+        return self.element.get('key')
+
     def make_full_text(self, text):
         return pe.Text(
             text,
@@ -43,8 +49,17 @@ class ViewObject(ABC):
             colors=Defaults.TEXT_COLOR
         )
 
-    def get_value(self, key):
-        return self.settings_view.settings.get_value(key)
+    @property
+    def value(self):
+        if not (key := self.key):
+            raise ValueError("The element must have a key to get the value")
+        return self.settings_view.interactor.get(key)
+
+    @value.setter
+    def value(self, value):
+        if not (key := self.key):
+            raise ValueError("The element must have a key to set the value")
+        return self.settings_view.interactor.set(key, value, self.VALUE_TYPE_KEY)
 
 
 class GenericText(ViewObject, ABC):
