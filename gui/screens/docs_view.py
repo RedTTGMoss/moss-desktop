@@ -1,8 +1,8 @@
 from abc import abstractmethod, ABC
 from math import ceil
+from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
-from typing import TYPE_CHECKING, Dict
 
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
@@ -55,7 +55,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
                                                      *font_details, (0, 0), Defaults.TEXT_COLOR)
 
         # Preparing the document texts
-        font_details = (Defaults.DOCUMENT_TITLE_FONT, self.gui.ratios.document_tree_view_document_title_size)
+        font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_document_title_size)
         page_counts = set()
         page_of_counts = set()
         pages_read = set()
@@ -78,7 +78,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
                                                      Defaults.DOCUMENT_TITLE_COLOR)
 
         # Handle small texts
-        font_details = (Defaults.DOCUMENT_TITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
+        font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
         for item_count in item_counts:
             self.texts[f'item_count_{item_count}'] = pe.Text(f'{item_count} items', *font_details,
                                                              (0, 0), Defaults.TEXT_COLOR)

@@ -78,11 +78,13 @@ class Defaults(metaclass=DefaultsMeta):
     ROBOTO_REGULAR_FONT = os.path.join(FONT_DIR, 'Roboto-Regular.ttf')
     ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
     TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
+    SUBTITLE_FONT = os.path.join(FONT_DIR, 'PTM55F.ttf')
 
     # Main fonts
     PATH_FONT = ROBOTO_REGULAR_FONT
     FOLDER_TITLE_FONT = TITLE_FONT
     DOCUMENT_TITLE_FONT = TITLE_FONT
+    DOCUMENT_SUBTITLE_FONT = SUBTITLE_FONT
     DOCUMENT_ERROR_FONT = ROBOTO_MEDIUM_FONT
     INSTALLER_FONT = ROBOTO_REGULAR_FONT
     BUTTON_FONT = ROBOTO_REGULAR_FONT
