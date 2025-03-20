@@ -41,7 +41,9 @@ jobs:
         shell: bash
         run: |
           PYGAME_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.pygame.__file__))')
+          PYGAMEEXTRA_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.__file__))')
           EXTISM_DIR=$(python -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
+          echo "PYGAMEEXTRA_DIR=${PYGAMEEXTRA_DIR}" >> $GITHUB_ENV
           echo "PYGAME_DIR=${PYGAME_DIR}" >> $GITHUB_ENV
           echo "EXTISM_DIR=${EXTISM_DIR}" >> $GITHUB_ENV
 
@@ -64,6 +66,7 @@ jobs:
             assets=assets
           include-data-files: |
             LICENSE=LICENSE
+            ${{ env.PYGAMEEXTRA_DIR }}/assets/font.ttf=pygameextra/assets/font.ttf
             ${{ matrix.os == 'windows-latest' && format('{0}/libpng16-16.dll=libpng16-16.dll', env.PYGAME_DIR) || '' }}
             ${{ matrix.os == 'windows-latest' && format('{0}/extism_sys.dll=extism_sys/extism_sys.dll', env.EXTISM_DIR) || format('{0}/libextism_sys.so=extism_sys/libextism_sys.so', env.EXTISM_DIR) }}
 
