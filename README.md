@@ -11,7 +11,7 @@ An app for working with your documents in the reMarkable cloud
 ### [Docs](https://redttg.gitbook.io/moss/)
 
 This project is entirely open source.
-If you encounter any issues, you can use the github issues to let the contributors know!
+If you encounter any issues, you can use the GitHub issues to let the contributors know!
 
 An open-source app for working with your documents in the reMarkable cloud
 
@@ -37,7 +37,7 @@ There are several examples available:
 
 [.Net](https://github.com/RedTTGMoss/Moss.NET.SDK)
 
-[Darkmode with Rust](https://github.com/RedTTGMoss/extension_dark_mode)
+[Dark mode with Rust](https://github.com/RedTTGMoss/extension_dark_mode)
 
 [Rust Sdk Tester](https://github.com/RedTTGMoss/rust_sdk_tester)
 
@@ -54,28 +54,28 @@ Here are some planned extensions We will create!
 - Image(s) to PDF import
 - Add Image to PDF function (from suggestion)
 - Content Store (A hub of verified extensions and notebooks)
-- Archiving (Automaticly move documents to collection based on certain conditions like a tag or date)
+- Archiving (Automatically move documents to collection based on certain conditions like a tag or date)
 - Aggregated rss news feed
 - Wikipedia crawler
 
 ## Contribution
 
-This section describes the steps for contributors to best setup their work environment
+This section describes the steps for contributors on how to prepare their work environment
 
-**Moss is tested with python 3.9**
+**Moss is tested with python 3.9 (but this is no longer a must)**
+
 *If you want to use your own cloud set it first in the config or in the gui*
 
 1. Fork this repository and clone it with submodules like `git clone --recursive `
 2. Run the moss.py file
-3. Setup your cloud connection
+3. Set up your cloud connection
 4. Wait for the initial sync
 5. Please note that if you are developing changes to the cache system, all cached files are stored in sync folder
 6. Make changes and test a new feature
    The look and feel of this feature has to be paper-like
-
-- Use the config.json, you can set `debug` to `true` in there!
-
 7. Make your pull request.
+
+- Use the config.json or settings, you can set `debug` *+ more* to `true` in there!
 
 A few things will be checked
 
