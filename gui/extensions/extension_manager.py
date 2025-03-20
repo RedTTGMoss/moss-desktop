@@ -233,7 +233,7 @@ class ExtensionManager:
                 extension_name = extension_name[:-5]
                 os.makedirs(os.path.join(Defaults.EXTENSIONS_DIR, extension_name), exist_ok=True)
                 os.rename(
-                    os.path.join(Defaults.EXTENSIONS_DIR, extension_name),
+                    os.path.join(Defaults.EXTENSIONS_DIR, f'{extension_name}.wasm'),
                     os.path.join(Defaults.EXTENSIONS_DIR, extension_name, extension_name)
                 )
                 self.extensions_to_load.append(extension_name)
