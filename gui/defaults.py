@@ -72,7 +72,7 @@ class Defaults(metaclass=DefaultsMeta):
     MONO_FONT = os.path.join(FONT_DIR, 'JetBrainsMono-Bold.ttf')
     ROBOTO_REGULAR_FONT = os.path.join(FONT_DIR, 'Roboto-Regular.ttf')
     ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
-    TITLE_FONT = os.path.join(FONT_DIR, 'Morrison-SemiBold.ttf')
+    TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
 
     PATH_FONT = ROBOTO_REGULAR_FONT
     FOLDER_TITLE_FONT = TITLE_FONT
@@ -93,6 +93,7 @@ class Defaults(metaclass=DefaultsMeta):
     XML_SUBTITLE_FONT = ROBOTO_REGULAR_FONT
     XML_TEXT_FONT = TITLE_FONT
     XML_SUBTEXT_FONT = MONO_FONT
+    XML_OPTION_FONT = MONO_FONT
     XML_FULL_TEXT_FONT = TITLE_FONT
 
     BACKGROUND = pe.colors.white

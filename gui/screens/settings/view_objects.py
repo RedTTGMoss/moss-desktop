@@ -144,3 +144,9 @@ class Subtext(GenericText):
     PADDING = 'xml_subtext_padding'
     FONT = 'XML_SUBTEXT_FONT'
     ALPHA = 150
+
+
+class OptionText(GenericText):
+    SIZE = 'xml_option_size'
+    PADDING = 'xml_option_padding'
+    FONT = 'XML_OPTION_FONT'
