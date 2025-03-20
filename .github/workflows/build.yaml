@@ -37,11 +37,13 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-${{ runner.os }}.txt
 
-      - name: Get pygame directory
+      - name: Get pygame and extism directory
         shell: bash
         run: |
           PYGAME_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.pygame.__file__))')
+          EXTISM_DIR=$(python -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
           echo "PYGAME_DIR=${PYGAME_DIR}" >> $GITHUB_ENV
+          echo "EXTISM_DIR=${EXTISM_DIR}" >> $GITHUB_ENV
 
       - name: Build
         uses: Nuitka/Nuitka-Action@main
@@ -62,6 +64,8 @@ jobs:
             assets=assets
           include-data-files: |
             LICENSE=LICENSE
+            ${{ env.EXTISM_DIR }}/libextism_sys.so=extism_sys/libextism_sys.so
+            ${{ matrix.os == 'windows-latest' && format('{0}/libpng16-16.dll=libpng16-16.dll', env.PYGAME_DIR) || '' }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
