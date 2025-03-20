@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Dict
 import pygameextra as pe
 
 from gui import APP_NAME
-from .context_menu import SettingsSidebarChain, BackButton, parse_menu_xml
+from .settings_menu import SettingsSidebarChain, BackButton, parse_menu_xml
 from .settings_view import SettingsView
 from ...defaults import Defaults
 from ...events import ResizeEvent
