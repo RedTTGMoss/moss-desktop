@@ -65,6 +65,7 @@ class Loader(pe.ChildContext, LogoMixin):
         'cloud': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'cloud.svg')),
         'cloud_download': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'cloud_download.svg')),
         'cloud_synced': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'cloud_synced.svg')),
+        'checkmark': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'checkmark.svg')),
         'warning_circle': os.path.join(Defaults.ICON_DIR, 'warning_circle.svg'),
         'notebook_large': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'notebook_large.svg')),
         'notebook': InvertedIcon(ReusedIcon('notebook_large', 0.333)),

@@ -1,3 +1,6 @@
+from functools import lru_cache
+from typing import Tuple
+
 import pygameextra as pe
 
 from gui.defaults import Defaults
@@ -23,3 +26,30 @@ def get_single_color(color: str):
         'defaults': defaults_parser,
         'pe': pe_parser
     }[parser](value)
+
+
+@lru_cache()
+def lerp(a, b, t):
+    return a + (b - a) * t
+
+
+def lerp_color(color_a, color_b, t):
+    return tuple(
+        lerp(a, b, t)
+        for a, b in zip(color_a, color_b)
+    )
+
+
+def invert_color(color: Tuple[int, ...]) -> Tuple[int, ...]:
+    return tuple(
+        255 - c if i < 3 else c
+        for i, c in enumerate(color)
+    )
+
+
+def ease_out_quad(t):
+    return 1 - (1 - t) ** 2
+
+
+def ease_in_quad(t):
+    return t ** 2

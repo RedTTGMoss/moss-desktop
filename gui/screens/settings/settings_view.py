@@ -12,6 +12,7 @@ class SettingsView(ScrollableView):
         'subtitle': Subtitle,
         'text': Text,
         'subtext': Subtext,
+        'toggle': Toggle
     }
 
     def __init__(self, settings: 'Settings', xml_tree, interactor=None):
@@ -36,7 +37,7 @@ class SettingsView(ScrollableView):
     def loop(self):
         y = self.top
         for element in self.elements:
-            y += element.display(0, y)
+            y += element.display(0, y) or 0
         self.bottom = y - self.top
 
     def handle_resize(self):

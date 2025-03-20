@@ -139,11 +139,23 @@ class Ratios:
         self.xml_subtext_padding_x = int(20 * scale)
         self.xml_subtext_padding_y = int(7 * scale)
 
-        self.xml_option_size = int(17 * scale)
+        self.xml_option_size = int(23 * scale)
         self.xml_option_padding_x = int(7 * scale)
         self.xml_option_padding_y = int(10 * scale)
 
         self.xml_full_text_size = int(14 * scale)
+
+        self.xml_toggle_outer_height = int(30 * scale)
+        self.xml_toggle_outer_width = self.xml_toggle_outer_height * 2
+
+        self.xml_toggle_margin = int(12 * scale)
+        self.xml_toggle_padding = int(5 * scale)
+
+        self.xml_toggle_inner_height = self.xml_toggle_outer_height - self.xml_toggle_padding * 2
+        self.xml_toggle_inner_width = self.xml_toggle_outer_width - self.xml_toggle_padding * 2
+
+        self.xml_toggle_outer_edge_rounding = self.xml_toggle_outer_height // 2
+        self.xml_toggle_inner_edge_rounding = self.xml_toggle_inner_height // 2
 
     def pixel(self, value):
         return max(1, int(value * self.scale))

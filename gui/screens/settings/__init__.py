@@ -34,7 +34,7 @@ class Settings(pe.ChildContext):
     def __init__(self, parent: 'GUI'):
         super().__init__(parent)
         self.sidebar = SettingsSidebarChain(self)
-        self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get('xml_settings/default'))[0], None)
+        self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get('xml_settings/default'))[0], self)
         self.back_button = BackButton(self)
         self.api.add_hook('settings_resize_check', self.handle_resize_event)
 
@@ -68,3 +68,10 @@ class Settings(pe.ChildContext):
 
     def close(self):
         self.close_screen()
+
+    def get(self, value):
+        return self.config.get(value)
+
+    def set(self, key, value, value_type):
+        self.config[key] = value
+        self.dirty_config = True
