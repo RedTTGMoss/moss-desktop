@@ -139,6 +139,10 @@ class Ratios:
         self.xml_subtext_padding_x = int(20 * scale)
         self.xml_subtext_padding_y = int(7 * scale)
 
+        self.xml_option_size = int(17 * scale)
+        self.xml_option_padding_x = int(7 * scale)
+        self.xml_option_padding_y = int(10 * scale)
+
         self.xml_full_text_size = int(14 * scale)
 
     def pixel(self, value):
