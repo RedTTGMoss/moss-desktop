@@ -141,11 +141,11 @@ class Ratios:
 
         self.xml_option_size = int(23 * scale)
         self.xml_option_padding_x = int(7 * scale)
-        self.xml_option_padding_y = int(10 * scale)
+        self.xml_option_padding_y = int(20 * scale)
 
         self.xml_full_text_size = int(14 * scale)
 
-        self.xml_toggle_outer_height = int(30 * scale)
+        self.xml_toggle_outer_height = int(28 * scale)
         self.xml_toggle_outer_width = self.xml_toggle_outer_height * 2
 
         self.xml_toggle_margin = int(12 * scale)
