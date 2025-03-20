@@ -9,6 +9,7 @@ class SettingsView(ScrollableView):
     LAYER = pe.BEFORE_LOOP_LAYER
     VIEW_OBJECTS = {
         'title': Title,
+        'description': DescriptionText,
         'subtitle': Subtitle,
         'text': Text,
         'subtext': Subtext,

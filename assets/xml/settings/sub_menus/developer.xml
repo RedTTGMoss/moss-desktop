@@ -1,6 +1,9 @@
 <view>
     <title>Developer Settings</title>
-    <subtitle>Here you can find all the settings related to debugging Moss or experimental features</subtitle>
+    <description>Here you can find all the settings related to debugging Moss or experimental features</description>
+
+    <subtitle>Main debug options</subtitle>
+    <subtext fore="defaults:RED">Some of these require a restart to take effect!</subtext>
 
     <toggle key="debug">Enable debug mode</toggle>
     <subtext>Global debug mode for logs or other options</subtext>

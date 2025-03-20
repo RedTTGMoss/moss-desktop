@@ -124,26 +124,24 @@ class Ratios:
 
         # Settings / XML
         self.xml_title_size = int(30 * scale)
-        self.xml_title_padding_x = int(15 * scale)
-        self.xml_title_padding_y = int(25 * scale)
+        self.xml_title_padding_x = int(7 * scale)
+        self.xml_title_padding_y = int(35 * scale)
 
-        self.xml_subtitle_size = int(20 * scale)
-        self.xml_subtitle_padding_x = int(30 * scale)
-        self.xml_subtitle_padding_y = 0
+        self.xml_subtitle_size = int(25 * scale)
+        self.xml_subtitle_padding_x = self.xml_title_padding_x
+        self.xml_subtitle_padding_y = self.xml_title_padding_y
 
         self.xml_text_size = int(15 * scale)
         self.xml_text_padding_x = int(15 * scale)
         self.xml_text_padding_y = int(20 * scale)
 
         self.xml_subtext_size = int(14 * scale)
-        self.xml_subtext_padding_x = int(20 * scale)
+        self.xml_subtext_padding_x = int(25 * scale)
         self.xml_subtext_padding_y = int(7 * scale)
 
-        self.xml_option_size = int(23 * scale)
-        self.xml_option_padding_x = int(7 * scale)
+        self.xml_option_size = int(18 * scale)
+        self.xml_option_padding_x = int(20 * scale)
         self.xml_option_padding_y = int(20 * scale)
-
-        self.xml_full_text_size = int(14 * scale)
 
         self.xml_toggle_outer_height = int(28 * scale)
         self.xml_toggle_outer_width = self.xml_toggle_outer_height * 2

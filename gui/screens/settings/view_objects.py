@@ -41,14 +41,6 @@ class ViewObject(ABC):
     def key(self) -> str:
         return self.element.get('key')
 
-    def make_full_text(self, text):
-        return pe.Text(
-            text,
-            Defaults.XML_FULL_TEXT_FONT,
-            self.gui.ratios.xml_full_text_size,
-            colors=Defaults.TEXT_COLOR
-        )
-
     # Access to the value of the current setting if applicable
     @property
     def value(self):
@@ -175,6 +167,12 @@ class Subtitle(GenericText):
 class Text(GenericText):
     SIZE = 'xml_text_size'
     PADDING = 'xml_text_padding'
+    FONT = 'XML_TEXT_FONT'
+
+
+class DescriptionText(GenericText):
+    SIZE = 'xml_text_size'
+    PADDING = 'xml_subtext_padding'
     FONT = 'XML_TEXT_FONT'
 
 

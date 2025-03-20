@@ -1,5 +1,6 @@
 <view>
     <title>Title</title>
+    <description>Description</description>
     <subtitle>Sub title</subtitle>
     <text>Text</text>
     <subtext>Subtext</subtext>
@@ -10,6 +11,7 @@
     <toggle key="test_key">There should be a tag on the very right --></toggle>
 
     <title inverted="1">Title</title>
+    <description inverted="1">Description</description>
     <subtitle inverted="1">Sub title</subtitle>
     <text inverted="1">Text</text>
     <subtext inverted="1">Subtext</subtext>
