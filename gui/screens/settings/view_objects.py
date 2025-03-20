@@ -117,7 +117,7 @@ class GenericText(ViewObject, ABC):
 
     @property
     def padding_end(self):
-        return 0
+        return self.padding_x
 
     @property
     def padding_y(self):
