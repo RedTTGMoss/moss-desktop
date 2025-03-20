@@ -6,6 +6,12 @@
         <data>xml_settings/moss</data>
     </item>
     <item>
+        <text>Developer Settings</text>
+        <icon>cog</icon>
+        <action>moss</action>
+        <data>xml_settings/developer</data>
+    </item>
+    <item>
         <text>Test view</text>
         <icon>cog</icon>
         <action>moss</action>
