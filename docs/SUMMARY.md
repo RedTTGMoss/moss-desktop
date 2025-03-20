@@ -9,3 +9,8 @@
 ***
 
 * [Development and contribution](development-and-contribution.md)
+
+## extensions
+
+* [Getting started](extensions/getting-started.md)
+* [Host functions](extensions/host-functions.md)
