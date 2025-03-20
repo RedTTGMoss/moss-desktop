@@ -334,7 +334,7 @@ class Toggle(OptionText):
     def display(self, x, y) -> int:
         # Draw the text
         height = super().display(x, y)
-        centery = y + height // 2
+        centery = self.text.rect.centery
 
         # Center the toggle on the right
         self.outer_rect.midright = (self.end - self.ratios.xml_toggle_margin, centery)
