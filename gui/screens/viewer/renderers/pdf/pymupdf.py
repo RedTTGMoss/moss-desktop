@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, Any
 
 import pygameextra as pe
 
@@ -19,7 +19,7 @@ PDF_SCALING = 227.54 / 72
 
 # noinspection PyPep8Naming
 class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
-    pdf: Optional[pymupdf.Document]
+    pdf: Optional[Any]
 
     def __init__(self, document_renderer):
         super().__init__(document_renderer)
