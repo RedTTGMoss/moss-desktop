@@ -4,6 +4,11 @@
 
     <subtitle>Main debug options</subtitle>
     <subtext fore="defaults:RED">Some of these require a restart to take effect!</subtext>
+    <subtext>
+        Please turn off any debug options that modify the UI,
+        as a final check up on the elements,
+        before finalizing changes.
+    </subtext>
 
     <toggle key="debug">Enable debug mode</toggle>
     <subtext>Global debug mode for logs or other options</subtext>
@@ -35,4 +40,14 @@
         Each button is outlined in red, some rects may be wrong.
         This is useful for debugging button alignment issues.
     </subtext>
+
+    <subtitle>Debug export options</subtitle>
+    <subtext>These options are for debug exports on documents</subtext>
+
+    <toggle key="format_raw_exports">Format RAW exports</toggle>
+    <subtext>This sorts and prettifies any metadata or content files</subtext>
+
+    <toggle key="add_ext_to_raw_exports">Add extension to RAW exports</toggle>
+    <subtext>Whether to include .json at the end of metadata or content files</subtext>
+
 </view>
