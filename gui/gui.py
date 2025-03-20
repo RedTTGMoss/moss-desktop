@@ -276,11 +276,13 @@ class GUI(pe.GameContext):
         makedirs(Defaults.THUMB_FILE_PATH, exist_ok=True)
 
     def add_screen(self, screen):
+        self.long_refresh()
         self.screens.append(screen)
 
     def close_screen(self):
         _ = self.screens.pop()
         del _
+        self.long_refresh()
 
     @property
     def current_screen(self):
@@ -309,14 +311,12 @@ class GUI(pe.GameContext):
                 self.quit_check()
             elif self.warning.closed:
                 self.warning = None
-        if self.config.enable_fake_screen_refresh and (len(
-                self.screens) != self.last_screen_count or not self.reset_fake_screen_refresh):
+        if self.config.enable_fake_screen_refresh and not self.reset_fake_screen_refresh:
             self.doing_fake_screen_refresh = True
             if self.reset_fake_screen_refresh:
                 self.fake_screen_refresh_timer = time.time()
             else:
                 self.reset_fake_screen_refresh = True
-            self.last_screen_count = len(self.screens)
             smaller_size = tuple(v * .8 for v in self.size)
 
             self.original_screen_refresh_surface = pe.Surface(self.size)
@@ -342,6 +342,10 @@ class GUI(pe.GameContext):
     def quick_refresh(self):
         self.reset_fake_screen_refresh = False
         self.fake_screen_refresh_timer = time.time() - self.FAKE_SCREEN_REFRESH_TIME * 5
+
+    def long_refresh(self):
+        self.reset_fake_screen_refresh = False
+        self.fake_screen_refresh_timer = time.time()
 
     def loop(self):
         if not self.running:

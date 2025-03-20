@@ -34,7 +34,6 @@ class ContextMenu(ContextBar, ABC):
         if self.context_menu_count > 0:
             return
         self.is_closed = True
-        self.quick_refresh()
 
     def handle_context_menu_closed(self, button, button_meta):
         if button_meta['_context_menu'].CLOSE_AFTER_ACTION:

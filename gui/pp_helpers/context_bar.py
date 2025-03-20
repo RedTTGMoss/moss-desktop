@@ -43,7 +43,6 @@ class ContextBar(pe.ChildContext, ABC):
         self.x_offset = 0
         self.y_offset = 0
         self.context_menu_count = 0
-        parent.quick_refresh()
         super().__init__(parent.parent_context)
 
     @property
@@ -90,6 +89,7 @@ class ContextBar(pe.ChildContext, ABC):
         return buttons
 
     def handle_action(self, action, data):
+        self.quick_refresh()
         pe.button.Button.action_call({
             'action': action,
             'args': data
