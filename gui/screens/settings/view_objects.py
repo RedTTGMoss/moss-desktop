@@ -87,7 +87,7 @@ class GenericText(ViewObject, ABC):
 
     def make_texts(self):
         formatted = dynamic_text(
-            self.element.text,
+            self.element.text or '',
             self.font, self.size,
             self.settings_view.width - self.padding_x - self.padding_end,
             new_line=True
