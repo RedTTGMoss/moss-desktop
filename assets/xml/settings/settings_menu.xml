@@ -1,6 +1,6 @@
 <menu>
     <item>
-        <text>Moss</text>
+        <text>Moss Settings</text>
         <icon>moss</icon>
         <action>moss</action>
         <data>xml_settings/moss</data>
