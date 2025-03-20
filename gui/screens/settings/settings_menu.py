@@ -1,5 +1,4 @@
 import time
-from functools import partial
 from typing import TYPE_CHECKING, List, Tuple, Optional
 
 import pygameextra as pe
@@ -98,6 +97,8 @@ class SettingsContextMenu(ContextMenu):
         self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, y)
 
     def open_sub(self, item):
+        if self.settings.sidebar.transitioning:  # Prevent accidental double menu clicks
+            return
         xml, root_tag = parse_menu_xml(self.data.get(item))
         if root_tag == 'menu':
             self.settings.sidebar.transitioning = True
