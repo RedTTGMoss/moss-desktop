@@ -1,4 +1,2 @@
-CEF4pygame==0.0
-cefpython3==66.1
 winshell==0.6
 pypiwin32==223
