@@ -11,7 +11,7 @@ python -m nuitka --mode=app --include-data-dir=assets=assets ^
 --include-data-files=LICENSE=LICENSE ^
 --include-data-files=%EXTISM_DIR%\extism_sys.dll=extism_sys\extism_sys.dll ^
 --include-data-files=%PYGAME_DIR%\libpng16-16.dll=libpng16-16.dll ^
---include-data-files=%PYGAMEEXTRA_DIR%\assets=pygameextra\assets ^
+--include-data-dir=%PYGAMEEXTRA_DIR%\assets=pygameextra\assets ^
 --assume-yes-for-downloads --output-dir=build --script-name=moss.py --windows-icon-from-ico=assets/icons/moss.ico ^
 --deployment --windows-console-mode=disable --clang
 
