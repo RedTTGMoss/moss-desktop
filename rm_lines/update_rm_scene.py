@@ -26,6 +26,7 @@ VENV_BIN_DIR = os.path.join(VENV_DIR, "Scripts" if os.name == "nt" else "bin")
 PIP_EXECUTABLE = os.path.join(VENV_BIN_DIR, "pip" + (".exe" if os.name == "nt" else ""))
 PYTHON_EXECUTABLE = os.path.join(VENV_BIN_DIR, "python" + (".exe" if os.name == "nt" else ""))
 SOURCE_DIR = os.path.join(MODIFICATIONS_DIR, "src", "rmscene")
+TESTS_DIR = os.path.join(MODIFICATIONS_DIR, "tests")
 TAB = '    '
 DEBUG = False
 
@@ -34,9 +35,9 @@ atexit.register(lambda: shutil.rmtree(MODIFICATIONS_DIR))
 os.environ['PIP_DISABLE_PIP_VERSION_CHECK'] = '1'  # Disable pip version check
 
 EXTRA_VALUES = {
-    'SceneInfo': (
-        ('page_size', 'tp.Tuple[int, int]', None),
-    )
+    # 'SceneInfo': (
+    #     ('page_size', 'tp.Tuple[int, int]', None),
+    # )
 }
 
 
@@ -109,11 +110,6 @@ def run_extra_reader_modifier(line):
     if line.strip().endswith('## Read simple values'):
         line = (
             f"{line}\n"
-            # add read first, second
-            f"{TAB}def read_first_second(self, index: int) -> tp.Tuple[int, int]:\n"
-            f"{TAB}{TAB}self.data.read_tag(index, TagType.Length4)\n"
-            f"{TAB}{TAB}first_second_bytes = [self.data.read_uint32() for _ in range(3)]\n"
-            f"{TAB}{TAB}return first_second_bytes[1], first_second_bytes[2]\n"
 
             # add read color
             f"{TAB}def read_color(self, index: int) -> tp.Tuple[int, ...]:\n"
@@ -127,16 +123,6 @@ def run_extra_reader_modifier(line):
 
 
 def run_scene_stream_modifier(line):
-    if line.strip().startswith('return SceneInfo('):
-        # Add page size getter in SceneInfo
-        line = (
-            f'{TAB}{TAB}try:\n'
-            f'{TAB}{TAB}{TAB}page_size = stream.read_first_second(5)\n'
-            f'{TAB}{TAB}except UnexpectedBlockError:\n'
-            f'{TAB}{TAB}{TAB}page_size = None\n'
-            f'{line}\n'
-            f"{' ' * len(line.split('(')[0])} page_size=page_size,"
-        )
     if line.strip().startswith('elif isinstance(b, RootTextBlock):'):
         # Add page size block to tree
         line = (
@@ -165,6 +151,14 @@ def run_scene_tree_modifier(line):
             f'if tp.TYPE_CHECKING:\n'
             f'{TAB}from .scene_stream import SceneInfo'
         )
+    return line
+
+
+def run_test_modifiers(line):
+    if line.endswith('GlyphRange('):
+        return f'{line}\nrgba_color=None,'
+    if line.endswith('Line('):
+        return f'{line}\nrgba_color=None,'
     return line
 
 
@@ -465,6 +459,18 @@ with OpenModify(os.path.join(SOURCE_DIR, 'tagged_block_common.py')) as (f, old):
     )
 
     f.write(final)
+
+for item in os.listdir(TESTS_DIR):
+    location = os.path.join(TESTS_DIR, item)
+    if os.path.isdir(location):
+        continue
+    with OpenModify(location) as (f, old):
+        final = '\n'.join(
+            run_test_modifiers(line)
+            for line in old.splitlines()
+        )
+
+        f.write(final)
 
 # ========================================
 print_stage("Checking modifications")

@@ -73,8 +73,8 @@ def remove_template_background(template: str):
 
 def tree_to_svg(tree: SceneTree, output_file, track_xy: DocumentSizeTracker, template: str = None):
     """Convert Tree to SVG."""
-    if tree.scene_info and tree.scene_info.page_size:
-        track_xy.frame_width, track_xy.frame_height = tree.scene_info.page_size
+    if tree.scene_info and tree.scene_info.paper_size:
+        track_xy.frame_width, track_xy.frame_height = tree.scene_info.paper_size
     output = SvgWriter()
     priority_lines = io.StringIO()  # For lines that should be drawn first AKA Highlighter
 
