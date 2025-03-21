@@ -359,7 +359,7 @@ class GUI(pe.GameContext):
             pass
 
     def save_config(self):
-        with open("config.json", "w") as f:
+        with open(Defaults.CONFIG_FILE_PATH, "w") as f:
             json.dump(self.config, f, indent=4)
         self.dirty_config = False
 
