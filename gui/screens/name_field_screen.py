@@ -81,7 +81,6 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         self.api.remove_hook(self.EVENT_HOOK_NAME.format(id(self)))
         if self.on_cancel and cancelled:
             self.on_cancel()
-        print("A text box runs del")
         self.close_screen()
 
     def ok(self):
