@@ -25,8 +25,8 @@ def make_tk():
     global tk_lock
     root = tk.Tk()
     root.withdraw()
-    if os.name == 'nt':
-        root.iconbitmap(Defaults.ICO_APP_ICON)
+    # if os.name == 'nt':
+    #     root.iconbitmap(Defaults.ICO_APP_ICON)
     if os.name == 'posix':
         img = tk.PhotoImage(file=Defaults.APP_ICON)
         root.tk.call('wm', 'iconphoto', root._w, img)
@@ -71,16 +71,23 @@ def open_file(title: str, types_text: str, *filetypes):
     return decorator
 
 
-def save_file(title: str, *filetypes):
+def save_file(title: str, *filetypes, **named_filetypes):
     def decorator(func):
         def wrapper(document: 'Document', *args, **kwargs):
             def prompt_file():
                 root = make_tk()
-                filetypes_with_default = [(f'{ext} files', f'*.{ext}') for ext in filetypes]
+                filetypes_with_default = \
+                    [
+                        (f'{ext[1:].upper()} files', f'*{ext}')
+                        for ext in filetypes
+                    ] + [
+                        (name, ext)
+                        for ext, name in named_filetypes.items()
+                    ]
                 file_name = filedialog.asksaveasfilename(
                     parent=root,
                     title=title,
-                    defaultextension=filetypes[0],
+                    defaultextension=filetypes_with_default[0][1],
                     initialfile=document.metadata.visible_name,
                     filetypes=filetypes_with_default
                 )
@@ -109,7 +116,7 @@ def notebook_prompt(file_path, callback):
     callback(file_path)
 
 
-@save_file("PDF export", '.pdf')
+@save_file("PDF export", **Defaults.EXPORT_TYPES)
 def export_prompt(file_path, document: 'Document', callback):
     # TODO: formats need work
     callback(file_path)

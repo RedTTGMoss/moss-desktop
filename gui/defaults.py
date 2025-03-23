@@ -153,8 +153,14 @@ class Defaults(metaclass=DefaultsMeta):
     ICO_APP_ICON = os.path.join(ICON_DIR, 'moss.ico')
 
     # File select data
-    IMPORT_TYPES = ['.rm', '.pdf', '.epub']
-    ALL_TYPES = [*IMPORT_TYPES, '.content', '.metadata', '.json']
+    RM_TYPES = ['.pdf', '.epub']
+    IMPORT_TYPES = ['.mossdoc', '.rmdoc', *RM_TYPES]
+    EXPORT_TYPES = {
+        '.mossdoc': "Moss doc type",
+        '.rmdoc': "RM doc type",
+        '.pdf': "Render to PDF"
+    }
+    ALL_TYPES = [*RM_TYPES, '.content', '.metadata', '.json']
 
     # TODO: Explain this for multisync operations not yet added
     PROGRESS_ORDER = [
