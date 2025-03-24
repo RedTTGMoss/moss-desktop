@@ -14,3 +14,4 @@ pymupdf==1.25.0
 extism==1.0.4
 lxml~=5.3.1
 slashr~=1.0.0
+crossfiledialog~=1.0.0
