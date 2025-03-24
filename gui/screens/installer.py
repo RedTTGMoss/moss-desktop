@@ -160,12 +160,12 @@ class Installer(pe.ChildContext, LogoMixin):
             path = os.path.join(path, f"{APP_NAME}.desktop")
             with open(path, 'w') as f:
                 f.write(
-                    "[Desktop Entry]"
-                    f"Name={APP_NAME}"
-                    f"Exec={os.path.join(INSTALL_DIR, 'moss.bin')}"
-                    f"Path={INSTALL_DIR}"
-                    f"Icon={os.path.join(INSTALL_DIR, 'assets', 'icons', 'moss.png')}"
-                    "Type=Application"
+                    "[Desktop Entry]\n"
+                    f"Name={APP_NAME}\n"
+                    f"Exec={os.path.join(INSTALL_DIR, 'moss.bin')}\n"
+                    f"Path={INSTALL_DIR}\n"
+                    f"Icon={os.path.join(INSTALL_DIR, 'assets', 'icons', 'moss.png')}\n"
+                    "Type=Application\n"
                     "Categories=Utility;")
 
     def add_to_path(self):
