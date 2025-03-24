@@ -183,7 +183,7 @@ class ImportScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
             preview = PreviewHandler.get_preview(document, Defaults.PREVIEW_SIZE)
             if document.content.file_type == "pdf":
                 light_documents.append(document.replace_pdf(surfaces_to_pdf([
-                    preview.surface
+                    preview.get_finished_surface()
                 ]) if preview else self.data['light_pdf']))
 
         return light_documents
