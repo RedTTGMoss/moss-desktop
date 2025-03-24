@@ -1,6 +1,6 @@
 import os
 import threading
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Union, Dict
 
 import crossfiledialog as cfd
 import pygameextra as pe
@@ -20,6 +20,22 @@ def get_config() -> 'ConfigDict':
     return pe.settings.game_context.config
 
 
+def get_types(types_text: str, filetypes: Union[Dict[str, Union[List[str], str]], List[str], str]) -> Dict[
+    str, List[str]]:
+    if isinstance(filetypes, dict):
+        filetypes_list = []
+        for types in filetypes.values():
+            if isinstance(types, list):
+                filetypes_list.extend(types)
+            else:
+                filetypes_list.append(types)
+    elif isinstance(filetypes, str):
+        filetypes_list = [filetypes]
+    else:
+        filetypes_list = filetypes
+    return {f'{types_text} ({", ".join(filetype[1:] for filetype in filetypes_list)})': filetypes_list}
+
+
 def open_file(title: str, types_text: str, filetypes):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -27,7 +43,7 @@ def open_file(title: str, types_text: str, filetypes):
                 config = get_config()
                 initialdir = config.last_prompt_directory if config.last_prompt_directory and os.path.isdir(
                     config.last_prompt_directory) else None
-                file_names = cfd.open_multiple(title, initialdir, filetypes)
+                file_names = cfd.open_multiple(title, initialdir, get_types(types_text, filetypes))
 
                 if not file_names:
                     return
