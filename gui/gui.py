@@ -2,6 +2,7 @@ import atexit
 import json
 import logging
 import os
+import threading
 import time
 from numbers import Number
 from os import makedirs
@@ -465,15 +466,30 @@ class GUI(pe.GameContext):
         pe.display.update()
 
     def quit(self):
+        if self.config.debug:
+            print("Show quit screen")
         self.display_quit_screen()
         self.running = False
+        if self.config.debug:
+            print("Stop running - NO MORE FRAMES")
         # noinspection PyBroadException
         try:
+            if self.config.debug:
+                print("Trying to unregister extensions")
             self.extension_manager.unregister()
         except:
             # This is usually a runtime error if moss is closed while loading extensions
             pass
+        if self.config.debug:
+            print("Saving configuration finally")
         self.save_config_if_dirty()
+
+        if self.config.debug:
+            print("Moss is forcing the API to stop operations")
+        self.api.force_quit = True
+        
+        if self.config.debug:
+            print("Moss has finished quitting")
 
     def quit_check(self):
         if self.api._upload_lock.locked():
