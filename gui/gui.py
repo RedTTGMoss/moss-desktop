@@ -2,7 +2,6 @@ import atexit
 import json
 import logging
 import os
-import threading
 import time
 from numbers import Number
 from os import makedirs
@@ -486,8 +485,8 @@ class GUI(pe.GameContext):
 
         if self.config.debug:
             print("Moss is forcing the API to stop operations")
-        self.api.force_quit = True
-        
+        self.api.force_stop_all()
+
         if self.config.debug:
             print("Moss has finished quitting")
 

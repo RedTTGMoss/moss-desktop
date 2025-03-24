@@ -69,6 +69,8 @@ with SlashR() as sr:
 print("\nNEWEST FIRST, OLDEST LAST")
 for hash_of_root, files in sorted(potential_roots.items(), key=lambda root: root_last_modified.get(root[0], 0),
                                   reverse=True):
+    if len(files) == 0:
+        continue
     last_modified = root_last_modified.get(hash_of_root, 0)
     print(f'{hash_of_root} - ITEMS: {len(files)}')
 
