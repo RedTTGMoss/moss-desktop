@@ -61,6 +61,7 @@ class MainMenu(pe.ChildContext):
         'my_files': None,
         'trash': 'trash',
     }
+    LOCATION_PARENTS = list(LOCATION_PARENT_MAPPING.values())
 
     file_sync_operation: Union[None, FileSyncProgress]
 
@@ -199,7 +200,9 @@ class MainMenu(pe.ChildContext):
         return (
                 item.parent == self.navigation_parent or
                 not self.navigation_parent
+                and item.parent
                 and self.config.show_orphans
+                and item.parent not in self.LOCATION_PARENTS
                 and item.parent not in document_collections
         )
 
