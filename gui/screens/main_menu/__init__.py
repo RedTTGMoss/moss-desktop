@@ -195,6 +195,14 @@ class MainMenu(pe.ChildContext):
         super().__call__(*args, **kwargs)
         self.bar()
 
+    def item_filter(self, item, document_collections):
+        return (
+                item.parent == self.navigation_parent or
+                not self.navigation_parent
+                and self.config.show_orphans
+                and item.parent not in document_collections
+        )
+
     def get_items(self):
         # Copy the document collections and documents incase they change
         document_collections = dict(self.api.document_collections)
@@ -204,12 +212,12 @@ class MainMenu(pe.ChildContext):
         self.document_collections = {
             key: item for key, item in
             document_collections.items()
-            if item.parent == self.navigation_parent
+            if self.item_filter(item, document_collections)
         }
         self.documents = {
             key: item for key, item in
             documents.items()
-            if item.parent == self.navigation_parent
+            if self.item_filter(item, document_collections)
         }
 
         # Preparing the path queue and the path texts

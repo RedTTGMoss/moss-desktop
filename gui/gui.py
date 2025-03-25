@@ -91,6 +91,8 @@ class ConfigDict(TypedDict):
     debug_disable_lines_alignment: bool
     debug_lines: bool
     debug_viewer: bool
+    debug_button_rects: bool
+    show_orphans: bool
     allow_statistics: bool
     portable_mode: bool
     extensions: dict
@@ -126,6 +128,7 @@ DEFAULT_CONFIG: ConfigDict = {
     'debug_lines': False,
     'debug_viewer': False,
     'debug_button_rects': False,
+    'show_orphans': True,
     'allow_statistics': False,
     'portable_mode': False,
     'extensions': {}

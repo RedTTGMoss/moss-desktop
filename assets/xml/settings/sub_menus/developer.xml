@@ -34,6 +34,13 @@
         It's useful for debugging issues with alignment or scale.
     </subtext>
 
+
+    <toggle key="show_orphans">Enable orphans</toggle>
+    <subtext>
+        This will show any documents or collections that have a missing parent.
+    </subtext>
+
+
     <toggle key="debug_button_rects">Show button rects</toggle>
     <subtext>
         This adds a condition to the UI to show the rect of every button at the end of the loop.
