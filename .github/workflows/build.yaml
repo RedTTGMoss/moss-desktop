@@ -64,6 +64,7 @@ jobs:
             pymupdf.mupdf
           include-data-dir: |
             assets=assets
+          include-package: certifi
           include-data-files: |
             LICENSE=LICENSE
             ${{ env.PYGAMEEXTRA_DIR }}/assets/font.ttf=pygameextra/assets/font.ttf
