@@ -13,6 +13,7 @@ from gui.extensions.host_functions import ACTION_APPEND
 from gui.extensions.shared_types import rect_from_pe_rect
 from gui.file_prompts import notebook_prompt, import_debug
 from gui.pp_helpers import ContextMenu, DocumentDebugPopup
+from gui.pp_helpers.popups import ConfirmPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
 from gui.screens.viewer import DocumentViewer
@@ -144,6 +145,11 @@ class DebugContextMenu(ContextMenu):
             "action": "hot_reload"
         },
         {
+            "text": "RESET ROOT FILE",
+            "icon": "trashcan_delete",
+            "action": "reset_root_file"
+        },
+        {
             "text": "Copy folder UUID",
             "icon": "copy",
             "action": "copy_uuid"
@@ -246,6 +252,29 @@ class DebugContextMenu(ContextMenu):
         document.randomize_uuids()
 
         self.import_screen.add_item(document)
+
+    def reset_root_file(self):
+        self.main_menu.bar.popups.put(ConfirmPopup(
+            self.main_menu.parent_context,
+            "Are you sure you want to reset the root file?",
+            "Your data will be irreversibly lost.\n"
+            "May be recoverable if using a custom cloud.\n"
+            "But it is not guaranteed. Proceed with caution.",
+            self.reset_root_file_second_confirm
+        ))
+
+    def reset_root_file_second_confirm(self):
+        self.main_menu.bar.popups.put(ConfirmPopup(
+            self.main_menu.parent_context,
+            "NO GOING BACK",
+            "If you proceed, your root file will be reset.\n"
+            "This action may be irreversible.\n"
+            "Are you sure you want to proceed?",
+            self._reset_root_file
+        ))
+
+    def _reset_root_file(self):
+        self.api.reset_root()
 
     def export_directory_json(self):
         if not self.main_menu.navigation_parent:
