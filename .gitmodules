@@ -1,3 +1,6 @@
 [submodule "rm_api"]
 	path = rm_api
 	url = https://github.com/RedTTGMoss/rm_api.git
+[submodule "rm_lines"]
+	path = rm_lines
+	url = https://github.com/RedTTGMoss/rm_lines.git
