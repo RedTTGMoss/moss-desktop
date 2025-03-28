@@ -67,13 +67,17 @@ This section describes the steps for contributors on how to prepare their work e
 *If you want to use your own cloud set it first in the config or in the gui*
 
 1. Fork this repository and clone it with submodules like `git clone --recursive `
-2. Run the moss.py file
-3. Set up your cloud connection
-4. Wait for the initial sync
-5. Please note that if you are developing changes to the cache system, all cached files are stored in sync folder
-6. Make changes and test a new feature
+2. Setup a virtual environment or use the global one, with minimum python version `3.9`
+3. Install the dependencies requirements.txt, rm_lines/requirements.txt, rm_api/requirements.txt
+4. Install system dependant requirements, from
+   requirements-Linux.txt, requirements-Windows.txt or requirements-macOS.txt respectively
+5. Run the moss.py file
+6. Set up your cloud connection
+7. Wait for the initial sync
+8. Please note that if you are developing changes to the cache system, all cached files are stored in sync folder
+9. Make changes and test a new feature
    The look and feel of this feature has to be paper-like
-7. Make your pull request.
+10. Make your pull request.
 
 - Use the config.json or settings, you can set `debug` *+ more* to `true` in there!
 
