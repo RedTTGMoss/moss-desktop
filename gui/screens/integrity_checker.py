@@ -30,7 +30,10 @@ class IntegrityChecker(pe.ChildContext, LogoMixin):
                 self.versions = {
                     package: version
                     for package, version in
-                    map(lambda line: str.split(line, '==') if '==' in line else (None, None),
+                    map(
+                        lambda line: str.split(line, '==') if '==' in line else
+                        str.split(line, '~=') if '~=' in line
+                        else (None, None),
                         open('requirements.txt').read().splitlines())
                 }
         else:
