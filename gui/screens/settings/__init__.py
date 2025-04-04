@@ -74,4 +74,4 @@ class Settings(pe.ChildContext):
 
     def set(self, key, value, value_type):
         self.config[key] = value
-        self.dirty_config = True
+        self.parent_context.dirty_config = True
