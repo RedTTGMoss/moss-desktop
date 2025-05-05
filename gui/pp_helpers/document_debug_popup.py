@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING, Tuple
 
 import pygameextra as pe
 import pyperclip
-from colorama import Fore, Style
-
 import rm_api.models as models
-from gui.defaults import Defaults
-from gui.pp_helpers.context_menu import ContextMenu
+from colorama import Fore, Style
 from rm_api.storage.v3 import get_file_contents, get_file, make_files_request
 from rm_lines import rm_bytes_to_svg
+
+from gui.defaults import Defaults
+from gui.pp_helpers.context_menu import ContextMenu
 
 if TYPE_CHECKING:
     from rm_api.models import Document
@@ -93,13 +93,13 @@ class DocumentDebugPopup(ContextMenu):
     @property
     @lru_cache
     def extract_location(self) -> str:
-        return str(os.path.join(os.path.dirname(Defaults.SYNC_FILE_PATH), 'sync_exports', str(self.document.parent),
+        return str(os.path.join(Defaults.SYNC_EXPORTS_FILE_PATH, str(self.document.parent),
                                 self.document.uuid))
 
     @property
     @lru_cache
     def important_extract_location(self):
-        return os.path.join(os.path.dirname(Defaults.SYNC_FILE_PATH), 'sync_exports', 'important')
+        return os.path.join(Defaults.SYNC_EXPORTS_FILE_PATH, 'important')
 
     def clean_extract_location(self, location=None):
         location = location or self.extract_location

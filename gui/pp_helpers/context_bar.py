@@ -1,12 +1,15 @@
 from abc import ABC
 from abc import abstractmethod
 from functools import lru_cache
-from typing import Tuple, Dict, List, Optional
+from typing import Tuple, Dict, List, Optional, TYPE_CHECKING
 
 import pygameextra as pe
 
 from gui.defaults import Defaults
 from gui.literals import CONTEXT_BAR_DIRECTIONS
+
+if TYPE_CHECKING:
+    from gui.screens.main_menu import MainMenu
 
 
 class ContextBar(pe.ChildContext, ABC):

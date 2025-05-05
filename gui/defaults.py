@@ -4,9 +4,9 @@ from pprint import pformat
 
 import pygameextra as pe
 from colorama import Fore
+from rm_lines.inker.writing_tools import remarkable_palette
 
 from gui import USER_DATA_DIR
-from rm_lines.inker.writing_tools import remarkable_palette
 
 
 def get_asset_path():
@@ -62,6 +62,7 @@ class Defaults(metaclass=DefaultsMeta):
     TOKEN_FILE_PATH = os.path.join(SCRIPT_DIR, 'token')
     CONFIG_FILE_PATH = pe.settings.config_file_path  # The GUI handles the path for this
     SYNC_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync')
+    SYNC_EXPORTS_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync_exports')
     THUMB_FILE_PATH = os.path.join(SCRIPT_DIR, 'thumbnails')
     LOG_FILE = os.path.join(SCRIPT_DIR, 'moss.log')
 

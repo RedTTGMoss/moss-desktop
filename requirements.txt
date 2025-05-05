@@ -11,3 +11,4 @@ slashr~=1.0.0
 crossfiledialog~=1.0.0
 rm_api==1.0.0
 rm_lines==1.0.1
+pathvalidate~=3.2.3

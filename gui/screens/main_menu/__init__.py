@@ -4,6 +4,8 @@ from threading import Lock
 from typing import TYPE_CHECKING, Dict, List, Union
 
 import pygameextra as pe
+from rm_api.models import Document
+from rm_api.notifications.models import SyncRefresh, FileSyncProgress, NewDocuments, DocumentSyncProgress
 
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
@@ -13,13 +15,11 @@ from gui.screens.main_menu.context_bars import TopBar, TopBarSelectOne, TopBarSe
 from gui.screens.main_menu.context_menus import SideBar
 from gui.screens.main_menu.main_doc_view import MainMenuDocView
 from gui.sync_stages import SYNC_STAGE_TEXTS
-from rm_api.models import Document
-from rm_api.notifications.models import SyncRefresh, FileSyncProgress, NewDocuments, DocumentSyncProgress
 
 if TYPE_CHECKING:
     from gui import GUI
     from gui.aspect_ratio import Ratios
-    from rm_api import API
+    from rm_api import API, DocumentCollection
     from gui.screens.loader import Loader
 
 
@@ -73,8 +73,8 @@ class MainMenu(pe.ChildContext):
     doc_view: MainMenuDocView
 
     def __init__(self, parent: 'GUI'):
-        self.document_collections = {}
-        self.documents = {}
+        self.document_collections: Dict[str, DocumentCollection] = {}
+        self.documents: Dict[str, Document] = {}
         self.texts: Dict[str, pe.Text] = {}
         self.path_queue = Queue()
         self.call_lock = Lock()

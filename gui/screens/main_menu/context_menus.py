@@ -1,11 +1,17 @@
 import hashlib
 import json
 import os
+import shutil
 from functools import lru_cache
 from typing import TYPE_CHECKING, List, Tuple, Optional
 
 import pygameextra as pe
 import pyperclip
+from pathvalidate import sanitize_filename
+from rm_api import make_hash
+from rm_api.models import Document, DocumentCollection, Content, Metadata
+from rm_api.notifications.models import DocumentSyncProgress
+from rm_api.storage.common import FileHandle
 
 from gui.cloud_action_helper import import_notebook_pages_to_cloud
 from gui.defaults import Defaults
@@ -17,10 +23,6 @@ from gui.pp_helpers.popups import ConfirmPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
 from gui.screens.viewer import DocumentViewer
-from rm_api import make_hash
-from rm_api.models import Document, DocumentCollection, Content, Metadata
-from rm_api.notifications.models import DocumentSyncProgress
-from rm_api.storage.common import FileHandle
 
 if TYPE_CHECKING:
     from gui.extensions.extension_manager import ExtensionManager
@@ -138,6 +140,11 @@ class DebugContextMenu(ContextMenu):
             "text": "Export directory to json",
             "icon": "export",
             "action": "export_directory_json"
+        },
+        {
+            "text": "Export docs in dir with to named .rm files",
+            "icon": "export",
+            "action": "export_docs_rm"
         },
         {
             "text": "Hot reload",
@@ -284,6 +291,24 @@ class DebugContextMenu(ContextMenu):
             self.api.document_collections[self.main_menu.navigation_parent]
         )
         debug.extract_json()
+
+    def export_docs_rm(self):
+        for document in self.main_menu.documents.values():
+            if document.get_page_count() != 1:
+                continue
+            export_path = os.path.join(Defaults.SYNC_EXPORTS_FILE_PATH, self.main_menu.navigation_parent,
+                                       f'{sanitize_filename(document.metadata.visible_name)}.rm')
+            os.makedirs(os.path.dirname(export_path), exist_ok=True)
+
+            document.ensure_download()
+            shutil.copy(
+                os.path.join(
+                    Defaults.SYNC_FILE_PATH,
+                    document.file_uuid_map[
+                        f'{document.uuid}/{document.content.c_pages.pages[0].id}.rm'
+                    ].hash),
+                export_path
+            )
 
     def export_statistics(self):
         self.parent_context.extension_manager.export_statistical_data()
