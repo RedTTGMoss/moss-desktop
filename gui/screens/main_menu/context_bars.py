@@ -1,8 +1,12 @@
+from functools import partial
 from queue import Queue
 from typing import TYPE_CHECKING, List, Union
 
 import pygameextra as pe
+from rm_api.helpers import threaded
+from rm_api.models import Document, DocumentCollection
 
+import gui.events as ev
 from gui.cloud_action_helper import import_files_to_cloud
 from gui.defaults import Defaults
 from gui.file_prompts import import_prompt
@@ -10,11 +14,9 @@ from gui.pp_helpers import ContextBar
 from gui.pp_helpers.popups import ConfirmPopup
 from gui.screens.main_menu.context_menus import DeleteContextMenu, ImportContextMenu
 from gui.screens.name_field_screen import NameFieldScreen
-from rm_api.helpers import threaded
-from rm_api.models import Document, DocumentCollection
 
 if TYPE_CHECKING:
-    pass
+    from rm_api import API
 
 
 class MainMenuContextBar(ContextBar):
@@ -136,23 +138,30 @@ class TopBar(MainMenuContextBar):
         # }
     )
     ONLINE_ACTIONS = ['create_notebook', 'create_collection', 'import_action']
+    api: 'API'
 
     def create_notebook(self):
-        NameFieldScreen(self.parent_context, "New Notebook", "", self._create_notebook, None,
+        self.api.spread_event(ev.CreateNotebookInit)
+        NameFieldScreen(self.parent_context, "New Notebook", "", self._create_notebook,
+                        partial(self.api.spread_event, ev.CreateNotebookCancelled),
                         submit_text='Create notebook')
 
     def create_collection(self):
-        NameFieldScreen(self.parent_context, "New Folder", "", self._create_collection, None,
+        self.api.spread_event(ev.CreateCollectionInit)
+        NameFieldScreen(self.parent_context, "New Folder", "", self._create_collection,
+                        partial(self.api.spread_event, ev.CreateCollectionCancelled),
                         submit_text='Create folder')
 
     @threaded
     def _create_notebook(self, title):
         doc = Document.new_notebook(self.api, title, self.main_menu.navigation_parent)
+        self.api.spread_event(ev.CreateNotebookConfirmed(title, doc.uuid))
         self.api.upload(doc)
 
     @threaded
     def _create_collection(self, title):
         col = DocumentCollection.create(self.api, title, self.main_menu.navigation_parent)
+        self.api.spread_event(ev.CreateCollectionConfirmed(title, col.uuid))
         self.api.upload(col)
 
     def import_action(self):
@@ -203,7 +212,10 @@ class TopBarSelectOne(MainMenuContextBar):
         self.is_favorite = False
 
     def delete_confirm(self):
-        self.popups.put(ConfirmPopup(self.parent_context, "Delete", self.DELETE_MESSAGE, self.delete))
+        self.api.spread_event(ev.UserDeleteInit(self.both_as_items))
+        self.popups.put(ConfirmPopup(self.parent_context, "Delete", self.DELETE_MESSAGE, self.delete, partial(
+            self.api.spread_event, ev.UserDeleteCancelled()
+        )))
 
     @threaded
     def delete(self):
@@ -213,6 +225,7 @@ class TopBarSelectOne(MainMenuContextBar):
             if isinstance(item, DocumentCollection):
                 sub_items.extend(item.recurse(self.api))
         self.deselect()
+        self.api.spread_event(ev.UserDeleteConfirmed(items + sub_items))
         self.api.delete_many_documents(items + sub_items)
 
     def move(self):
@@ -237,6 +250,7 @@ class TopBarSelectOne(MainMenuContextBar):
                 items_to_upload[-1].parent = self.main_menu.navigation_parent
             items_to_upload[-1].metadata.visible_name += " copy"
         self.deselect()
+        self.api.spread_event(ev.UserDuplicateConfirmed(self.both_as_items, items_to_upload))
         self.api.upload_many_documents(items_to_upload)
 
     def deselect(self):
@@ -279,14 +293,27 @@ class TopBarSelectOne(MainMenuContextBar):
             items_to_upload.append(document_collection)
             document_collection.metadata.pinned = not self.is_favorite
         self.deselect()
+        self.api.spread_event(ev.UserFavoritesConfirmed(items_to_upload))
         self.api.upload_many_documents(items_to_upload)
 
     def rename(self):
-        NameFieldScreen(self.parent_context, "Rename", self.single_item.metadata.visible_name, self._rename, None,
+        is_notebook = isinstance(self.single_item, Document)
+        self.api.spread_event(
+            partial(ev.RenameNotebookInit if is_notebook else ev.RenameCollectionInit, self.single_item.uuid))
+        NameFieldScreen(self.parent_context, "Rename", self.single_item.metadata.visible_name, self._rename,
+                        partial(self.api.spread_event,
+                                partial(ev.RenameNotebookCancelled if is_notebook else ev.RenameCollectionCancelled,
+                                        self.single_item.uuid)),
                         submit_text='Finish rename')
 
     @threaded
     def _rename(self, new_name: str):
+        self.api.spread_event(
+            partial(
+                ev.RenameNotebookConfirmed if isinstance(self.single_item, Document) else ev.RenameCollectionConfirmed,
+                self.single_item.uuid, new_name, self.single_item.metadata.visible_name
+            )
+        )
         self.single_item.metadata.visible_name = new_name
         self.api.upload(self.single_item)
 
@@ -315,6 +342,7 @@ class TopBarSelectOne(MainMenuContextBar):
             items_to_upload.append(document_collection)
             document_collection.parent = parent
         self.deselect()
+        self.api.spread_event(ev.MoveConfirmed(items_to_upload, parent))
         self.api.upload_many_documents(items_to_upload)
 
     def trash(self):
@@ -335,11 +363,15 @@ class TopBarTrash(MainMenuContextBar):
     ONLINE_ACTIONS = ('delete_confirm',)
     ALIGN = 'right'
 
-    @threaded
-    def delete(self):
-        items = [
+    @property
+    def bin_items(self):
+        return [
             item for item in self.api.documents.values() if item.parent == 'trash'
         ]
+
+    @threaded
+    def delete(self):
+        items = self.bin_items
 
         for collection in self.api.document_collections.values():
             if collection.parent != 'trash':
@@ -347,14 +379,16 @@ class TopBarTrash(MainMenuContextBar):
             items.extend(collection.recurse(self.api))
             items.append(collection)
 
+        self.api.spread_event(ev.UserDeleteConfirmed(items))
         self.api.delete_many_documents(items)
 
     def delete_confirm(self):
+        self.api.spread_event(ev.UserDeleteInit(self.bin_items))
         self.popups.put(ConfirmPopup(self.parent_context,
                                      "Delete permanently?",
                                      "Are you sure you want to clear the trash?\n"
                                      "This action is irreversible.",
-                                     self.delete))
+                                     self.delete, partial(self.api.spread_event, ev.UserDeleteCancelled())))
 
 
 class TopBarSelectMulti(TopBarSelectOne):

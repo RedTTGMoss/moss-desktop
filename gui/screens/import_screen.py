@@ -3,17 +3,18 @@ from datetime import timedelta
 from typing import Dict, TYPE_CHECKING, List
 
 import pygameextra as pe
+from rm_api import Document
 
 from gui.aspect_ratio import Ratios
 from gui.cloud_action_helper import surfaces_to_pdf
 from gui.defaults import Defaults
-from gui.events import ResizeEvent
+from gui.events import ResizeEvent, ImportScreenLightSyncInit, ImportScreenLightSyncComplete, \
+    ImportScreenFullSyncConfirm
 from gui.preview_handler import PreviewHandler
 from gui.rendering import render_button_using_text, render_full_text
 from gui.screens.docs_view import DocumentTreeViewer
 from gui.screens.mixins import ButtonReadyMixin, TitledMixin
 from gui.screens.viewer import DocumentViewer
-from rm_api import Document
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -156,6 +157,7 @@ class ImportScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         self.close_screen()
 
     def full_import(self):
+        self.api.spread_event(ImportScreenFullSyncConfirm(self.document_uuids, id(self)))
         threading.Thread(
             target=self.api.upload_many_documents,
             args=(self.documents_to_upload,),
@@ -172,9 +174,15 @@ class ImportScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
             daemon=True
         ).start()
 
+    @property
+    def document_uuids(self) -> List[str]:
+        return [document.uuid for document in self.documents_to_upload]
+
     def _light_import(self):
+        self.api.spread_event(ImportScreenLightSyncInit(self.document_uuids, id(self)))
         self.api.upload_many_documents(self.convert_light())
         self.uploading_light = False
+        self.api.spread_event(ImportScreenLightSyncComplete(self.document_uuids, id(self)))
 
     def convert_light(self):
         light_documents = []

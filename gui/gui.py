@@ -12,11 +12,11 @@ import colorama
 import pygameextra as pe
 from box import Box
 from colorama import Fore, Style
-
 from rm_api.auth import FailedToRefreshToken
 from rm_api.models import make_uuid
 from rm_api.notifications.models import APIFatal
-from .events import ResizeEvent, MossFatal
+
+from .events import ResizeEvent, MossFatal, ScreenClosure
 from .literals import PDF_RENDER_MODES, NOTEBOOK_RENDER_MODES, MAIN_MENU_MODES, MAIN_MENU_LOCATIONS, \
     DOCUMENT_VIEWER_MODES
 
@@ -284,6 +284,7 @@ class GUI(pe.GameContext):
 
     def close_screen(self):
         _ = self.screens.pop()
+        self.api.spread_event(ScreenClosure(id(_), _.__class__.__name__))
         del _
         self.long_refresh()
 
