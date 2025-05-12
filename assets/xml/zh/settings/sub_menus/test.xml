@@ -1,0 +1,59 @@
+<view>
+    <title>Title</title>
+    <description>Description</description>
+    <subtitle>Sub title</subtitle>
+    <text>Text</text>
+    <subtext>Subtext</subtext>
+    <text fore="hex:ff0000">Text</text>
+    <subtext fore="hex:ff0000">Subtext</subtext>
+    <text back="pe:blue">Text</text>
+    <subtext back="pe:blue">Subtext</subtext>
+    <toggle key="test_key">There should be a tag on the very right --></toggle>
+
+    <title inverted="1">Title</title>
+    <description inverted="1">Description</description>
+    <subtitle inverted="1">Sub title</subtitle>
+    <text inverted="1">Text</text>
+    <subtext inverted="1">Subtext</subtext>
+    <text fore="hex:ff0000" inverted="1">Text</text>
+    <subtext fore="hex:ff0000" inverted="1">Subtext</subtext>
+    <text back="pe:blue" inverted="1">Text</text>
+    <subtext back="pe:blue" inverted="1">Subtext</subtext>
+
+    <title>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </title>
+    <subtitle>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </subtitle>
+    <text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </text>
+    <subtext>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </subtext>
+    <toggle key="test_key">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et
+        dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </toggle>
+</view>

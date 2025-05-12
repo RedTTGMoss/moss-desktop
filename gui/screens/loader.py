@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Union, Dict
 import pygameextra as pe
 
 from gui import APP_NAME
+from gui.i18n import i18n
 from gui.defaults import Defaults
 from gui.helpers import invert_icon
 from gui.screens.main_menu import MainMenu
@@ -88,6 +89,7 @@ class Loader(pe.ChildContext, LogoMixin):
         'trashcan_delete': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'trashcan_delete.svg')),
         'cog': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'cog.svg')),
         'heart': os.path.join(Defaults.ICON_DIR, 'heart.svg'),
+        'language': os.path.join(Defaults.ICON_DIR, 'language.svg'),
         'compass': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'compass.svg')),
         'duplicate': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'duplicate.svg')),
         'text_edit': InvertedIcon(os.path.join(Defaults.ICON_DIR, 'text_edit.svg')),
@@ -107,11 +109,11 @@ class Loader(pe.ChildContext, LogoMixin):
         },
 
         # Settings
-        'xml_settings': os.path.join(Defaults.XML_DIR, 'settings', 'settings_menu.xml'),
+        'xml_settings': os.path.join(Defaults.XML_DIR, i18n.get_locale(),'settings', 'settings_menu.xml'),
         **{
-            f"xml_settings/{settings_sub_menu.rsplit('.', 1)[0]}":
-                TreatAsData(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus', settings_sub_menu))
-            for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus'))
+            f"xml_settings/{i18n.get_locale()}/{settings_sub_menu.rsplit('.', 1)[0]}":
+                TreatAsData(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus', settings_sub_menu))
+            for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus'))
         },
 
     }
@@ -203,8 +205,15 @@ class Loader(pe.ChildContext, LogoMixin):
     def load(self):
         try:
             self._load()
+            self.load_xml_settings()
         except:
             print_exc()
+            
+    def load_xml_settings(self):
+        # TODO: Fix this.
+        self.load_data('xml_settings', os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'settings_menu.xml'))
+        for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus')):
+            self.load_data(f"xml_settings/{i18n.get_locale()}/{settings_sub_menu.rsplit('.', 1)[0]}", os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus', settings_sub_menu))
 
     def load_extensions(self):
         try:

@@ -16,6 +16,7 @@ from gui.pp_helpers import ContextMenu, DocumentDebugPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
 from gui.screens.viewer import DocumentViewer
+from gui.i18n import t, i18n
 from rm_api import make_hash
 from rm_api.models import Document, DocumentCollection, Content, Metadata
 from rm_api.notifications.models import DocumentSyncProgress
@@ -28,12 +29,12 @@ if TYPE_CHECKING:
 class ImportContextMenu(ContextMenu):
     BUTTONS = (
         {
-            "text": "PDF/EPUB Import",
+            "text": t("menu.import.pdf_epub"),
             "icon": "import",
             "action": 'import_action'
         },
         {
-            "text": "Notebook Import",
+            "text": t("menu.import.notebook"),
             "icon": "notebook_add",
             "action": 'notebook_import'
         }
@@ -54,7 +55,7 @@ class ImportContextMenu(ContextMenu):
 class DeleteContextMenu(ContextMenu):
     BUTTONS = (
         {
-            "text": "Delete",
+            "text": t("menu.delete.confirm"),
             "icon": "trashcan_delete",
             "action": 'delete_confirm'
         },
@@ -119,37 +120,37 @@ class DebugContextMenu(ContextMenu):
     )
     BUTTONS = (
         {
-            "text": "Global debug menu",
+            "text": t("menu.debug.global"),
             "icon": "cog",
             "action": None
         },
         {
-            "text": "Test doc view",
+            "text": t("menu.debug.test_doc"),
             "icon": "notebook",
             "action": "test_doc_view"
         },
         {
-            "text": "Import from directory",
+            "text": t("menu.debug.import_dir"),
             "icon": "import",
             "action": "import_from_directory"
         },
         {
-            "text": "Export directory to json",
+            "text": t("menu.debug.export_json"),
             "icon": "export",
             "action": "export_directory_json"
         },
         {
-            "text": "Hot reload",
+            "text": t("menu.debug.hot_reload"),
             "icon": "rotate",
             "action": "hot_reload"
         },
         {
-            "text": "Copy folder UUID",
+            "text": t("menu.debug.copy_uuid"),
             "icon": "copy",
             "action": "copy_uuid"
         },
         {
-            "text": "Export statistics",
+            "text": t("menu.debug.export_stats"),
             "icon": "export",
             "action": "export_statistics"
         }
@@ -339,14 +340,14 @@ class SideBar(ContextMenu):
     TOP_BUTTONS = 5
     BUTTONS = (
         {
-            "text": "My Files",
+            "text": t("menu.sidebar.my_files"),
             "icon": "my_files",
             "action": "set_location",
             "data": "my_files",
             "inverted_id": "my_files"
         },
         {
-            "text": "Filter by",
+            "text": t("menu.sidebar.filter"),
             "icon": "filter",
             "action": None,
             "inverted_id": "filter",
@@ -354,40 +355,46 @@ class SideBar(ContextMenu):
             "context_icon": "chevron_right",
         },
         {
-            "text": "Favorites",
+            "text": t("menu.sidebar.favorites"),
             "icon": "star",
             "action": None,
             "inverted_id": "favorites",
             "disabled": True
         },
         {
-            "text": "Tags",
+            "text": t("menu.sidebar.tags"),
             "icon": "tag",
             "action": None,
             "inverted_id": "tags",
             "disabled": True
         },
         {
-            "text": "Extensions",  # Maintain as index 4
+            "text": t("menu.sidebar.extensions"),
             "icon": "puzzle",
             "action": "custom_extensions_menu",
             "inverted_id": "extensions",
             "context_icon": "chevron_right"
         },
         {
-            "text": "Trash",
+            "text": t("menu.sidebar.trash"),
             "icon": "trashcan",
             "action": "set_location",
             "data": "trash",
             "inverted_id": "trash"
         },
         {
-            "text": "Made by RedTTG",
+            "text": t("menu.sidebar.language"),
+            "icon": "language",
+            "action": "language_menu",
+            "context_icon": "chevron_right"
+        },  
+        {
+            "text": t("menu.sidebar.made_by"),
             "icon": "heart",
             "action": None
         },
         {
-            "text": "Settings",
+            "text": t("menu.sidebar.settings"),
             "icon": "cog",
             "action": "settings",
             "disabled": False
@@ -399,7 +406,7 @@ class SideBar(ContextMenu):
     def __init__(self, context, *args, **kwargs):
         if context.config.debug:
             self.BUTTONS = (*self.BUTTONS, {
-                "text": "DEBUG",
+                "text": t("menu.sidebar.debug"),
                 "icon": "cog",
                 "action": "debug",
                 "context_icon": "chevron_right",
@@ -468,3 +475,31 @@ class SideBar(ContextMenu):
     @property
     def currently_inverted(self):
         return self.main_menu.menu_location
+    
+    def language_menu(self):
+        self.handle_new_context_menu(self._language_menu, 6)  # 6 是语言按钮的索引
+
+    def _language_menu(self, ideal_position):
+        return LanguageMenu(self.main_menu, ideal_position)
+    
+
+class LanguageMenu(ContextMenu):
+    BUTTONS = [
+        {
+            "text": lang,
+            "action": "set_language",
+            "icon": "language",
+            "data": lang
+        }
+        for lang in i18n.get_available_languages()
+    ]
+
+    def __init__(self, parent: 'MainMenu', ideal_position: Tuple[int, int]):
+        super().__init__(parent, ideal_position)
+
+    def set_language(self, lang):
+        if self.main_menu.parent_context.set_language(lang):
+            self.close()
+        else:
+            print(f"Failed to set language to {lang}")
+

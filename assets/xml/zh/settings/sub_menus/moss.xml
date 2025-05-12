@@ -1,0 +1,68 @@
+<view>
+    <title>Moss 设置</title>
+    <description>在这里你可以找到所有与 Moss 相关的设置。</description>
+
+    <subtitle>Moss 选项</subtitle>
+
+    <toggle key="allow_statistics">允许统计</toggle>
+    <subtext>
+        这允许跟踪使用统计信息。
+        目前这些数据不会被共享，但可能会被扩展访问。
+    </subtext>
+
+    <toggle key="portable_mode">便携模式</toggle>
+    <subtext>
+        这将禁用启动时的安装程序屏幕，
+        并允许你从未安装的提取文件夹中运行。
+    </subtext>
+
+    <subtitle>同步选项</subtitle>
+
+    <toggle key="wait_for_everything_to_load">等待所有内容加载</toggle>
+    <subtext>
+        这会在打开主菜单之前强制所有文档准备就绪。
+        这可能会导致加载时间增加，具体取决于你的云存储大小。
+    </subtext>
+
+    <toggle key="download_everything">下载所有内容</toggle>
+    <subtext fore="defaults:RED">这是一个实验性功能</subtext>
+    <subtext>
+        此选项会下载主菜单中可见且之前未下载的任何文档。
+    </subtext>
+
+    <toggle key="download_last_opened_page_to_make_preview">下载最后一页以创建预览</toggle>
+    <subtext>
+        此功能仅下载创建文档预览缩略图所需的数据，
+        而无需打开文档。
+    </subtext>
+
+    <toggle key="save_last_opened_folder">保存最后打开的文件夹</toggle>
+    <subtext>
+        启用此选项将保持当前打开的文件夹，
+        每次打开应用时都会如此。如果禁用，它将保持最后保存的文件夹。
+        默认文件夹是"我的文件"。
+    </subtext>
+
+    <toggle key="save_after_close">关闭文档后保存</toggle>
+    <subtext fore="defaults:ORANGE">此功能可能不稳定！</subtext>
+    <subtext>
+        此选项会在关闭文档查看器后上传文档。
+        这将更新诸如当前页面或最后打开时间等数据。
+    </subtext>
+
+    <subtitle>界面选项</subtitle>
+
+    <toggle key="enable_fake_screen_refresh">启用模拟屏幕刷新</toggle>
+    <subtext>
+        这是一个已弃用的功能，
+        某些界面交互会导致屏幕进行模拟电子墨水屏刷新。
+        此功能可能会打扰某些用户或造成其他困扰。
+    </subtext>
+
+    <toggle key="maintain_aspect_size">保持宽高比</toggle>
+    <subtext>
+        这将保持文档查看器中加载的文档大小与原始窗口大小一致。
+        如果禁用此选项，页面大小将尝试根据你调整后的窗口大小进行缩放。
+    </subtext>
+
+</view> 

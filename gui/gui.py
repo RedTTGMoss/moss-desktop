@@ -10,6 +10,7 @@ from typing import TypedDict, Union, TYPE_CHECKING
 import appdirs
 import colorama
 import pygameextra as pe
+from gui.i18n import i18n
 from box import Box
 from colorama import Fore, Style
 
@@ -128,7 +129,8 @@ DEFAULT_CONFIG: ConfigDict = {
     'debug_button_rects': False,
     'allow_statistics': False,
     'portable_mode': False,
-    'extensions': {}
+    'extensions': {},
+    'language': 'en'
 }
 
 ConfigType = Box[ConfigDict]
@@ -274,6 +276,7 @@ class GUI(pe.GameContext):
         makedirs(Defaults.TEMP_DIR, exist_ok=True)
         makedirs(Defaults.OPTIONS_DIR, exist_ok=True)
         makedirs(Defaults.THUMB_FILE_PATH, exist_ok=True)
+        self.set_language(self.config.language)
 
     def add_screen(self, screen):
         self.long_refresh()
@@ -527,3 +530,15 @@ class GUI(pe.GameContext):
         if self.config.maintain_aspect_size:
             return self.original_size
         return self.size
+    '''
+    Currently, it doesn't work if you don't restart the app.
+    '''
+    def set_language(self, lang):
+        print(f"Setting language to {lang}")
+        if i18n.set_language(lang):
+            self.config.language = lang
+            self.dirty_config = True
+            self.loader.load()
+            self.reload()
+            return True
+        return False

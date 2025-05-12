@@ -1,4 +1,5 @@
 import __main__
+import locale
 import os.path
 from pprint import pformat
 
@@ -6,8 +7,8 @@ import pygameextra as pe
 from colorama import Fore
 
 from gui import USER_DATA_DIR
+from gui.i18n import i18n
 from rm_lines.inker.writing_tools import remarkable_palette
-
 
 def get_asset_path():
     # Check if we are running in a Nuitka bundle
@@ -71,14 +72,25 @@ class Defaults(metaclass=DefaultsMeta):
     EXTENSIONS_DIR = os.path.join(CONTENT_DIR, 'extensions')
     OPTIONS_DIR = os.path.join(CONTENT_DIR, 'options')
 
+    # TODO: Get system default local, and use system fonts by default
+    DEFAULT_ZH_FONT = os.path.join(FONT_DIR, 'NotoSansSC-VariableFont_wght.ttf')
+    if i18n.get_language() == "zh":
+        CUSTOM_FONT = DEFAULT_ZH_FONT
+        CUSTOM_FONT_BOLD = DEFAULT_ZH_FONT
+        MONO_FONT = DEFAULT_ZH_FONT
+        ROBOTO_REGULAR_FONT = DEFAULT_ZH_FONT
+        ROBOTO_MEDIUM_FONT = DEFAULT_ZH_FONT
+        TITLE_FONT = DEFAULT_ZH_FONT
+        SUBTITLE_FONT = DEFAULT_ZH_FONT
+    else:
     # Get font paths
-    CUSTOM_FONT = os.path.join(FONT_DIR, 'Imperator.ttf')
-    CUSTOM_FONT_BOLD = os.path.join(FONT_DIR, 'Imperator Bold.ttf')
-    MONO_FONT = os.path.join(FONT_DIR, 'JetBrainsMono-Bold.ttf')
-    ROBOTO_REGULAR_FONT = os.path.join(FONT_DIR, 'Roboto-Regular.ttf')
-    ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
-    TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
-    SUBTITLE_FONT = os.path.join(FONT_DIR, 'PTM55F.ttf')
+        CUSTOM_FONT = os.path.join(FONT_DIR, 'Imperator.ttf')
+        CUSTOM_FONT_BOLD = os.path.join(FONT_DIR, 'Imperator Bold.ttf')
+        MONO_FONT = os.path.join(FONT_DIR, 'JetBrainsMono-Bold.ttf')
+        ROBOTO_REGULAR_FONT = os.path.join(FONT_DIR, 'Roboto-Regular.ttf')
+        ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
+        TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
+        SUBTITLE_FONT = os.path.join(FONT_DIR, 'PTM55F.ttf')
 
     # Main fonts
     PATH_FONT = ROBOTO_REGULAR_FONT

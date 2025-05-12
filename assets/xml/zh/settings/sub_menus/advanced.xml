@@ -1,0 +1,47 @@
+<view>
+    <title>高级设置</title>
+    <description>在这里你可以找到所有高级设置。</description>
+
+    <subtitle>高级选项</subtitle>
+
+    <toggle key="use_advanced_features">使用高级功能</toggle>
+    <subtext>
+        这将启用高级功能。
+        如果禁用，将使用基本功能。
+    </subtext>
+
+    <toggle key="use_experimental_features">使用实验性功能</toggle>
+    <subtext>
+        这将启用实验性功能。
+        如果禁用，将使用稳定功能。
+    </subtext>
+
+    <subtitle>调试选项</subtitle>
+
+    <toggle key="use_debug_mode">使用调试模式</toggle>
+    <subtext>
+        这将启用调试模式。
+        如果禁用，将使用正常模式。
+    </subtext>
+
+    <toggle key="use_logging">使用日志</toggle>
+    <subtext>
+        这将启用日志记录。
+        如果禁用，将不记录日志。
+    </subtext>
+
+    <subtitle>性能选项</subtitle>
+
+    <toggle key="use_high_performance">使用高性能</toggle>
+    <subtext>
+        这将启用高性能模式。
+        如果禁用，将使用正常性能模式。
+    </subtext>
+
+    <toggle key="use_low_power">使用低功耗</toggle>
+    <subtext>
+        这将启用低功耗模式。
+        如果禁用，将使用正常功耗模式。
+    </subtext>
+
+</view> 

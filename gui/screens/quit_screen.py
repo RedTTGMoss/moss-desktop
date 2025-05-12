@@ -5,6 +5,7 @@ import pygameextra as pe
 from gui.defaults import Defaults
 from gui.gui import APP_NAME
 from gui.screens.mixins import LogoMixin
+from gui.i18n import t
 
 if TYPE_CHECKING:
     from gui.gui import GUI
@@ -19,10 +20,10 @@ class QuitScreen(pe.ChildContext, LogoMixin):
         Defaults.TEXT_COLOR = [(30, 10, 10), None]
         self.initialize_logo_and_line()
         self.quit_text = pe.Text(
-            f"Quitting... please wait for your data to be properly saved",
+            t("quit.quitting"),
             Defaults.CUSTOM_FONT, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR)
         self.love_text = pe.Text(
-            f"Thank you for using {APP_NAME}",
+            t("quit.thanks", app_name=APP_NAME),
             Defaults.CUSTOM_FONT_BOLD, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR
         )
         self.quit_text.rect.midtop = self.line_rect.midbottom

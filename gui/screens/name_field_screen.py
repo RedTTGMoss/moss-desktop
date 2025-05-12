@@ -6,6 +6,7 @@ from gui.defaults import Defaults
 from gui.events import ResizeEvent
 from gui.rendering import render_button_using_text
 from gui.screens.mixins import TitledMixin, ButtonReadyMixin
+from gui.i18n import t
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -47,15 +48,15 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
     EVENT_HOOK_NAME = 'name_field_screen_resize_check<{0}>'
 
     def __init__(self, gui: 'GUI', title, text='', on_submit=None, on_cancel=None, empty_ok: bool = False,
-                 submit_text: str = 'Submit', cancel_text: str = 'Cancel'):
+                 submit_text: str = None, cancel_text: str = None):
         self.title = title
         self.empty_ok = empty_ok
         self.on_submit = on_submit
         self.on_cancel = on_cancel
         super().__init__(gui)
 
-        self.BUTTON_TEXTS['ok_button'] = submit_text
-        self.BUTTON_TEXTS['cancel'] = cancel_text
+        self.BUTTON_TEXTS['ok_button'] = submit_text or t("name_field.submit")
+        self.BUTTON_TEXTS['cancel'] = cancel_text or t("name_field.cancel")
 
         self.handle_title(title)
         self.handle_texts()
@@ -84,6 +85,8 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         self.close_screen()
 
     def ok(self):
+        if not self.empty_ok and not self.text:
+            return
         if self.on_submit:
             self.on_submit(self.text)
         self.close(False)

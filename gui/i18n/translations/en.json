@@ -1,0 +1,115 @@
+{
+    "menu": {
+        "top_bar": {
+            "select_one": {
+                "menu": "Menu",
+                "deselect": "Deselect",
+                "rename": "Rename",
+                "favorite": "Favorite",
+                "duplicate": "Duplicate",
+                "trash": "Trash",
+                "move": "Move"
+            },
+            "create_folder": "Create Folder",
+            "create_notebook": "Create Notebook",
+            "import": "Import",
+            "menu": "Menu"
+        },
+        "import": {
+            "pdf_epub": "Import PDF/EPUB",
+            "notebook": "Import Notebook"
+        },
+        "create": {
+            "folder": "Create Folder",
+            "notebook": "Create Notebook"
+        },
+        "delete": {
+            "confirm": "Delete"
+        },
+        "debug": {
+            "global": "Global Debug Menu",
+            "test_doc": "Test Document View",
+            "import_dir": "Import from Directory",
+            "export_json": "Export Directory to JSON",
+            "hot_reload": "Hot Reload",
+            "copy_uuid": "Copy Folder UUID",
+            "export_stats": "Export Statistics"
+        },
+        "sidebar": {
+            "my_files": "My Files",
+            "filter": "Filter",
+            "favorites": "Favorites",
+            "tags": "Tags",
+            "extensions": "Extensions",
+            "trash": "Trash",
+            "made_by": "Made by RedTTG",
+            "settings": "Settings",
+            "debug": "Debug",
+            "language": "Language"
+        },
+        "settings": {
+            "back": "Back"
+        }
+    },
+    "prompts": {
+        "import": {
+            "file": "Import File",
+            "notebook": "Import Notebook"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "general": {
+            "title": "General",
+            "language": "Language",
+            "theme": "Theme",
+            "scale": "Scale"
+        },
+        "sync": {
+            "title": "Sync",
+            "enable": "Enable Sync",
+            "interval": "Sync Interval"
+        },
+        "advanced": {
+            "title": "Advanced",
+            "debug": "Debug Mode",
+            "clear_cache": "Clear Cache"
+        }
+    },
+    "viewer": {
+        "close": "Close",
+        "next_page": "Next Page",
+        "prev_page": "Previous Page",
+        "zoom_in": "Zoom In",
+        "zoom_out": "Zoom Out",
+        "page_info": "Page {current} of {total}",
+        "loading": "Loading..."
+    },
+    "installer": {
+        "title": "Installer",
+        "install": "Install",
+        "reinstall": "Reinstall",
+        "cancel": "Cancel",
+        "installing": "Installing...",
+        "progress": "Progress: {progress}%"
+    },
+    "loader": {
+        "loading": "Loading...",
+        "initializing": "Initializing...",
+        "syncing": "Syncing..."
+    },
+    "quit": {
+        "quitting": "Quitting... Please wait for data to save",
+        "thanks": "Thank you for using {app_name}"
+    },
+    "name_field": {
+        "submit": "Confirm",
+        "cancel": "Cancel",
+        "empty_error": "Name cannot be empty"
+    },
+    "common": {
+        "items": "{count} items",
+        "pages": "{count} pages",
+        "read": "Read {percent}%"
+    }
+}
