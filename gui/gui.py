@@ -280,7 +280,6 @@ class GUI(pe.GameContext):
         makedirs(Defaults.TEMP_DIR, exist_ok=True)
         makedirs(Defaults.OPTIONS_DIR, exist_ok=True)
         makedirs(Defaults.THUMB_FILE_PATH, exist_ok=True)
-        self.set_language(self.config.language)
 
     def add_screen(self, screen):
         self.long_refresh()
@@ -531,6 +530,12 @@ class GUI(pe.GameContext):
             self._import_screen = screen
 
     def reload(self):
+        """
+            This function reloads the entirety of Moss assets and reinitializes the GUI elements.
+            Please do note that it jumps ahead to the loading screen.
+            This means that your cloud session should already be validly set up.
+            Hence, do not call this function unless Moss is fully loaded and unless fully necessary.
+        """
         self.extension_manager.reset()
         for hook in list(self.api.hook_list.keys()):
             if hook == 'GUI':
@@ -556,9 +561,7 @@ class GUI(pe.GameContext):
         if self.config.maintain_aspect_size:
             return self.original_size
         return self.size
-    '''
-    Currently, it doesn't work if you don't restart the app.
-    '''
+
     def set_language(self, lang):
         from gui.i18n import i18n
         print(f"Setting language to {lang}")
