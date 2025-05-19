@@ -1,8 +1,15 @@
 import os
+import sys
 import threading
 from typing import TYPE_CHECKING, List, Union, Dict
 
-import crossfiledialog as cfd
+if sys.platform == 'linux':
+    from .filedialogs.linux import cfd
+elif sys.platform == 'win32':
+    from .filedialogs.windows import cfd
+else:
+    from .filedialogs.macos import cfd
+
 import pygameextra as pe
 
 from gui.defaults import Defaults
