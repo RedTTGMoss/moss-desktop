@@ -1,6 +1,6 @@
 #!/bin/bash
-EXTISM_DIR=$(python -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
-PYGAMEEXTRA_DIR=$(python -c 'import os, pygameextra; print(os.path.dirname(pygameextra.__file__))')
+EXTISM_DIR=$(python3 -c 'import os, extism_sys; print(os.path.dirname(extism_sys.__file__))')
+PYGAMEEXTRA_DIR=$(python3 -c 'import os, pygameextra; print(os.path.dirname(pygameextra.__file__))')
 
 python3 -m nuitka --mode=app \
 --include-data-dir=assets=assets \
