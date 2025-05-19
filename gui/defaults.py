@@ -1,9 +1,12 @@
 import __main__
+import locale
 import os.path
 from pprint import pformat
+from typing import TYPE_CHECKING
 
 import pygameextra as pe
 from colorama import Fore
+from gui.i18n import i18n
 from rm_lines.inker.writing_tools import remarkable_palette
 
 from gui import USER_DATA_DIR
@@ -62,7 +65,6 @@ class Defaults(metaclass=DefaultsMeta):
     TOKEN_FILE_PATH = os.path.join(SCRIPT_DIR, 'token')
     CONFIG_FILE_PATH = pe.settings.config_file_path  # The GUI handles the path for this
     SYNC_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync')
-    SYNC_EXPORTS_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync_exports')
     THUMB_FILE_PATH = os.path.join(SCRIPT_DIR, 'thumbnails')
     LOG_FILE = os.path.join(SCRIPT_DIR, 'moss.log')
 
@@ -73,38 +75,38 @@ class Defaults(metaclass=DefaultsMeta):
     OPTIONS_DIR = os.path.join(CONTENT_DIR, 'options')
 
     # Get font paths
-    CUSTOM_FONT = os.path.join(FONT_DIR, 'Imperator.ttf')
-    CUSTOM_FONT_BOLD = os.path.join(FONT_DIR, 'Imperator Bold.ttf')
-    MONO_FONT = os.path.join(FONT_DIR, 'JetBrainsMono-Bold.ttf')
-    ROBOTO_REGULAR_FONT = os.path.join(FONT_DIR, 'Roboto-Regular.ttf')
-    ROBOTO_MEDIUM_FONT = os.path.join(FONT_DIR, 'Roboto-Medium.ttf')
-    TITLE_FONT = os.path.join(FONT_DIR, 'PTM75F.ttf')
-    SUBTITLE_FONT = os.path.join(FONT_DIR, 'PTM55F.ttf')
+    CUSTOM_FONT = None
+    CUSTOM_FONT_BOLD = None
+    MONO_FONT = None
+    ROBOTO_REGULAR_FONT = None
+    ROBOTO_MEDIUM_FONT = None
+    TITLE_FONT = None
+    SUBTITLE_FONT = None
 
     # Main fonts
-    PATH_FONT = ROBOTO_REGULAR_FONT
-    FOLDER_TITLE_FONT = TITLE_FONT
-    DOCUMENT_TITLE_FONT = TITLE_FONT
-    DOCUMENT_SUBTITLE_FONT = SUBTITLE_FONT
-    DOCUMENT_ERROR_FONT = ROBOTO_MEDIUM_FONT
-    INSTALLER_FONT = ROBOTO_REGULAR_FONT
-    BUTTON_FONT = ROBOTO_REGULAR_FONT
+    PATH_FONT = None
+    FOLDER_TITLE_FONT = None
+    DOCUMENT_TITLE_FONT = None
+    DOCUMENT_SUBTITLE_FONT = None
+    DOCUMENT_ERROR_FONT = None
+    INSTALLER_FONT = None
+    BUTTON_FONT = None
 
     # Unique fonts
-    LOGO_FONT = CUSTOM_FONT_BOLD
-    MAIN_MENU_FONT = CUSTOM_FONT_BOLD
-    MAIN_MENU_BAR_FONT = ROBOTO_MEDIUM_FONT
-    MAIN_MENU_PROGRESS_FONT = MONO_FONT
-    CODE_FONT = MONO_FONT
-    DEBUG_FONT = MONO_FONT
-    GUIDES_FONT = ROBOTO_REGULAR_FONT
+    LOGO_FONT = None
+    MAIN_MENU_FONT = None
+    MAIN_MENU_BAR_FONT = None
+    MAIN_MENU_PROGRESS_FONT = None
+    CODE_FONT = None
+    DEBUG_FONT = None
+    GUIDES_FONT = None
 
     # Settings fonts
-    XML_TITLE_FONT = ROBOTO_MEDIUM_FONT
-    XML_SUBTITLE_FONT = ROBOTO_MEDIUM_FONT
-    XML_TEXT_FONT = TITLE_FONT
-    XML_SUBTEXT_FONT = MONO_FONT
-    XML_OPTION_FONT = TITLE_FONT
+    XML_TITLE_FONT = None
+    XML_SUBTITLE_FONT = None
+    XML_TEXT_FONT = None
+    XML_SUBTEXT_FONT = None
+    XML_OPTION_FONT = None
 
     # The main colors
     BACKGROUND = pe.colors.white
@@ -180,11 +182,56 @@ class Defaults(metaclass=DefaultsMeta):
         "total": pe.colors.white,  # This should never get used!!!
     }
 
+    @classmethod
+    def init(cls, config):
+        # TODO: Get system default local, and use system fonts by default
+        if config.language == "zh":
+            zh_font = os.path.join(cls.FONT_DIR, 'NotoSansSC-VariableFont_wght.ttf')
+            cls.CUSTOM_FONT = zh_font
+            cls.CUSTOM_FONT_BOLD = zh_font
+            cls.MONO_FONT = zh_font
+            cls.ROBOTO_REGULAR_FONT = zh_font
+            cls.ROBOTO_MEDIUM_FONT = zh_font
+            cls.TITLE_FONT = zh_font
+            cls.SUBTITLE_FONT = zh_font
+        else:
+            cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Imperator.ttf')
+            cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Imperator Bold.ttf')
+            cls.MONO_FONT = os.path.join(cls.FONT_DIR, 'JetBrainsMono-Bold.ttf')
+            cls.ROBOTO_REGULAR_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Regular.ttf')
+            cls.ROBOTO_MEDIUM_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Medium.ttf')
+            cls.TITLE_FONT = os.path.join(cls.FONT_DIR, 'PTM75F.ttf')
+            cls.SUBTITLE_FONT = os.path.join(cls.FONT_DIR, 'PTM55F.ttf')
 
-# If in debug mode just display the defaults in the terminal for easy reference
-if pe.settings.config.debug:
-    print(f"\n{Fore.MAGENTA}Defaults:{Fore.RESET}")
-    for key, value in Defaults.__dict__.items():
-        if not key.startswith("__"):
-            print(f"{Fore.YELLOW}{key}: {Fore.CYAN}{pformat(value)}{Fore.RESET}")
-    print(f"{Fore.MAGENTA}^ Defaults ^{Fore.RESET}\n")
+        # Main fonts
+        cls.PATH_FONT = cls.ROBOTO_REGULAR_FONT
+        cls.FOLDER_TITLE_FONT = cls.TITLE_FONT
+        cls.DOCUMENT_TITLE_FONT = cls.TITLE_FONT
+        cls.DOCUMENT_SUBTITLE_FONT = cls.SUBTITLE_FONT
+        cls.DOCUMENT_ERROR_FONT = cls.ROBOTO_MEDIUM_FONT
+        cls.INSTALLER_FONT = cls.ROBOTO_REGULAR_FONT
+        cls.BUTTON_FONT = cls.ROBOTO_REGULAR_FONT
+
+        # Unique fonts
+        cls.LOGO_FONT = cls.CUSTOM_FONT_BOLD
+        cls.MAIN_MENU_FONT = cls.CUSTOM_FONT_BOLD
+        cls.MAIN_MENU_BAR_FONT = cls.ROBOTO_MEDIUM_FONT
+        cls.MAIN_MENU_PROGRESS_FONT = cls.MONO_FONT
+        cls.CODE_FONT = cls.MONO_FONT
+        cls.DEBUG_FONT = cls.MONO_FONT
+        cls.GUIDES_FONT = cls.ROBOTO_REGULAR_FONT
+
+        # Settings fonts
+        cls.XML_TITLE_FONT = cls.ROBOTO_MEDIUM_FONT
+        cls.XML_SUBTITLE_FONT = cls.ROBOTO_MEDIUM_FONT
+        cls.XML_TEXT_FONT = cls.TITLE_FONT
+        cls.XML_SUBTEXT_FONT = cls.MONO_FONT
+        cls.XML_OPTION_FONT = cls.TITLE_FONT
+
+        # If in debug mode just display the defaults in the terminal for easy reference
+        if pe.settings.config.debug:
+            print(f"\n{Fore.MAGENTA}Defaults:{Fore.RESET}")
+            for key, value in Defaults.__dict__.items():
+                if not key.startswith("__"):
+                    print(f"{Fore.YELLOW}{key}: {Fore.CYAN}{pformat(value)}{Fore.RESET}")
+            print(f"{Fore.MAGENTA}^ Defaults ^{Fore.RESET}\n")

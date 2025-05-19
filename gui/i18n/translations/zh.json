@@ -1,0 +1,115 @@
+{
+    "menu": {
+        "top_bar": {
+            "select_one": {
+                "menu": "菜单",
+                "deselect": "取消选择",
+                "rename": "重命名",
+                "favorite": "收藏",
+                "duplicate": "复制",
+                "trash": "回收站",
+                "move": "移动"
+            },
+            "create_folder": "创建文件夹",
+            "create_notebook": "创建笔记本",
+            "import": "导入",
+            "menu": "菜单"
+        },
+        "import": {
+            "pdf_epub": "导入PDF/EPUB",
+            "notebook": "导入笔记本"
+        },
+        "create": {
+            "folder": "创建文件夹",
+            "notebook": "创建笔记本"
+        },
+        "delete": {
+            "confirm": "删除"
+        },
+        "debug": {
+            "global": "全局调试菜单",
+            "test_doc": "测试文档视图",
+            "import_dir": "从目录导入",
+            "export_json": "导出目录到JSON",
+            "hot_reload": "热重载",
+            "copy_uuid": "复制文件夹UUID",
+            "export_stats": "导出统计信息"
+        },
+        "sidebar": {
+            "my_files": "我的文件",
+            "filter": "筛选",
+            "favorites": "收藏夹",
+            "tags": "标签",
+            "extensions": "扩展",
+            "trash": "回收站",
+            "made_by": "由RedTTG制作",
+            "settings": "设置",
+            "debug": "调试",
+            "language": "语言"
+        },
+        "settings": {
+            "back": "返回"
+        }
+    },
+    "prompts": {
+        "import": {
+            "file": "导入文件",
+            "notebook": "导入笔记本"
+        }
+    },
+    "settings": {
+        "title": "设置",
+        "general": {
+            "title": "常规",
+            "language": "语言",
+            "theme": "主题",
+            "scale": "缩放"
+        },
+        "sync": {
+            "title": "同步",
+            "enable": "启用同步",
+            "interval": "同步间隔"
+        },
+        "advanced": {
+            "title": "高级",
+            "debug": "调试模式",
+            "clear_cache": "清除缓存"
+        }
+    },
+    "viewer": {
+        "close": "关闭",
+        "next_page": "下一页",
+        "prev_page": "上一页",
+        "zoom_in": "放大",
+        "zoom_out": "缩小",
+        "page_info": "第 {current} 页，共 {total} 页",
+        "loading": "加载中..."
+    },
+    "installer": {
+        "title": "安装",
+        "install": "安装",
+        "reinstall": "重新安装",
+        "cancel": "取消",
+        "installing": "正在安装...",
+        "progress": "进度：{progress}%"
+    },
+    "loader": {
+        "loading": "加载中...",
+        "initializing": "初始化中...",
+        "syncing": "同步中..."
+    },
+    "quit": {
+        "quitting": "正在退出...请等待数据保存完成",
+        "thanks": "感谢使用 {app_name}"
+    },
+    "name_field": {
+        "submit": "确定",
+        "cancel": "取消",
+        "empty_error": "名称不能为空"
+    },
+    "common": {
+        "items": "{count} 个项目",
+        "pages": "{count} 页",
+        "read": "已读 {percent}%"
+    }
+} 

@@ -10,6 +10,7 @@ from typing import TypedDict, Union, TYPE_CHECKING
 import appdirs
 import colorama
 import pygameextra as pe
+from gui.i18n import i18n
 from box import Box
 from colorama import Fore, Style
 from rm_api.auth import FailedToRefreshToken
@@ -96,6 +97,7 @@ class ConfigDict(TypedDict):
     allow_statistics: bool
     portable_mode: bool
     extensions: dict
+    language: str
 
 
 DEFAULT_CONFIG: ConfigDict = {
@@ -131,7 +133,8 @@ DEFAULT_CONFIG: ConfigDict = {
     'show_orphans': True,
     'allow_statistics': False,
     'portable_mode': False,
-    'extensions': {}
+    'extensions': {},
+    'language': 'en'
 }
 
 ConfigType = Box[ConfigDict]
@@ -203,7 +206,7 @@ class GUI(pe.GameContext):
     loader: 'Loader'
 
     def __init__(self):
-        global Defaults
+        global _defaults_module, Defaults
         self.config = load_config()
 
         self.AREA = (self.WIDTH * self.config.scale, self.HEIGHT * self.config.scale)
@@ -216,6 +219,7 @@ class GUI(pe.GameContext):
         setattr(pe.settings, 'indev', False)
 
         from .defaults import Defaults
+        Defaults.init(self.config)
         try:
             from gui.extensions import ExtensionManager
         except:
@@ -277,6 +281,7 @@ class GUI(pe.GameContext):
         makedirs(Defaults.TEMP_DIR, exist_ok=True)
         makedirs(Defaults.OPTIONS_DIR, exist_ok=True)
         makedirs(Defaults.THUMB_FILE_PATH, exist_ok=True)
+        self.set_language(self.config.language)
 
     def add_screen(self, screen):
         self.long_refresh()
@@ -532,10 +537,16 @@ class GUI(pe.GameContext):
             if hook == 'GUI':
                 continue
             self.api.remove_hook(hook)
+        for screen in self.screens:
+            # Try to call any close method if it exists
+            getattr(screen, 'close', lambda: None)()
         self.screens.clear()
+        pe.text.get_font.cache_clear()
+        Defaults.init(self.config)
         from gui.screens.loader import Loader
         self.add_screen(Loader(self))
         self.extension_manager.init()
+
 
     @property
     def BACKGROUND(self):
@@ -546,3 +557,15 @@ class GUI(pe.GameContext):
         if self.config.maintain_aspect_size:
             return self.original_size
         return self.size
+    '''
+    Currently, it doesn't work if you don't restart the app.
+    '''
+    def set_language(self, lang):
+        print(f"Setting language to {lang}")
+        if i18n.set_language(lang):
+            self.config.language = lang
+            self.dirty_config = True
+            self.loader.load()
+            self.reload()
+            return True
+        return False

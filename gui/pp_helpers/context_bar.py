@@ -6,6 +6,7 @@ from typing import Tuple, Dict, List, Optional, TYPE_CHECKING
 import pygameextra as pe
 
 from gui.defaults import Defaults
+from gui.i18n import t
 from gui.literals import CONTEXT_BAR_DIRECTIONS
 
 if TYPE_CHECKING:
@@ -137,11 +138,11 @@ class ContextBar(pe.ChildContext, ABC):
         # Handle texts so we know their size
         for button_meta in self.BUTTONS:
             self.texts.append(pe.Text(
-                button_meta['text'], Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
+                t(button_meta['text']), Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
                 colors=self.text_color
             ))
             self.texts_inverted.append(pe.Text(
-                button_meta['text'], Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
+                t(button_meta['text']), Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
                 colors=self.text_color_inverted
             ))
 

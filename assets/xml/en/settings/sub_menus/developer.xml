@@ -1,0 +1,60 @@
+<view>
+    <title>Developer Settings</title>
+    <description>Here you can find all the settings related to debugging Moss or experimental features</description>
+
+    <subtitle>Main debug options</subtitle>
+    <subtext fore="defaults:RED">Some of these require a restart to take effect!</subtext>
+    <subtext>
+        Please turn off any debug options that modify the UI,
+        as a final check up on the elements,
+        before finalizing changes.
+    </subtext>
+
+    <toggle key="debug">Enable debug mode</toggle>
+    <subtext>Global debug mode for logs or other options</subtext>
+
+    <toggle key="debug_log">Enable debug log</toggle>
+    <subtext>Weather or not to initiate logs in the terminal on startup</subtext>
+
+    <toggle key="debug_disable_lines_alignment">Disable LINES alignment</toggle>
+    <subtext>
+        This refers to the notebook lines file rendering and
+        the way that rm_lines tries to align the whole page to a common center
+    </subtext>
+
+    <toggle key="debug_lines">Enable debug log for LINES renderer</toggle>
+    <subtext>
+        This enables detailed logs for every stroke and item during LINES page rendering.
+        It gets messy be aware!
+    </subtext>
+
+    <toggle key="debug_viewer">Enable document viewer debug</toggle>
+    <subtext>
+        This enables info UI for the document viewer.
+        It's useful for debugging issues with alignment or scale.
+    </subtext>
+
+
+    <toggle key="show_orphans">Enable orphans</toggle>
+    <subtext>
+        This will show any documents or collections that have a missing parent.
+    </subtext>
+
+
+    <toggle key="debug_button_rects">Show button rects</toggle>
+    <subtext>
+        This adds a condition to the UI to show the rect of every button at the end of the loop.
+        Each button is outlined in red, some rects may be wrong.
+        This is useful for debugging button alignment issues.
+    </subtext>
+
+    <subtitle>Debug export options</subtitle>
+    <subtext>These options are for debug exports on documents</subtext>
+
+    <toggle key="format_raw_exports">Format RAW exports</toggle>
+    <subtext>This sorts and prettifies any metadata or content files</subtext>
+
+    <toggle key="add_ext_to_raw_exports">Add extension to RAW exports</toggle>
+    <subtext>Whether to include .json at the end of metadata or content files</subtext>
+
+</view>

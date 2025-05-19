@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Dict
 import pygameextra as pe
 
 from gui import APP_NAME
+from gui.i18n import i18n
 from .settings_menu import SettingsSidebarChain, BackButton, parse_menu_xml
 from .settings_view import SettingsView
 from ...defaults import Defaults
@@ -34,7 +35,10 @@ class Settings(pe.ChildContext):
     def __init__(self, parent: 'GUI'):
         super().__init__(parent)
         self.sidebar = SettingsSidebarChain(self)
-        self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get('xml_settings/default'))[0], self)
+        print(self.data.keys())
+        print(f'xml_settings/{i18n.get_locale()}/default')
+
+        self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get(f'xml_settings/{i18n.get_locale()}/default'))[0], self)
         self.back_button = BackButton(self)
         self.api.add_hook('settings_resize_check', self.handle_resize_event)
 

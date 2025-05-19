@@ -1,10 +1,11 @@
 import time
-from typing import TYPE_CHECKING, List, Tuple, Optional
+from typing import TYPE_CHECKING, List, Tuple, Optional, Union
 
 import pygameextra as pe
 from lxml import etree
 from lxml.etree import Element
 
+from gui.i18n import t
 from gui.pp_helpers import ContextMenu
 from gui.screens.scrollable_view import ScrollableView
 from .settings_view import SettingsView
@@ -37,7 +38,7 @@ class BackButton(ContextMenu):
 
     BUTTONS = (
         {
-            'text': 'Back',
+            'text': t("menu.settings.back"),
             'icon': 'chevron_left',
             'action': 'back'
         },

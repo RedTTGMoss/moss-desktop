@@ -1,0 +1,47 @@
+<view>
+    <title>安全设置</title>
+    <description>在这里你可以找到所有与安全相关的设置。</description>
+
+    <subtitle>安全选项</subtitle>
+
+    <toggle key="use_encryption">使用加密</toggle>
+    <subtext>
+        这将启用数据加密。
+        如果禁用，数据将以明文形式存储。
+    </subtext>
+
+    <toggle key="use_secure_storage">使用安全存储</toggle>
+    <subtext>
+        这将启用安全存储。
+        如果禁用，数据将以不安全的方式存储。
+    </subtext>
+
+    <subtitle>认证选项</subtitle>
+
+    <toggle key="use_biometric">使用生物识别</toggle>
+    <subtext>
+        这将启用生物识别认证。
+        如果禁用，将使用密码认证。
+    </subtext>
+
+    <toggle key="use_password">使用密码</toggle>
+    <subtext>
+        这将启用密码认证。
+        如果禁用，将使用生物识别认证。
+    </subtext>
+
+    <subtitle>密码选项</subtitle>
+
+    <toggle key="use_strong_password">使用强密码</toggle>
+    <subtext>
+        这将启用强密码要求。
+        如果禁用，将允许使用弱密码。
+    </subtext>
+
+    <toggle key="use_password_expiration">使用密码过期</toggle>
+    <subtext>
+        这将启用密码过期。
+        如果禁用，密码将永不过期。
+    </subtext>
+
+</view> 

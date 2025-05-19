@@ -13,6 +13,7 @@ else:
 import pygameextra as pe
 
 from gui.defaults import Defaults
+from gui.i18n import t
 
 if TYPE_CHECKING:
     from rm_api.models import Document
@@ -83,7 +84,7 @@ def save_file(title: str, filetypes):
     return decorator
 
 
-@open_file("Import file", "Moss import types", Defaults.IMPORT_TYPES)
+@open_file(t("prompts.import.file"), "Moss import types", Defaults.IMPORT_TYPES)
 def import_prompt(file_path, callback):
     callback(file_path)
 
@@ -93,12 +94,12 @@ def import_debug(file_path, callback):
     callback(file_path)
 
 
-@open_file("Import notebook pages", "RM lines", '*.rm')
+@open_file(t("prompts.import.notebook"), "RM lines", '.rm')
 def notebook_prompt(file_path, callback):
     callback(file_path)
 
 
-@save_file("PDF export", Defaults.EXPORT_TYPES)
+@save_file(t("prompts.export.pdf"), Defaults.EXPORT_TYPES)
 def export_prompt(file_path, document: 'Document', callback):
     # TODO: formats need work
     callback(file_path)
