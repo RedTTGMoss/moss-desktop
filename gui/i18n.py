@@ -1,7 +1,7 @@
 import json
 import os
 from typing import Dict, List, Optional, Any
-# from gui.defaults import Defaults
+
 class I18nManager:
     _instance = None
     _translations: Dict[str, Dict[str, Any]] = {}
@@ -23,11 +23,11 @@ class I18nManager:
     
     def _load_translations(self):
         """Load all translation files from the translations directory"""
-        translations_dir = os.path.join(os.path.dirname(__file__), "translations")
-        for filename in os.listdir(translations_dir):
+        from gui.defaults import Defaults
+        for filename in os.listdir(Defaults.TRANSLATIONS_DIR):
             if filename.endswith('.json'):
                 lang = filename[:-5]  # Remove .json extension
-                with open(os.path.join(translations_dir, filename), 'r', encoding='utf-8') as f:
+                with open(os.path.join(Defaults.TRANSLATIONS_DIR, filename), 'r', encoding='utf-8') as f:
                     self._translations[lang] = json.load(f)
     
     def set_language(self, lang: str):

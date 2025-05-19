@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 import pygameextra as pe
 from colorama import Fore
-from gui.i18n import i18n
 from rm_lines.inker.writing_tools import remarkable_palette
 
 from gui import USER_DATA_DIR
@@ -57,6 +56,7 @@ class Defaults(metaclass=DefaultsMeta):
     IMAGES_DIR = os.path.join(ASSET_DIR, 'images')
     DATA_DIR = os.path.join(ASSET_DIR, 'data')
     FONT_DIR = os.path.join(ASSET_DIR, 'fonts')
+    TRANSLATIONS_DIR = os.path.join(ASSET_DIR, 'translations')
 
     if INSTALLED:
         SCRIPT_DIR = USER_DATA_DIR

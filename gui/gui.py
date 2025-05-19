@@ -10,7 +10,6 @@ from typing import TypedDict, Union, TYPE_CHECKING
 import appdirs
 import colorama
 import pygameextra as pe
-from gui.i18n import i18n
 from box import Box
 from colorama import Fore, Style
 from rm_api.auth import FailedToRefreshToken
@@ -561,6 +560,7 @@ class GUI(pe.GameContext):
     Currently, it doesn't work if you don't restart the app.
     '''
     def set_language(self, lang):
+        from gui.i18n import i18n
         print(f"Setting language to {lang}")
         if i18n.set_language(lang):
             self.config.language = lang
