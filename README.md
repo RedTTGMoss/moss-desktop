@@ -75,14 +75,17 @@ This section describes the steps for contributors on how to prepare their work e
 6. Set up your cloud connection
 7. Wait for the initial sync
 8. Please note that if you are developing changes to the cache system, all cached files are stored in sync folder
-9. Make changes and test a new feature
-   The look and feel of this feature has to be paper-like
-10. Make your pull request.
+9. Please note that if you are adding any non python files they are stored in the `assets` folder
+10. Please note that the use of the Defaults module class is highly recommended when working with files
+11. Make changes and test a new feature
+   ~~The look and feel of this feature has to be paper-like~~
+12. Make your pull request.
 
-- Use the config.json or settings, you can set `debug` *+ more* to `true` in there!
+- Use the config.json or settings, you can set `debug` *+ more* to `true` in there! ***Or use the settings ;)***
 
 A few things will be checked
 
 - Different screen resolution support
+- Build & platform support
 - API compatibility
 - etc.
