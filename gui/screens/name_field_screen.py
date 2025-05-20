@@ -4,9 +4,9 @@ import pygameextra as pe
 
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
+from gui.i18n import t
 from gui.rendering import render_button_using_text
 from gui.screens.mixins import TitledMixin, ButtonReadyMixin
-from gui.i18n import t
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -32,6 +32,13 @@ class CustomInputBox(pe.InputBox):
             return
         pe.draw.line(Defaults.LINE_GRAY, (self.cursor_x, self.text.rect.top), (self.cursor_x, self.text.rect.bottom),
                      self.gui.ratios.line)
+
+    def draw_selection(self):
+        selection_rect = self.selected_text.rect.copy()
+        selection_rect.height += (self.area.bottom - selection_rect.bottom) * 2
+        selection_rect.bottom = self.area.bottom
+        pe.draw.rect(self.selected_text.background, selection_rect, 0)
+        self.selected_text.display()
 
 
 class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
@@ -66,7 +73,8 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
             (0, self.title_bottom, self.width, gui.ratios.field_screen_input_height),
             Defaults.DOCUMENT_TITLE_FONT,
             text, gui.ratios.field_screen_input_size,
-            colors=Defaults.DOCUMENT_TITLE_COLOR,
+            text_colors=Defaults.DOCUMENT_TITLE_COLOR,
+            selected_colors=Defaults.DOCUMENT_TITLE_COLOR_INVERTED,
             return_action=self.ok,
         )
         self.field.focus()
@@ -76,7 +84,7 @@ class NameFieldScreen(pe.ChildContext, ButtonReadyMixin, TitledMixin):
 
     @property
     def text(self):
-        return self.field.text.text
+        return self.field.value
 
     def close(self, cancelled=True):
         self.api.remove_hook(self.EVENT_HOOK_NAME.format(id(self)))
