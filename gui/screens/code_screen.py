@@ -1,11 +1,13 @@
+import sys
 import threading
 import time
 import webbrowser
-from queue import Queue
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 import pygameextra as pe
 from pyperclip import paste as pyperclip_paste
+from rm_api import DEFAULT_REMARKABLE_URI, DEFAULT_REMARKABLE_DISCOVERY_URI
+from rm_api.auth import FailedToGetToken, MissingTabletLink
 
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
@@ -15,8 +17,6 @@ from gui.rendering import render_button_using_text
 from gui.screens.loader import Loader
 from gui.screens.mixins import ButtonReadyMixin
 from gui.screens.name_field_screen import NameFieldScreen
-from rm_api import DEFAULT_REMARKABLE_URI, DEFAULT_REMARKABLE_DISCOVERY_URI
-from rm_api.auth import FailedToGetToken, MissingTabletLink
 
 if TYPE_CHECKING:
     from gui.gui import GUI
@@ -50,7 +50,7 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
     }
 
     parent_context: 'GUI'
-    screens: Queue[pe.ChildContext]
+    screens: List[pe.ChildContext]
 
     website_info: pe.Text
 
@@ -136,7 +136,9 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
 
     def handle_event(self, event):
         if event.type == pe.pygame.KEYDOWN:
-            if self.ctrl_hold and event.key == pe.pygame.K_v:
+            mods = pe.pygame.key.get_mods()
+            system_mod = mods & pe.KMOD_META if sys.platform == 'darwin' else mods & pe.KMOD_CTRL
+            if system_mod and event.key == pe.pygame.K_v:
                 for char in pyperclip_paste():
                     if char.isalnum():
                         self.add_character(char)
@@ -149,15 +151,11 @@ class CodeScreen(ButtonReadyMixin, pe.ChildContext):
                 self.hold_backspace_timer = time.time() + self.BACKSPACE_DELETE_DELAY
             elif len(self.code) == self.CODE_LENGTH:
                 pass
-            elif event.key == pe.pygame.K_LCTRL or event.key == pe.pygame.K_RCTRL:
-                self.ctrl_hold = True
             elif event.unicode.isalnum():
                 self.add_character(event.unicode)
         elif event.type == pe.pygame.KEYUP:
             if event.key == pe.pygame.K_BACKSPACE:
                 self.hold_backspace = False
-            elif event.key == pe.pygame.K_LCTRL or event.key == pe.pygame.K_RCTRL:
-                self.ctrl_hold = False
 
     def check_code(self):
         self.checking_code = True
