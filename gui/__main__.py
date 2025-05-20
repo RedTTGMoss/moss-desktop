@@ -1,4 +1,5 @@
 from gui import GUI
+import pygameextra as pe
 
 
 def run_gui():
@@ -12,3 +13,4 @@ def run_gui():
 
 if __name__ == "__main__":
     run_gui()
+    pe.pge_quit()
