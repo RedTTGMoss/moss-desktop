@@ -6,6 +6,7 @@ import pygameextra as pe
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
 from . import xml_tools as tools
+from ...i18n import t
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -87,7 +88,7 @@ class GenericText(ViewObject, ABC):
 
     def make_texts(self):
         formatted = dynamic_text(
-            self.element.text or '',
+            t(self.element.text) or '',
             self.font, self.size,
             self.settings_view.width - self.padding_x - self.padding_end,
             new_line=True

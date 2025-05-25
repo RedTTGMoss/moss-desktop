@@ -1,0 +1,39 @@
+<view>
+    <title>settings.moss.title</title>
+    <description>settings.moss.description</description>
+
+    <subtitle>settings.moss.options.title</subtitle>
+
+    <toggle key="allow_statistics">settings.moss.options.toggle_statistics.label</toggle>
+    <subtext>settings.moss.options.toggle_statistics.footnote</subtext>
+
+    <toggle key="portable_mode">settings.moss.options.toggle_portable.label</toggle>
+    <subtext>settings.moss.options.toggle_portable.footnote</subtext>
+
+    <subtitle>settings.moss.sync.title</subtitle>
+
+    <toggle key="wait_for_everything_to_load">settings.moss.sync.toggle_wait_for_everything.label</toggle>
+    <subtext>settings.moss.sync.toggle_wait_for_everything.footnote</subtext>
+
+    <toggle key="download_everything">settings.moss.sync.toggle_download_everything.label</toggle>
+    <subtext fore="defaults:RED">settings.common.experimental</subtext>
+    <subtext>settings.moss.sync.toggle_download_everything.footnote</subtext>
+
+    <toggle key="download_last_opened_page_to_make_preview">settings.moss.sync.toggle_download_last_page.label</toggle>
+    <subtext>settings.moss.sync.toggle_download_last_page.footnote</subtext>
+
+    <toggle key="save_last_opened_folder">settings.moss.sync.toggle_save_path.label</toggle>
+    <subtext>settings.moss.sync.toggle_save_path.footnote</subtext>
+
+    <toggle key="save_after_close">settings.moss.sync.toggle_save_doc.label</toggle>
+    <subtext fore="defaults:ORANGE">settings.common.unstable</subtext>
+    <subtext>settings.moss.sync.toggle_save_doc.footnote</subtext>
+
+    <subtitle>settings.moss.ui.title</subtitle>
+
+    <toggle key="enable_fake_screen_refresh">settings.moss.ui.toggle_fake_refresh.label</toggle>
+    <subtext>settings.moss.ui.toggle_fake_refresh.footnote</subtext>
+
+    <toggle key="maintain_aspect_size">settings.moss.ui.toggle_maintain_aspect.label</toggle>
+    <subtext>settings.moss.ui.toggle_maintain_aspect.footnote</subtext>
+</view>

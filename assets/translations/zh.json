@@ -1,55 +1,78 @@
 {
+    "common": {
+        "items": "{count} 个项目",
+        "pages": "{count} 页",
+        "read": "已读 {percent}%"
+    },
+    "installer": {
+        "cancel": "取消",
+        "install": "安装",
+        "installing": "正在安装...",
+        "progress": "进度：{progress}%",
+        "reinstall": "重新安装",
+        "title": "安装"
+    },
+    "loader": {
+        "initializing": "初始化中...",
+        "loading": "加载中...",
+        "syncing": "同步中..."
+    },
     "menu": {
-        "top_bar": {
-            "select_one": {
-                "menu": "菜单",
-                "deselect": "取消选择",
-                "rename": "重命名",
-                "favorite": "收藏",
-                "duplicate": "复制",
-                "trash": "回收站",
-                "move": "移动"
-            },
-            "create_folder": "创建文件夹",
-            "create_notebook": "创建笔记本",
-            "import": "导入",
-            "menu": "菜单"
-        },
-        "import": {
-            "pdf_epub": "导入PDF/EPUB",
-            "notebook": "导入笔记本"
-        },
         "create": {
             "folder": "创建文件夹",
             "notebook": "创建笔记本"
         },
+        "debug": {
+            "copy_uuid": "复制文件夹UUID",
+            "export_json": "导出目录到JSON",
+            "export_stats": "导出统计信息",
+            "global": "全局调试菜单",
+            "hot_reload": "热重载",
+            "import_dir": "从目录导入",
+            "test_doc": "测试文档视图"
+        },
         "delete": {
             "confirm": "删除"
         },
-        "debug": {
-            "global": "全局调试菜单",
-            "test_doc": "测试文档视图",
-            "import_dir": "从目录导入",
-            "export_json": "导出目录到JSON",
-            "hot_reload": "热重载",
-            "copy_uuid": "复制文件夹UUID",
-            "export_stats": "导出统计信息"
-        },
-        "sidebar": {
-            "my_files": "我的文件",
-            "filter": "筛选",
-            "favorites": "收藏夹",
-            "tags": "标签",
-            "extensions": "扩展",
-            "trash": "回收站",
-            "made_by": "由RedTTG制作",
-            "settings": "设置",
-            "debug": "调试",
-            "language": "语言"
+        "import": {
+            "notebook": "导入笔记本",
+            "pdf_epub": "导入PDF/EPUB"
         },
         "settings": {
             "back": "返回"
+        },
+        "sidebar": {
+            "debug": "调试",
+            "extensions": "扩展",
+            "favorites": "收藏夹",
+            "filter": "筛选",
+            "language": "语言",
+            "made_by": "由RedTTG制作",
+            "my_files": "我的文件",
+            "settings": "设置",
+            "tags": "标签",
+            "trash": "回收站"
+        },
+        "top_bar": {
+            "create_folder": "创建文件夹",
+            "create_notebook": "创建笔记本",
+            "import": "导入",
+            "menu": "菜单",
+            "select_one": {
+                "deselect": "取消选择",
+                "duplicate": "复制",
+                "favorite": "收藏",
+                "menu": "菜单",
+                "move": "移动",
+                "rename": "重命名",
+                "trash": "回收站"
+            }
         }
+    },
+    "name_field": {
+        "cancel": "取消",
+        "empty_error": "名称不能为空",
+        "submit": "确定"
     },
     "prompts": {
         "import": {
@@ -57,59 +80,130 @@
             "notebook": "导入笔记本"
         }
     },
-    "settings": {
-        "title": "设置",
-        "general": {
-            "title": "常规",
-            "language": "语言",
-            "theme": "主题",
-            "scale": "缩放"
-        },
-        "sync": {
-            "title": "同步",
-            "enable": "启用同步",
-            "interval": "同步间隔"
-        },
-        "advanced": {
-            "title": "高级",
-            "debug": "调试模式",
-            "clear_cache": "清除缓存"
-        }
-    },
-    "viewer": {
-        "close": "关闭",
-        "next_page": "下一页",
-        "prev_page": "上一页",
-        "zoom_in": "放大",
-        "zoom_out": "缩小",
-        "page_info": "第 {current} 页，共 {total} 页",
-        "loading": "加载中..."
-    },
-    "installer": {
-        "title": "安装",
-        "install": "安装",
-        "reinstall": "重新安装",
-        "cancel": "取消",
-        "installing": "正在安装...",
-        "progress": "进度：{progress}%"
-    },
-    "loader": {
-        "loading": "加载中...",
-        "initializing": "初始化中...",
-        "syncing": "同步中..."
-    },
     "quit": {
         "quitting": "正在退出...请等待数据保存完成",
         "thanks": "感谢使用 {app_name}"
     },
-    "name_field": {
-        "submit": "确定",
-        "cancel": "取消",
-        "empty_error": "名称不能为空"
+    "settings": {
+        "common": {
+            "experimental": "这是一个实验性功能",
+            "unstable": "此功能可能不稳定！"
+        },
+        "default": {
+            "description": "settings.default.description",
+            "title": "settings.default.title"
+        },
+        "developer": {
+            "debug": {
+                "footnote": "请关闭任何修改 UI 的调试选项， 作为对各个元素的最终检查， 在最终确认更改之前。",
+                "title": "主要调试选项",
+                "toggle": {
+                    "footnote": "全局调试模式，用于日志或其他选项",
+                    "label": "启用调试模式"
+                },
+                "toggle_alignment": {
+                    "footnote": "这指的是笔记本 LINES 文件的渲染方式， 以及 rm_lines 尝试将整个页面居中对齐的机制",
+                    "label": "禁用 LINES 对齐"
+                },
+                "toggle_button_rects": {
+                    "footnote": "为 UI 添加条件，在每一轮循环结束时显示每个按钮的区域。 每个按钮会被红色描边，某些区域可能有误。 适用于调试按钮对齐问题。",
+                    "label": "显示按钮区域"
+                },
+                "toggle_lines_log": {
+                    "footnote": "启用 LINES 渲染器的调试日志",
+                    "label": "为每一个笔迹和项目启用详细的 LINES 页面渲染日志。 日志会非常混乱，请注意！"
+                },
+                "toggle_log": {
+                    "footnote": "是否在启动时在终端输出日志",
+                    "label": "启用调试日志"
+                },
+                "toggle_orphans": {
+                    "footnote": "settings.developer.debug.toggle_orphans.footnote",
+                    "label": "settings.developer.debug.toggle_orphans.label"
+                },
+                "toggle_viewer": {
+                    "footnote": "启用文档查看器的调试信息 UI。 用于排查对齐或缩放问题。",
+                    "label": "启用文档查看器调试"
+                },
+                "warning": "其中一些更改需要重启后才会生效！"
+            },
+            "debug_exports": {
+                "description": "这些选项用于导出文档时的调试信息",
+                "title": "调试导出选项",
+                "toggle_raw": {
+                    "footnote": "对元数据或内容文件进行排序和美化",
+                    "label": "格式化原始导出文件"
+                },
+                "toggle_raw_ext": {
+                    "footnote": "是否在元数据或内容文件末尾添加 .json 扩展名",
+                    "label": "为原始导出文件添加扩展名"
+                }
+            },
+            "description": "这里包含所有与调试 Moss 或实验性功能相关的设置",
+            "title": "开发者设置"
+        },
+        "missing_template": {
+            "description": "settings.missing_template.description",
+            "info": "settings.missing_template.info",
+            "title": "settings.missing_template.title"
+        },
+        "moss": {
+            "description": "在这里你可以找到所有与 Moss 相关的设置。",
+            "options": {
+                "title": "Moss 选项",
+                "toggle_portable": {
+                    "footnote": "这将禁用启动时的安装程序屏幕， 并允许你从未安装的提取文件夹中运行。",
+                    "label": "便携模式"
+                },
+                "toggle_statistics": {
+                    "footnote": "这允许跟踪使用统计信息。 目前这些数据不会被共享，但可能会被扩展访问。",
+                    "label": "允许统计"
+                }
+            },
+            "sync": {
+                "title": "同步选项",
+                "toggle_download_everything": {
+                    "footnote": "此选项会下载主菜单中可见且之前未下载的任何文档。",
+                    "label": "下载所有内容"
+                },
+                "toggle_download_last_page": {
+                    "footnote": "此功能仅下载创建文档预览缩略图所需的数据， 而无需打开文档。",
+                    "label": "下载最后一页以创建预览"
+                },
+                "toggle_save_doc": {
+                    "footnote": "此选项会在关闭文档查看器后上传文档。 这将更新诸如当前页面或最后打开时间等数据。",
+                    "label": "关闭文档后保存"
+                },
+                "toggle_save_path": {
+                    "footnote": "启用此选项将保持当前打开的文件夹， 每次打开应用时都会如此。如果禁用，它将保持最后保存的文件夹。 默认文件夹是\"我的文件\"。",
+                    "label": "保存最后打开的文件夹"
+                },
+                "toggle_wait_for_everything": {
+                    "footnote": "这会在打开主菜单之前强制所有文档准备就绪。 这可能会导致加载时间增加，具体取决于你的云存储大小。",
+                    "label": "等待所有内容加载"
+                }
+            },
+            "title": "Moss 设置",
+            "ui": {
+                "title": "界面选项",
+                "toggle_fake_refresh": {
+                    "footnote": "这是一个已弃用的功能， 某些界面交互会导致屏幕进行模拟电子墨水屏刷新。 此功能可能会打扰某些用户或造成其他困扰。",
+                    "label": "启用模拟屏幕刷新"
+                },
+                "toggle_maintain_aspect": {
+                    "footnote": "这将保持文档查看器中加载的文档大小与原始窗口大小一致。 如果禁用此选项，页面大小将尝试根据你调整后的窗口大小进行缩放。",
+                    "label": "保持宽高比"
+                }
+            }
+        }
     },
-    "common": {
-        "items": "{count} 个项目",
-        "pages": "{count} 页",
-        "read": "已读 {percent}%"
+    "viewer": {
+        "close": "关闭",
+        "loading": "加载中...",
+        "next_page": "下一页",
+        "page_info": "第 {current} 页，共 {total} 页",
+        "prev_page": "上一页",
+        "zoom_in": "放大",
+        "zoom_out": "缩小"
     }
-} 
+}

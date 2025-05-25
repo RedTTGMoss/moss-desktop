@@ -6,18 +6,18 @@ from traceback import print_exc
 from typing import TYPE_CHECKING, Union, Dict
 
 import pygameextra as pe
+from rm_api.notifications.models import SyncCompleted, NewDocuments
 
 from gui import APP_NAME
-from gui.i18n import i18n
 from gui.defaults import Defaults
 from gui.helpers import invert_icon
 from gui.screens.main_menu import MainMenu
 from gui.screens.mixins import LogoMixin
-from rm_api.notifications.models import SyncCompleted, NewDocuments
 
 if TYPE_CHECKING:
     from gui.gui import GUI
     from rm_api import API
+    from gui.i18n import I18nManager
     from gui.extensions import ExtensionManager
 
 
@@ -102,6 +102,7 @@ class Loader(pe.ChildContext, LogoMixin):
         'light_pdf': os.path.join(Defaults.DATA_DIR, 'light.pdf'),
 
         # Templates
+        # TODO: Soon to be obsolete data, or add check before loading?
         **{
             f"templates/{template.rsplit('.', 1)[0]}":
                 TreatAsData(os.path.join(Defaults.DATA_DIR, 'templates', template))
@@ -109,11 +110,12 @@ class Loader(pe.ChildContext, LogoMixin):
         },
 
         # Settings
-        'xml_settings': os.path.join(Defaults.XML_DIR, i18n.get_locale(),'settings', 'settings_menu.xml'),
+        'xml_settings': os.path.join(Defaults.XML_DIR, 'settings', 'settings_menu.xml'),
+        'xml_missing_menu_template': os.path.join(Defaults.XML_DIR, 'missing_menu_template.xml'),
         **{
-            f"xml_settings/{i18n.get_locale()}/{settings_sub_menu.rsplit('.', 1)[0]}":
-                TreatAsData(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus', settings_sub_menu))
-            for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus'))
+            f"xml_settings/{settings_sub_menu.rsplit('.', 1)[0]}":
+                TreatAsData(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus', settings_sub_menu))
+            for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, 'settings', 'sub_menus'))
         },
 
     }
@@ -121,6 +123,7 @@ class Loader(pe.ChildContext, LogoMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     icons: Dict[str, pe.Image]
     api: 'API'
+    i18n: 'I18nManager'
     extension_manager: 'ExtensionManager'
     logo: pe.Text
     line_rect: pe.Rect
@@ -181,6 +184,15 @@ class Loader(pe.ChildContext, LogoMixin):
             self.load_one(key, item)
             self.items_loaded += 1
 
+        # Load additional languages
+        for lang_file in os.listdir(Defaults.TRANSLATIONS_DIR):
+            if not lang_file.endswith('.json'):
+                continue
+            lang = lang_file[:-5]
+            if lang == self.i18n.language:
+                continue
+            self.i18n.load_translations(lang)
+
         # Begin loading extensions
         threading.Thread(target=self.load_extensions, daemon=True).start()
 
@@ -205,15 +217,8 @@ class Loader(pe.ChildContext, LogoMixin):
     def load(self):
         try:
             self._load()
-            self.load_xml_settings()
         except:
             print_exc()
-            
-    def load_xml_settings(self):
-        # TODO: Fix this.
-        self.load_data('xml_settings', os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'settings_menu.xml'))
-        for settings_sub_menu in os.listdir(os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus')):
-            self.load_data(f"xml_settings/{i18n.get_locale()}/{settings_sub_menu.rsplit('.', 1)[0]}", os.path.join(Defaults.XML_DIR, i18n.get_locale(), 'settings', 'sub_menus', settings_sub_menu))
 
     def load_extensions(self):
         try:

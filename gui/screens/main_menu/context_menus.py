@@ -1,5 +1,4 @@
 import hashlib
-import importlib
 import json
 import os
 import shutil
@@ -16,7 +15,6 @@ from rm_api.storage.common import FileHandle
 
 from gui.cloud_action_helper import import_notebook_pages_to_cloud
 from gui.defaults import Defaults
-import gui.defaults
 from gui.extensions.host_functions import ACTION_APPEND
 from gui.extensions.shared_types import rect_from_pe_rect
 from gui.file_prompts import notebook_prompt, import_debug
@@ -25,7 +23,6 @@ from gui.pp_helpers.popups import ConfirmPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
 from gui.screens.viewer import DocumentViewer
-from gui.i18n import t, i18n
 
 if TYPE_CHECKING:
     from gui.extensions.extension_manager import ExtensionManager
@@ -530,17 +527,17 @@ class SideBar(ContextMenu):
 
 
 class LanguageMenu(ContextMenu):
-    BUTTONS = [
-        {
-            "text": lang,
-            "action": "set_language",
-            "icon": "language",
-            "data": lang
-        }
-        for lang in i18n.get_available_languages()
-    ]
 
     def __init__(self, parent: 'MainMenu', ideal_position: Tuple[int, int]):
+        self.BUTTONS = [
+            {
+                "text": lang,
+                "action": "set_language",
+                "icon": "language",
+                "data": lang
+            }
+            for lang in parent.i18n.available_languages
+        ]
         super().__init__(parent, ideal_position)
 
     def set_language(self, lang):
@@ -548,4 +545,3 @@ class LanguageMenu(ContextMenu):
             self.close()
         else:
             print(f"Failed to set language to {lang}")
-

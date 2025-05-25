@@ -1,0 +1,40 @@
+<view>
+    <title>settings.developer.title</title>
+    <description>settings.developer.description</description>
+
+    <subtitle>settings.developer.debug.title</subtitle>
+    <subtext fore="defaults:RED">settings.developer.debug.warning</subtext>
+    <subtext>settings.developer.debug.footnote</subtext>
+
+    <toggle key="debug">settings.developer.debug.toggle.label</toggle>
+    <subtext>settings.developer.debug.toggle.footnote</subtext>
+
+    <toggle key="debug_log">settings.developer.debug.toggle_log.label</toggle>
+    <subtext>settings.developer.debug.toggle_log.footnote</subtext>
+
+    <toggle key="debug_disable_lines_alignment">settings.developer.debug.toggle_alignment.label</toggle>
+    <subtext>settings.developer.debug.toggle_alignment.footnote</subtext>
+
+    <toggle key="debug_lines">settings.developer.debug.toggle_lines_log.label</toggle>
+    <subtext>settings.developer.debug.toggle_lines_log.footnote</subtext>
+
+    <toggle key="debug_viewer">settings.developer.debug.toggle_viewer.label</toggle>
+    <subtext>settings.developer.debug.toggle_viewer.footnote</subtext>
+
+
+    <toggle key="show_orphans">settings.developer.debug.toggle_orphans.label</toggle>
+    <subtext>settings.developer.debug.toggle_orphans.footnote</subtext>
+
+
+    <toggle key="debug_button_rects">settings.developer.debug.toggle_button_rects.label</toggle>
+    <subtext>settings.developer.debug.toggle_button_rects.footnote</subtext>
+
+    <subtitle>settings.developer.debug_exports.title</subtitle>
+    <subtext>settings.developer.debug_exports.description</subtext>
+
+    <toggle key="format_raw_exports">settings.developer.debug_exports.toggle_raw.label</toggle>
+    <subtext>settings.developer.debug_exports.toggle_raw.footnote</subtext>
+
+    <toggle key="add_ext_to_raw_exports">settings.developer.debug_exports.toggle_raw_ext.label</toggle>
+    <subtext>settings.developer.debug_exports.toggle_raw_ext.footnote</subtext>
+</view>

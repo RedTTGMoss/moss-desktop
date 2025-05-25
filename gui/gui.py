@@ -218,7 +218,10 @@ class GUI(pe.GameContext):
         setattr(pe.settings, 'indev', False)
 
         from .defaults import Defaults
-        Defaults.init(self.config)
+        from .i18n import I18nManager
+        Defaults.init(self.config)  # Initialize Defaults with the loaded config
+        self.i18n = I18nManager(self)  # Initialize the I18nManager with the GUI instance
+
         try:
             from gui.extensions import ExtensionManager
         except:
@@ -536,6 +539,7 @@ class GUI(pe.GameContext):
             This means that your cloud session should already be validly set up.
             Hence, do not call this function unless Moss is fully loaded and unless fully necessary.
         """
+        from .i18n import _t
         self.extension_manager.reset()
         for hook in list(self.api.hook_list.keys()):
             if hook == 'GUI':
@@ -546,11 +550,11 @@ class GUI(pe.GameContext):
             getattr(screen, 'close', lambda: None)()
         self.screens.clear()
         pe.text.get_font.cache_clear()
+        _t.cache_clear()
         Defaults.init(self.config)
         from gui.screens.loader import Loader
         self.add_screen(Loader(self))
         self.extension_manager.init()
-
 
     @property
     def BACKGROUND(self):
@@ -563,12 +567,8 @@ class GUI(pe.GameContext):
         return self.size
 
     def set_language(self, lang):
-        from gui.i18n import i18n
-        print(f"Setting language to {lang}")
-        if i18n.set_language(lang):
-            self.config.language = lang
-            self.dirty_config = True
-            self.loader.load()
-            self.reload()
-            return True
-        return False
+        self.i18n.language = lang
+        self.config.language = lang
+        self.dirty_config = True
+        self.loader.load()
+        self.reload()

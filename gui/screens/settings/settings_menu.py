@@ -1,5 +1,5 @@
 import time
-from typing import TYPE_CHECKING, List, Tuple, Optional, Union
+from typing import TYPE_CHECKING, List, Tuple, Optional
 
 import pygameextra as pe
 from lxml import etree
@@ -67,6 +67,10 @@ class BackButton(ContextMenu):
         self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, self.ratios.main_menu_top_height)
 
 
+def generate_missing_menu(data, menu_id):
+    return data.get('xml_missing_menu_template').decode().format(menu_id).encode()
+
+
 class SettingsContextMenu(ContextMenu):
     ENABLE_OUTLINE = False
 
@@ -100,7 +104,11 @@ class SettingsContextMenu(ContextMenu):
     def open_sub(self, item):
         if self.settings.sidebar.transitioning:  # Prevent accidental double menu clicks
             return
-        xml, root_tag = parse_menu_xml(self.data.get(item))
+        menu = self.data.get(item)
+        if menu:
+            xml, root_tag = parse_menu_xml(menu)
+        else:
+            xml, root_tag = parse_menu_xml(generate_missing_menu(self.data, item))
         if root_tag == 'menu':
             self.settings.sidebar.transitioning = True
             self.settings.sidebar.transitioning_time = time.time()

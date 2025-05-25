@@ -1,0 +1,6 @@
+<view>
+    <title fore="defaults:RED">settings.missing_template.title</title>
+    <subtitle inverted="1">{0}</subtitle>
+    <description>settings.missing_template.description</description>
+    <text>settings.missing_template.info</text>
+</view>
