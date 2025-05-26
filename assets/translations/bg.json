@@ -1,29 +1,29 @@
 {
     "common": {
-        "items": "{count} items",
-        "pages": "{count} pages",
-        "read": "Read {percent}%"
+        "items": "{count} елемента",
+        "pages": "{count} страници",
+        "read": "Прочетено {percent}%"
     },
     "installer": {
-        "cancel": "Cancel",
-        "install": "Install",
-        "installing": "Installing...",
-        "progress": "Progress: {progress}%",
-        "reinstall": "Reinstall",
-        "title": "Installer"
+        "cancel": "Откажи",
+        "install": "Инсталирай",
+        "installing": "Инсталира се...",
+        "progress": "Инсталира се... ({progress}%)",
+        "reinstall": "Преинсталирай",
+        "title": "Инсталатор"
     },
     "loader": {
-        "initializing": "Initializing...",
-        "loading": "Loading...",
-        "syncing": "Syncing..."
+        "initializing": "Инициализира се...",
+        "loading": "Зарежда се...",
+        "syncing": "Синхронизиране..."
     },
     "menu": {
         "create": {
-            "folder": "Create Folder",
-            "notebook": "Create Notebook"
+            "folder": "Нова папка",
+            "notebook": "Нова тетрадка"
         },
         "debug": {
-            "copy_uuid": "Copy Folder UUID",
+            "copy_uuid": "Копирай UUID на папката",
             "export_json": "Export Directory to JSON",
             "export_stats": "Export Statistics",
             "global": "Global Debug Menu",
@@ -54,8 +54,8 @@
             "trash": "Trash"
         },
         "top_bar": {
-            "create_folder": "Create Folder",
-            "create_notebook": "Create Notebook",
+            "create_folder": "Нова папка",
+            "create_notebook": "Нова тетрадка",
             "import": "Import",
             "menu": "Menu",
             "select_one": {
@@ -70,7 +70,7 @@
         }
     },
     "name_field": {
-        "cancel": "Cancel",
+        "cancel": "Откажи",
         "empty_error": "Name cannot be empty",
         "submit": "Confirm"
     },
@@ -203,7 +203,7 @@
     },
     "viewer": {
         "close": "Close",
-        "loading": "Loading...",
+        "loading": "Зарежда се...",
         "next_page": "Next Page",
         "page_info": "Page {current} of {total}",
         "prev_page": "Previous Page",
