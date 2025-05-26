@@ -13,9 +13,9 @@ from colorama import Fore
 from extism import Error as ExtismError
 from extism import Plugin
 from extism.extism import HOST_FN_REGISTRY
+from rm_api import FileSyncProgress, DocumentSyncProgress
 
 from gui.defaults import Defaults
-from rm_api import FileSyncProgress, DocumentSyncProgress
 from .host_functions import init_host_functions, make_task_id
 from .shared_types import TContextButton
 
@@ -60,6 +60,7 @@ class ExtensionManager:
         self.extra_items = {}
         self.extensions_allowed_paths = {}
         self.extensions = {}
+        self.extensions_accepting_hooks = []
         self.context_menus = {}
         self.document_objects = {}
         self.collection_objects = {}
@@ -112,6 +113,7 @@ class ExtensionManager:
         self.extra_items.clear()
         self.extensions_allowed_paths.clear()
         self.extensions.clear()
+        self.extensions_accepting_hooks.clear()
         self.context_menus.clear()
         self.document_objects.clear()
         self.collection_objects.clear()
@@ -221,6 +223,8 @@ class ExtensionManager:
             self.error(f"Extension {extension_name} failed to register")
             print_exc()
             return
+        if extension.function_exists('moss_event_hook'):
+            self.extensions_accepting_hooks.append(extension_name)
         self.log(f"Registered extension {extension_name}")
         self.loaded_extensions.append(extension_name)
         self.extensions_loaded += 1
@@ -304,6 +308,11 @@ class ExtensionManager:
             self.file_sync_progress_objects[id(event)] = event
         elif isinstance(event, DocumentSyncProgress):
             self.document_sync_progress_objects[id(event)] = event
+        else:
+            for extension_name in self.extensions_accepting_hooks:
+                with self.lock:
+                    self.action('moss_event_hook', extension_name)(
+                        event={'_class': event.__class__.__name__, **event.__dict__()})
 
     def loop(self):
         if self.extra_items or len(self.loaded_extensions) < self.extension_count:

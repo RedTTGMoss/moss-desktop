@@ -32,12 +32,9 @@ def moss_pe_register_screen(screen: Annotated[TScreen, Json]):
         PRE_LOOP = screen.get('screen_pre_loop', None)
         LOOP = screen.screen_loop
         POST_LOOP = screen.get('screen_post_loop', None)
-        EVENT_HOOK = screen.get('event_hook', None)
 
         def __init__(self, parent, initial_values: Optional[dict] = None):
             self.values = initial_values or {}
-            self.event_hook_id = f'{self.EXTENSION_NAME}::{self.KEY}<{id(self)}>_API_HOOK'
-            d.api.add_hook(self.event_hook_id, self.handle_hook)
             super().__init__(parent)
 
         @property
@@ -55,12 +52,7 @@ def moss_pe_register_screen(screen: Annotated[TScreen, Json]):
             if self.POST_LOOP:
                 d.extension_manager.action(self.POST_LOOP, self.EXTENSION_NAME)()
 
-        def handle_hook(self, event):
-            if self.EVENT_HOOK:
-                d.extension_manager.action(self.EVENT_HOOK, self.EXTENSION_NAME)(event=event.__class__.__name__)
-
         def close(self):
-            d.api.remove_hook(self.event_hook_id)
             self.close_screen()
 
     CustomScreen.__name__ = screen.key
