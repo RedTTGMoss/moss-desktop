@@ -85,6 +85,10 @@
         "thanks": "感谢使用 {app_name}"
     },
     "settings": {
+        "menus": {
+            "moss": "Moss Settings",
+            "developer": "Developer Settings"
+        },
         "common": {
             "experimental": "这是一个实验性功能",
             "unstable": "此功能可能不稳定！"
