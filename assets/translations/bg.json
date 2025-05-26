@@ -96,67 +96,67 @@
         "developer": {
             "debug": {
                 "footnote": "Моля изклчете дебъг настройки които модифицират елементи, като краен преглед преди финализиране на промени.",
-                "title": "Main debug options",
+                "title": "Главно меню за дебъг",
                 "toggle": {
-                    "footnote": "Global debug mode for logs or other options",
-                    "label": "Enable debug mode"
+                    "footnote": "Глобален режим за дебъг, за допълнително информация и настроийки",
+                    "label": "Активиране на режима за отстраняване на грешки"
                 },
                 "toggle_alignment": {
-                    "footnote": "This refers to the notebook lines file rendering and the way that rm_lines tries to align the whole page to a common center",
-                    "label": "Disable LINES alignment"
+                    "footnote": "Тази настройка премахва опитите на rm_lines да намести страницата към средата",
+                    "label": "Премахни подравняване на страниците"
                 },
                 "toggle_button_rects": {
-                    "footnote": "This adds a condition to the UI to show the rect of every button at the end of the loop. Each button is outlined in red, some rects may be wrong. This is useful for debugging button alignment issues.",
-                    "label": "Show button rects"
+                    "footnote": "Тази настройка добавя червено очертание към всеки бутон. По този начин може да се останови ако има проблем със подравняването на някои бутон.",
+                    "label": "Показване на правоъгълниците на бутоните"
                 },
                 "toggle_lines_log": {
-                    "footnote": "This enables detailed logs for every stroke and item during LINES page rendering. It gets messy be aware!",
-                    "label": "Enable debug log for LINES renderer"
+                    "footnote": "Тази настройка активира подробни логове за чертежите при показването на страница. Става страшна каша, да си знаете!",
+                    "label": "Активирай дебъг логове за чертежите"
                 },
                 "toggle_log": {
-                    "footnote": "Weather or not to initiate logs in the terminal on startup",
-                    "label": "Enable debug logs"
+                    "footnote": "Дали да се инизиализират логове в терминала, при стартиране",
+                    "label": "Активиране на дебъг логове"
                 },
                 "toggle_orphans": {
-                    "footnote": "This will show any documents or collections that have a missing parent.",
-                    "label": "Enable orphans"
+                    "footnote": "Тази настройка показва документи и папки които нямат родна папка.",
+                    "label": "Показване на сираци"
                 },
                 "toggle_viewer": {
-                    "footnote": "This enables info UI for the document viewer. It's useful for debugging issues with alignment or scale.",
-                    "label": "Enable document viewer debug"
+                    "footnote": "Добавя допълнително елементи в четеца. Полезно за разрешаване на проблеми със подравняване или други мерни единици.",
+                    "label": "Активирай дебъг режим за четеца"
                 },
-                "warning": "Some of these require a restart to take effect!"
+                "warning": "Може да се наложи да отворите на ново, за някои настройки тук да придобият ефект!"
             },
             "debug_exports": {
-                "description": "These options are for debug exports on documents",
-                "title": "Debug export options",
+                "description": "Тези настройки са за дебъг износи",
+                "title": "Дебъг настройки при износ",
                 "toggle_raw": {
-                    "footnote": "This sorts and prettifies any metadata or content files",
-                    "label": "Enable RAW export"
+                    "footnote": "Тази настройка сортира файловете при износ",
+                    "label": "Активирай суров износ"
                 },
                 "toggle_raw_ext": {
-                    "footnote": "Whether to include .json at the end of metadata or content files",
-                    "label": "Add extension to RAW exports"
+                    "footnote": "Дали да се добави .json към края на износените файлове",
+                    "label": "Добавяне на разширение към суровия износ"
                 }
             },
-            "description": "Here you can find all the settings related to debugging Moss or experimental features",
-            "title": "Developer Settings"
+            "description": "Тук може да намерите всички настройки за дебъг и недовършени функции",
+            "title": "Настройки за програмисти"
         },
         "menus": {
-            "developer": "Developer Settings",
-            "moss": "Moss Settings"
+            "developer": "Настройки за програмисти",
+            "moss": "Настройки на приложението"
         },
         "missing_template": {
-            "description": "Moss could not find the following menu.",
-            "info": "If you think this is a mistake, please raise an issue!",
-            "title": "Menu missing!"
+            "description": "Не можеше да се намери това меню.",
+            "info": "Ако мислите, че това не е правилно, моля направете жалба!",
+            "title": "Менюто липсва!"
         },
         "moss": {
-            "description": "You will find all the settings related to Moss here.",
+            "description": "Тук ще намерите всички настройки за приложението.",
             "options": {
-                "title": "Moss Options",
+                "title": "Главни настройки",
                 "toggle_portable": {
-                    "footnote": "This disables the installer screen on startup and allows you to run from an extracted folder without installing.",
+                    "footnote": "Тази настройка премахва инсталатора при началото на програмата, това ти позволява да стартираш без да инсталираш.",
                     "label": "Portable mode"
                 },
                 "toggle_statistics": {
@@ -187,7 +187,7 @@
                     "label": "Wait for everything to load"
                 }
             },
-            "title": "Moss Settings",
+            "title": "Настройки на приложението",
             "ui": {
                 "title": "UI options",
                 "toggle_fake_refresh": {
