@@ -24,78 +24,78 @@
         },
         "debug": {
             "copy_uuid": "Копирай UUID на папката",
-            "export_json": "Export Directory to JSON",
-            "export_stats": "Export Statistics",
-            "global": "Global Debug Menu",
-            "hot_reload": "Hot Reload",
-            "import_dir": "Import from Directory",
-            "test_doc": "Test Document View"
+            "export_json": "Износ на папка като JSON",
+            "export_stats": "Износ на статистики",
+            "global": "Глобален панел за дебъг",
+            "hot_reload": "Горещо презареждане",
+            "import_dir": "Внос на документ от директория",
+            "test_doc": "Тест на панела за документи"
         },
         "delete": {
-            "confirm": "Delete"
+            "confirm": "Потвърди изтриването"
         },
         "import": {
-            "notebook": "Import Notebook",
-            "pdf_epub": "Import PDF/EPUB"
+            "notebook": "Внос на тетрадка",
+            "pdf_epub": "Внос на PDF/EPUB документ"
         },
         "settings": {
-            "back": "Back"
+            "back": "Назад"
         },
         "sidebar": {
-            "debug": "Debug",
-            "extensions": "Extensions",
-            "favorites": "Favorites",
-            "filter": "Filter",
-            "language": "Language",
-            "made_by": "Made by RedTTG",
-            "my_files": "My Files",
-            "settings": "Settings",
-            "tags": "Tags",
-            "trash": "Trash"
+            "debug": "Дебъгване",
+            "extensions": "Разширения",
+            "favorites": "Любими",
+            "filter": "Филтър",
+            "language": "Език",
+            "made_by": "Поддържано от RedTTG",
+            "my_files": "Моите файлове",
+            "settings": "Настройки",
+            "tags": "Отбелезалки",
+            "trash": "Боклук"
         },
         "top_bar": {
             "create_folder": "Нова папка",
             "create_notebook": "Нова тетрадка",
-            "import": "Import",
-            "menu": "Menu",
+            "import": "Внос",
+            "menu": "Меню",
             "select_one": {
-                "deselect": "Deselect",
-                "duplicate": "Duplicate",
-                "favorite": "Favorite",
-                "menu": "Menu",
-                "move": "Move",
-                "rename": "Rename",
-                "trash": "Trash"
+                "deselect": "Размаркиране",
+                "duplicate": "Дубликирай",
+                "favorite": "Любимо",
+                "menu": "Меню",
+                "move": "Местене",
+                "rename": "Преименуване",
+                "trash": "Кошче"
             }
         }
     },
     "name_field": {
         "cancel": "Откажи",
-        "empty_error": "Name cannot be empty",
-        "submit": "Confirm"
+        "empty_error": "Името не може да бъде празно",
+        "submit": "Потвърждаване"
     },
     "prompts": {
         "import": {
-            "file": "Import File",
-            "notebook": "Import Notebook"
+            "file": "Внос на файл",
+            "notebook": "Внос на тетрадка"
         }
     },
     "quit": {
-        "quitting": "Quitting... Please wait for data to save",
-        "thanks": "Thank you for using {app_name}"
+        "quitting": "Затваряне... Моля изчакайте да се запазят данните",
+        "thanks": "Благодаря, че избрахте {app_name}"
     },
     "settings": {
         "common": {
-            "experimental": "THIS IS AN EXPERIMENTAL FEATURE",
-            "unstable": "This feature may be unstable!"
+            "experimental": "ТОВА Е ЕКСПЕРИМЕНТАЛНА ФУНКЦИЯ",
+            "unstable": "Тази функция може да е нестабилна!"
         },
         "default": {
-            "description": "Navigate using the sidebar in order to modify settings",
-            "title": "Welcome to the moss settings."
+            "description": "Навигирайте, използвайки страничната лента за навигация и промяна на настройките",
+            "title": "Добре дошли в настройките на Moss."
         },
         "developer": {
             "debug": {
-                "footnote": "Please turn off any debug options that modify the UI, as a final check up on the elements, before finalizing changes.",
+                "footnote": "Моля изклчете дебъг настройки които модифицират елементи, като краен преглед преди финализиране на промени.",
                 "title": "Main debug options",
                 "toggle": {
                     "footnote": "Global debug mode for logs or other options",
