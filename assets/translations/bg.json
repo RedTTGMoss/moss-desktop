@@ -85,10 +85,6 @@
         "thanks": "Thank you for using {app_name}"
     },
     "settings": {
-        "menus": {
-            "moss": "Moss Settings",
-            "developer": "Developer Settings"
-        },
         "common": {
             "experimental": "THIS IS AN EXPERIMENTAL FEATURE",
             "unstable": "This feature may be unstable!"
@@ -145,6 +141,10 @@
             },
             "description": "Here you can find all the settings related to debugging Moss or experimental features",
             "title": "Developer Settings"
+        },
+        "menus": {
+            "developer": "Developer Settings",
+            "moss": "Moss Settings"
         },
         "missing_template": {
             "description": "Moss could not find the following menu.",
