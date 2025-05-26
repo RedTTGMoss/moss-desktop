@@ -90,8 +90,8 @@
             "unstable": "此功能可能不稳定！"
         },
         "default": {
-            "description": "settings.default.description",
-            "title": "settings.default.title"
+            "description": "Navigate using the sidebar in order to modify settings",
+            "title": "Welcome to the moss settings."
         },
         "developer": {
             "debug": {
@@ -118,8 +118,8 @@
                     "label": "启用调试日志"
                 },
                 "toggle_orphans": {
-                    "footnote": "settings.developer.debug.toggle_orphans.footnote",
-                    "label": "settings.developer.debug.toggle_orphans.label"
+                    "footnote": "This will show any documents or collections that have a missing parent.",
+                    "label": "Enable orphans"
                 },
                 "toggle_viewer": {
                     "footnote": "启用文档查看器的调试信息 UI。 用于排查对齐或缩放问题。",
@@ -147,9 +147,9 @@
             "moss": "Moss Settings"
         },
         "missing_template": {
-            "description": "settings.missing_template.description",
-            "info": "settings.missing_template.info",
-            "title": "settings.missing_template.title"
+            "description": "Moss could not find the following menu.",
+            "info": "If you think this is a mistake, please raise an issue!",
+            "title": "Menu missing!"
         },
         "moss": {
             "description": "在这里你可以找到所有与 Moss 相关的设置。",
