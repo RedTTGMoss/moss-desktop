@@ -93,10 +93,6 @@
             "experimental": "这是一个实验性功能",
             "unstable": "此功能可能不稳定！"
         },
-        "default": {
-            "description": "settings.default.description",
-            "title": "settings.default.title"
-        },
         "developer": {
             "debug": {
                 "footnote": "请关闭任何修改 UI 的调试选项， 作为对各个元素的最终检查， 在最终确认更改之前。",
@@ -121,10 +117,6 @@
                     "footnote": "是否在启动时在终端输出日志",
                     "label": "启用调试日志"
                 },
-                "toggle_orphans": {
-                    "footnote": "settings.developer.debug.toggle_orphans.footnote",
-                    "label": "settings.developer.debug.toggle_orphans.label"
-                },
                 "toggle_viewer": {
                     "footnote": "启用文档查看器的调试信息 UI。 用于排查对齐或缩放问题。",
                     "label": "启用文档查看器调试"
@@ -145,11 +137,6 @@
             },
             "description": "这里包含所有与调试 Moss 或实验性功能相关的设置",
             "title": "开发者设置"
-        },
-        "missing_template": {
-            "description": "settings.missing_template.description",
-            "info": "settings.missing_template.info",
-            "title": "settings.missing_template.title"
         },
         "moss": {
             "description": "在这里你可以找到所有与 Moss 相关的设置。",
