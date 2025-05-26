@@ -85,10 +85,6 @@
         "thanks": "感谢使用 {app_name}"
     },
     "settings": {
-        "menus": {
-            "moss": "Moss Settings",
-            "developer": "Developer Settings"
-        },
         "common": {
             "experimental": "这是一个实验性功能",
             "unstable": "此功能可能不稳定！"
@@ -145,6 +141,10 @@
             },
             "description": "这里包含所有与调试 Moss 或实验性功能相关的设置",
             "title": "开发者设置"
+        },
+        "menus": {
+            "developer": "Developer Settings",
+            "moss": "Moss Settings"
         },
         "missing_template": {
             "description": "settings.missing_template.description",
