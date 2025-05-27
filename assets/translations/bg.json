@@ -1,0 +1,213 @@
+{
+    "common": {
+        "items": "{count} елемента",
+        "pages": "{count} страници",
+        "read": "Прочетено {percent}%"
+    },
+    "installer": {
+        "cancel": "Откажи",
+        "install": "Инсталирай",
+        "installing": "Инсталира се...",
+        "progress": "Инсталира се... ({progress}%)",
+        "reinstall": "Преинсталирай",
+        "title": "Инсталатор"
+    },
+    "loader": {
+        "initializing": "Инициализира се...",
+        "loading": "Зарежда се...",
+        "syncing": "Синхронизиране..."
+    },
+    "menu": {
+        "create": {
+            "folder": "Нова папка",
+            "notebook": "Нова тетрадка"
+        },
+        "debug": {
+            "copy_uuid": "Копирай UUID на папката",
+            "export_json": "Износ на папка като JSON",
+            "export_stats": "Износ на статистики",
+            "global": "Глобален панел за дебъг",
+            "hot_reload": "Горещо презареждане",
+            "import_dir": "Внос на документ от директория",
+            "test_doc": "Тест на панела за документи"
+        },
+        "delete": {
+            "confirm": "Потвърди изтриването"
+        },
+        "import": {
+            "notebook": "Внос на тетрадка",
+            "pdf_epub": "Внос на PDF/EPUB документ"
+        },
+        "settings": {
+            "back": "Назад"
+        },
+        "sidebar": {
+            "debug": "Дебъгване",
+            "extensions": "Разширения",
+            "favorites": "Любими",
+            "filter": "Филтър",
+            "language": "Език",
+            "made_by": "Поддържано от RedTTG",
+            "my_files": "Моите файлове",
+            "settings": "Настройки",
+            "tags": "Отбелезалки",
+            "trash": "Боклук"
+        },
+        "top_bar": {
+            "create_folder": "Нова папка",
+            "create_notebook": "Нова тетрадка",
+            "import": "Внос",
+            "menu": "Меню",
+            "select_one": {
+                "deselect": "Размаркиране",
+                "duplicate": "Дубликирай",
+                "favorite": "Любимо",
+                "menu": "Меню",
+                "move": "Местене",
+                "rename": "Преименуване",
+                "trash": "Кошче"
+            }
+        }
+    },
+    "name_field": {
+        "cancel": "Откажи",
+        "empty_error": "Името не може да бъде празно",
+        "submit": "Потвърждаване"
+    },
+    "prompts": {
+        "import": {
+            "file": "Внос на файл",
+            "notebook": "Внос на тетрадка"
+        }
+    },
+    "quit": {
+        "quitting": "Затваряне... Моля изчакайте да се запазят данните",
+        "thanks": "Благодаря, че избрахте {app_name}"
+    },
+    "settings": {
+        "common": {
+            "experimental": "ТОВА Е ЕКСПЕРИМЕНТАЛНА ФУНКЦИЯ",
+            "unstable": "Тази функция може да е нестабилна!"
+        },
+        "default": {
+            "description": "Навигирайте, използвайки страничната лента за навигация и промяна на настройките",
+            "title": "Добре дошли в настройките на Moss."
+        },
+        "developer": {
+            "debug": {
+                "footnote": "Моля изклчете дебъг настройки които модифицират елементи, като краен преглед преди финализиране на промени.",
+                "title": "Главно меню за дебъг",
+                "toggle": {
+                    "footnote": "Глобален режим за дебъг, за допълнително информация и настроийки",
+                    "label": "Активиране на режима за отстраняване на грешки"
+                },
+                "toggle_alignment": {
+                    "footnote": "Тази настройка премахва опитите на rm_lines да намести страницата към средата",
+                    "label": "Премахни подравняване на страниците"
+                },
+                "toggle_button_rects": {
+                    "footnote": "Тази настройка добавя червено очертание към всеки бутон. По този начин може да се останови ако има проблем със подравняването на някои бутон.",
+                    "label": "Показване на правоъгълниците на бутоните"
+                },
+                "toggle_lines_log": {
+                    "footnote": "Тази настройка активира подробни логове за чертежите при показването на страница. Става страшна каша, да си знаете!",
+                    "label": "Активирай дебъг логове за чертежите"
+                },
+                "toggle_log": {
+                    "footnote": "Дали да се инизиализират логове в терминала, при стартиране",
+                    "label": "Активиране на дебъг логове"
+                },
+                "toggle_orphans": {
+                    "footnote": "Тази настройка показва документи и папки които нямат родна папка.",
+                    "label": "Показване на сираци"
+                },
+                "toggle_viewer": {
+                    "footnote": "Добавя допълнително елементи в четеца. Полезно за разрешаване на проблеми със подравняване или други мерни единици.",
+                    "label": "Активирай дебъг режим за четеца"
+                },
+                "warning": "Може да се наложи да отворите на ново, за някои настройки тук да придобият ефект!"
+            },
+            "debug_exports": {
+                "description": "Тези настройки са за дебъг износи",
+                "title": "Дебъг настройки при износ",
+                "toggle_raw": {
+                    "footnote": "Тази настройка сортира файловете при износ",
+                    "label": "Активирай суров износ"
+                },
+                "toggle_raw_ext": {
+                    "footnote": "Дали да се добави .json към края на износените файлове",
+                    "label": "Добавяне на разширение към суровия износ"
+                }
+            },
+            "description": "Тук може да намерите всички настройки за дебъг и недовършени функции",
+            "title": "Настройки за програмисти"
+        },
+        "menus": {
+            "developer": "Настройки за програмисти",
+            "moss": "Настройки на приложението"
+        },
+        "missing_template": {
+            "description": "Не можеше да се намери това меню.",
+            "info": "Ако мислите, че това не е правилно, моля направете жалба!",
+            "title": "Менюто липсва!"
+        },
+        "moss": {
+            "description": "Тук ще намерите всички настройки за приложението.",
+            "options": {
+                "title": "Главни настройки",
+                "toggle_portable": {
+                    "footnote": "Тази настройка премахва инсталатора при началото на програмата, това ти позволява да стартираш без да инсталираш.",
+                    "label": "Преносим режим"
+                },
+                "toggle_statistics": {
+                    "footnote": "Тази настройка позволява да се износват статистически данни. Тези данни не се споделят, но може да се ползват от разширения.",
+                    "label": "Allow statistics"
+                }
+            },
+            "sync": {
+                "title": "Sync options",
+                "toggle_download_everything": {
+                    "footnote": "This option downloads any documents that are visible in the main menu and were not downloaded before.",
+                    "label": "Download everything"
+                },
+                "toggle_download_last_page": {
+                    "footnote": "This feature downloads only the necessary data to create a preview thumbnail of the document, without having to open it.",
+                    "label": "Download last page to make preview"
+                },
+                "toggle_save_doc": {
+                    "footnote": "This option causes the document to be uploaded after closing the document viewer. This will update data such as the current page or last opened.",
+                    "label": "Save after closing a document"
+                },
+                "toggle_save_path": {
+                    "footnote": "Enabling this will maintain the currently opened folder, every time you open the app. If you disable this it will maintain whichever folder it last saved. The default folder is \"My Files\".",
+                    "label": "Save last opened folder"
+                },
+                "toggle_wait_for_everything": {
+                    "footnote": "This may lead to increased load times, depending on the size of your cloud.",
+                    "label": "Wait for everything to load"
+                }
+            },
+            "title": "Настройки на приложението",
+            "ui": {
+                "title": "UI options",
+                "toggle_fake_refresh": {
+                    "footnote": "This is a deprecated feature, where some UI interactions cause the screen to do a fake eink refresh. This feature may be disturbing to some users or otherwise annoying.",
+                    "label": "Enable fake screen refresh"
+                },
+                "toggle_maintain_aspect": {
+                    "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
+                    "label": "Maintain aspect size"
+                }
+            }
+        }
+    },
+    "viewer": {
+        "close": "Close",
+        "loading": "Зарежда се...",
+        "next_page": "Next Page",
+        "page_info": "Page {current} of {total}",
+        "prev_page": "Previous Page",
+        "zoom_in": "Zoom In",
+        "zoom_out": "Zoom Out"
+    }
+}
