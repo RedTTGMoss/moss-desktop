@@ -46,7 +46,8 @@
             "rename": "Rename",
             "trash": "Trash",
             "my_files": "My Files",
-            "delete": "Delete"
+            "delete": "Delete",
+            "tags": "Tags"
         },
         "prompts": {
             "trash": {
