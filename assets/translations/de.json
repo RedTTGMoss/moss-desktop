@@ -52,7 +52,8 @@
             },
             "import": {
                 "file": "Datei importieren",
-                "notebook": "Notizbuch importieren"
+                "notebook": "Notizbuch importieren",
+                "pdf_epub": "PDF/EPUB Import"
             }
         }
     },
@@ -60,6 +61,18 @@
         "cancel": "Abbrechen",
         "empty_error": "Name darf nicht leer sein",
         "submit": "Bestätigen"
+    },
+    "sidebar": {
+        "debug": "Debug",
+        "extensions": "Extensions",
+        "favorites": "Favorites",
+        "filter": "Filter",
+        "language": "Language",
+        "made_by": "Made by RedTTG",
+        "my_files": "My Files",
+        "settings": "Settings",
+        "tags": "Tags",
+        "trash": "Papierkorb"
     },
     "quit": {
         "quitting": "Beenden... Bitte warten Sie, bis die Daten gespeichert wurden",
