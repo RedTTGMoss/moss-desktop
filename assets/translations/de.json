@@ -19,8 +19,8 @@
     },
     "menu": {
         "create": {
-            "folder": "Ordner erstellen",
-            "notebook": "Notizbuch erstellen"
+            "folder": "Create Folder",
+            "notebook": "Create Notebook"
         },
         "debug": {
             "copy_uuid": "Ordner UUID kopieren",
@@ -32,7 +32,7 @@
             "test_doc": "Test Document View"
         },
         "delete": {
-            "confirm": "Löschen"
+            "confirm": "Delete"
         },
         "import": {
             "notebook": "Import Notebook",
@@ -42,30 +42,30 @@
             "back": "Zurück"
         },
         "sidebar": {
-            "debug": "Debuggen",
-            "extensions": "Erweiterungen",
-            "favorites": "Favoriten",
+            "debug": "Debug",
+            "extensions": "Extensions",
+            "favorites": "Favorites",
             "filter": "Filter",
-            "language": "Sprache",
+            "language": "Language",
             "made_by": "Made by RedTTG",
             "my_files": "My Files",
-            "settings": "Einstellungen",
+            "settings": "Settings",
             "tags": "Tags",
-            "trash": "Papierkorb"
+            "trash": "Trash"
         },
         "top_bar": {
-            "create_folder": "Ordner erstellen",
-            "create_notebook": "Notizbuch erstellen",
-            "import": "Importieren",
-            "menu": "Menü",
+            "create_folder": "Create Folder",
+            "create_notebook": "Create Notebook",
+            "import": "Import",
+            "menu": "Menu",
             "select_one": {
                 "deselect": "Deselect",
-                "duplicate": "Duplizieren",
+                "duplicate": "Duplicate",
                 "favorite": "Favorite",
-                "menu": "Menü",
-                "move": "Verschieben",
-                "rename": "Umbenennen",
-                "trash": "Papierkorb"
+                "menu": "Menu",
+                "move": "Move",
+                "rename": "Rename",
+                "trash": "Trash"
             }
         }
     },
