@@ -18,7 +18,9 @@ from gui.defaults import Defaults
 from gui.extensions.host_functions import ACTION_APPEND
 from gui.extensions.shared_types import rect_from_pe_rect
 from gui.file_prompts import notebook_prompt, import_debug
+from gui.helpers import new_lined_dynamic_text
 from gui.pp_helpers import ContextMenu, DocumentDebugPopup
+from gui.pp_helpers.context_bar import FixedSizeContextBar
 from gui.pp_helpers.popups import ConfirmPopup
 from gui.preview_handler import PreviewHandler
 from gui.screens.name_field_screen import NameFieldScreen
@@ -378,7 +380,7 @@ class CustomExtensionsMenu(ContextMenu):
         self.initialized_position = False
 
 
-class SideBar(ContextMenu):
+class SideBar(FixedSizeContextBar, ContextMenu):
     ENABLE_OUTLINE = False
     TOP_BUTTONS = 5
     BUTTONS = (

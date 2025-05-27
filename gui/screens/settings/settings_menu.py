@@ -10,6 +10,7 @@ from gui.pp_helpers import ContextMenu
 from gui.screens.scrollable_view import ScrollableView
 from .settings_view import SettingsView
 from ...extensions.shared_types import TContextButton
+from ...pp_helpers.context_bar import FixedSizeContextBar
 
 if TYPE_CHECKING:
     from . import Settings
@@ -33,7 +34,7 @@ def parse_menu_xml(data: bytes):
         return tree, root_tag
 
 
-class BackButton(ContextMenu):
+class BackButton(FixedSizeContextBar, ContextMenu):
     ENABLE_OUTLINE = False
 
     BUTTONS = (
@@ -71,7 +72,7 @@ def generate_missing_menu(data, menu_id):
     return data.get('xml_missing_menu_template').decode().format(menu_id).encode()
 
 
-class SettingsContextMenu(ContextMenu):
+class SettingsContextMenu(FixedSizeContextBar, ContextMenu):
     ENABLE_OUTLINE = False
 
     def __init__(self, settings: 'Settings', menu: List[TContextButton]):

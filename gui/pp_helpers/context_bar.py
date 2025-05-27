@@ -6,6 +6,7 @@ from typing import Tuple, Dict, List, Optional, TYPE_CHECKING
 import pygameextra as pe
 
 from gui.defaults import Defaults
+from gui.helpers import new_lined_dynamic_text
 from gui.i10n import t
 from gui.literals import CONTEXT_BAR_DIRECTIONS
 
@@ -274,3 +275,20 @@ class ContextBar(pe.ChildContext, ABC):
                 button_meta['context_menu_icon_rect'].move_ip(-x_offset, -y_offset)
                 button_text.rect.move_ip(-x_offset, -y_offset)
                 button_text_inverted.rect.move_ip(-x_offset, -y_offset)
+
+class FixedSizeContextBar(ContextBar, ABC):
+    def handle_scales(self):
+        super().handle_scales()
+        for button, button_meta, text, text_inverted in self.button_data_zipped:
+            text_scaled = new_lined_dynamic_text(text.text, text.font, button.area.width - text.rect.left)
+
+            midleft = text.rect.midleft
+
+            text.text = text_scaled
+            text_inverted.text = text_scaled
+
+            text.init()
+            text_inverted.init()
+
+            text.rect.midleft = midleft
+            text_inverted.rect.midleft = midleft
