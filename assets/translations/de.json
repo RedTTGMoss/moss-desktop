@@ -44,7 +44,9 @@
             "favorite": "Favorisieren",
             "move": "Verschieben",
             "rename": "Umbenennen",
-            "trash": "Papierkorb"
+            "trash": "Papierkorb",
+            "my_files": "My Files",
+            "delete": "Löschen"
         },
         "prompts": {
             "trash": {
@@ -69,9 +71,7 @@
         "filter": "Filter",
         "language": "Language",
         "made_by": "Made by RedTTG",
-        "my_files": "My Files",
         "settings": "Settings",
-        "tags": "Tags",
         "trash": "Papierkorb"
     },
     "quit": {
