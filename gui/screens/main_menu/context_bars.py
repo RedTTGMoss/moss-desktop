@@ -43,7 +43,7 @@ class MainMenuContextBar(ContextBar):
         super().__init__(parent)
         if self.api.offline_mode:
             self.offline_error_text = pe.Text(
-                "You are offline!",
+                t("menu.top.offline"),
                 Defaults.MAIN_MENU_BAR_FONT, parent.ratios.main_menu_bar_size,
                 colors=Defaults.TEXT_ERROR_COLOR
             )

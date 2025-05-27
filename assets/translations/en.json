@@ -33,6 +33,7 @@
         "top": {
             "import": "Import",
             "menu": "Menu",
+            "offline": "You are offline!",
             "create": {
                 "folder": "Create Folder",
                 "notebook": "Create Notebook"
