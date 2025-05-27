@@ -18,6 +18,10 @@
         "syncing": "Syncing..."
     },
     "menu": {
+        "create": {
+            "folder": "Create Folder",
+            "notebook": "Create Notebook"
+        },
         "debug": {
             "copy_uuid": "Copy Folder UUID",
             "export_json": "Export Directory to JSON",
@@ -27,29 +31,41 @@
             "import_dir": "Import from Directory",
             "test_doc": "Test Document View"
         },
-        "import": "Import",
+        "delete": {
+            "confirm": "Delete"
+        },
+        "import": {
+            "notebook": "Import Notebook",
+            "pdf_epub": "Import PDF/EPUB"
+        },
         "settings": {
             "back": "Back"
         },
-        "top": {
-            "import": "Import",
-            "menu": "Menu",
-            "create": {
-                "folder": "Create Folder",
-                "notebook": "Create Notebook"
-            },
-            "deselect": "Deselect"
-        },
-        "common": {
-            "duplicate": "Duplicate",
-            "favorite": "Favorite",
-            "move": "Move",
-            "rename": "Rename",
+        "sidebar": {
+            "debug": "Debug",
+            "extensions": "Extensions",
+            "favorites": "Favorites",
+            "filter": "Filter",
+            "language": "Language",
+            "made_by": "Made by RedTTG",
+            "my_files": "My Files",
+            "settings": "Settings",
+            "tags": "Tags",
             "trash": "Trash"
         },
-        "prompts": {
-            "trash": {
-                "delete": "Delete"
+        "top_bar": {
+            "create_folder": "Create Folder",
+            "create_notebook": "Create Notebook",
+            "import": "Import",
+            "menu": "Menu",
+            "select_one": {
+                "deselect": "Deselect",
+                "duplicate": "Duplicate",
+                "favorite": "Favorite",
+                "menu": "Menu",
+                "move": "Move",
+                "rename": "Rename",
+                "trash": "Trash"
             }
         }
     },
