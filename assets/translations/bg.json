@@ -32,31 +32,31 @@
         },
         "top": {
             "import": "Внос",
-            "menu": "Menu",
+            "menu": "Меню",
             "create": {
-                "folder": "Create Folder",
-                "notebook": "Create Notebook"
+                "folder": "Нова папка",
+                "notebook": "Нова тетрадка"
             },
-            "deselect": "Deselect"
+            "deselect": "Размаркиране"
         },
         "common": {
-            "duplicate": "Duplicate",
-            "favorite": "Favorite",
-            "move": "Move",
-            "rename": "Rename",
-            "trash": "Trash",
-            "my_files": "My Files",
-            "delete": "Delete",
-            "tags": "Tags"
+            "duplicate": "Дубликирай",
+            "favorite": "Любимо",
+            "move": "Местене",
+            "rename": "Преименуване",
+            "trash": "Кошче",
+            "my_files": "Моите файлове",
+            "delete": "Изтрий",
+            "tags": "Отбелезалки"
         },
         "prompts": {
             "trash": {
-                "delete": "Delete"
+                "delete": "Изтрий"
             },
             "import": {
-                "file": "Import File",
-                "notebook": "Import Notebook",
-                "pdf_epub": "PDF/EPUB Import"
+                "file": "Внос на файл",
+                "notebook": "Внос на тетрадка",
+                "pdf_epub": "Импортиране в PDF/EPUB формат"
             }
         }
     },
@@ -66,14 +66,14 @@
         "submit": "Потвърждаване"
     },
     "sidebar": {
-        "debug": "Debug",
-        "extensions": "Extensions",
-        "favorites": "Favorites",
-        "filter": "Filter",
-        "language": "Language",
-        "made_by": "Made by RedTTG",
-        "settings": "Settings",
-        "trash": "Trash"
+        "debug": "Дебъгване",
+        "extensions": "Разширения",
+        "favorites": "Любими",
+        "filter": "Филтър",
+        "language": "Език",
+        "made_by": "Поддържано от RedTTG",
+        "settings": "Настройки",
+        "trash": "Кошче"
     },
     "quit": {
         "quitting": "Затваряне... Моля изчакайте да се запазят данните",
@@ -156,53 +156,53 @@
                 },
                 "toggle_statistics": {
                     "footnote": "Тази настройка позволява да се износват статистически данни. Тези данни не се споделят, но може да се ползват от разширения.",
-                    "label": "Allow statistics"
+                    "label": "Разрешаване на статистика"
                 }
             },
             "sync": {
-                "title": "Sync options",
+                "title": "Опции за синхронизиране",
                 "toggle_download_everything": {
-                    "footnote": "This option downloads any documents that are visible in the main menu and were not downloaded before.",
-                    "label": "Download everything"
+                    "footnote": "Тази опция изтегля всички документи, които са видими в главното меню и не са били изтеглени преди това.",
+                    "label": "Изтегли всичко"
                 },
                 "toggle_download_last_page": {
-                    "footnote": "This feature downloads only the necessary data to create a preview thumbnail of the document, without having to open it.",
-                    "label": "Download last page to make preview"
+                    "footnote": "Тази функция изтегля само необходимите данни, за да създаде миниатюра за предварителен преглед на документа, без да е необходимо да го отваряте.",
+                    "label": "Изтеглине последната страница, за да се направи корица"
                 },
                 "toggle_save_doc": {
-                    "footnote": "This option causes the document to be uploaded after closing the document viewer. This will update data such as the current page or last opened.",
-                    "label": "Save after closing a document"
+                    "footnote": "Тази опция кара документа да бъде качен след затваряне. Това ще актуализира данни, като например текущата или последно отворена страница.",
+                    "label": "Запазване след затваряне на документ"
                 },
                 "toggle_save_path": {
-                    "footnote": "Enabling this will maintain the currently opened folder, every time you open the app. If you disable this it will maintain whichever folder it last saved. The default folder is \"My Files\".",
-                    "label": "Save last opened folder"
+                    "footnote": "Активирането на тази функция ще пази текущо отворената папка всеки път, когато отворите приложението. Ако деактивирате тази функция, ще се пази папката, в която е запазена последно. Папката по подразбиране е „Моите файлове“.",
+                    "label": "Запазване на последната отворена папка"
                 },
                 "toggle_wait_for_everything": {
-                    "footnote": "This may lead to increased load times, depending on the size of your cloud.",
-                    "label": "Wait for everything to load"
+                    "footnote": "Това може да доведе до увеличено време за зареждане, в зависимост от размера на вашия облак.",
+                    "label": "Изчакаване всичко да се зареди"
                 }
             },
             "title": "Настройки на приложението",
             "ui": {
-                "title": "UI options",
+                "title": "Опции на интерфейса",
                 "toggle_fake_refresh": {
-                    "footnote": "This is a deprecated feature, where some UI interactions cause the screen to do a fake eink refresh. This feature may be disturbing to some users or otherwise annoying.",
-                    "label": "Enable fake screen refresh"
+                    "footnote": "Това е остаряла функция, при която някои взаимодействия с потребителския интерфейс карат екрана да прави фалшиво обновяване на мастилото. Тази функция може да е обезпокоителна за някои потребители или досадна.",
+                    "label": "Фалшиво обновяване на екрана"
                 },
                 "toggle_maintain_aspect": {
-                    "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
-                    "label": "Maintain aspect size"
+                    "footnote": "Тази опция запазва размера на документите в оригиналния размер на приложението. Ако деактивирате това, размерът на странизата ще се разполага според размера на прозореца при огелемяване.",
+                    "label": "Запазване на съотношението"
                 }
             }
         }
     },
     "viewer": {
-        "close": "Close",
+        "close": "Затвори",
         "loading": "Зарежда се...",
-        "next_page": "Next Page",
-        "page_info": "Page {current} of {total}",
-        "prev_page": "Previous Page",
-        "zoom_in": "Zoom In",
-        "zoom_out": "Zoom Out"
+        "next_page": "Следваща страница",
+        "page_info": "Страница {current} от {total}",
+        "prev_page": "Предишна страница",
+        "zoom_in": "Увеличи",
+        "zoom_out": "Намали"
     }
 }
