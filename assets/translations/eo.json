@@ -1,207 +1,208 @@
 {
     "common": {
-        "items": "{count} items",
-        "pages": "{count} pages",
-        "read": "Read {percent}%"
+        "items": "{count} eroj",
+        "pages": "{count} paĝoj",
+        "read": "Legu {percent}%"
     },
     "installer": {
-        "cancel": "Cancel",
-        "install": "Install",
-        "installing": "Installing...",
-        "progress": "Progress: {progress}%",
-        "reinstall": "Reinstall",
-        "title": "Installer"
+        "cancel": "Nuligi",
+        "install": "Instali",
+        "installing": "Instali...",
+        "progress": "Progreso: {progress}%",
+        "reinstall": "Reinstali",
+        "title": "Instalilo"
     },
     "loader": {
-        "initializing": "Initializing...",
-        "loading": "Loading...",
-        "syncing": "Syncing..."
+        "initializing": "Inicialigante...",
+        "loading": "Ŝargante...",
+        "syncing": "Sinkronigante..."
     },
     "menu": {
         "debug": {
-            "copy_uuid": "Copy Folder UUID",
-            "export_json": "Export Directory to JSON",
-            "export_stats": "Export Statistics",
-            "global": "Global Debug Menu",
-            "hot_reload": "Hot Reload",
-            "import_dir": "Import from Directory",
-            "test_doc": "Test Document View"
+            "copy_uuid": "Kopii Dosierujan UUID-on",
+            "export_json": "Eksporti Dosierujon al JSON",
+            "export_stats": "Eksportaj Statistikoj",
+            "global": "Tutmonda Sencimiga Menuo",
+            "hot_reload": "Varma Reŝargo",
+            "import_dir": "Importi el la dosierujo",
+            "test_doc": "Testa Dokumenta Vido"
         },
         "settings": {
-            "back": "Back"
+            "back": "Reen"
         },
         "top": {
-            "import": "Import",
-            "menu": "Menu",
+            "import": "Importi",
+            "menu": "Menuo",
             "create": {
-                "folder": "Create Folder",
-                "notebook": "Create Notebook"
+                "folder": "Krei dosierujon",
+                "notebook": "Krei Notlibron"
             },
-            "deselect": "Deselect"
+            "deselect": "Malelekti",
+            "empty_trash": "Empty trash"
         },
         "common": {
-            "duplicate": "Duplicate",
-            "favorite": "Favorite",
-            "move": "Move",
-            "rename": "Rename",
-            "trash": "Trash",
-            "my_files": "My Files",
-            "delete": "Delete",
-            "tags": "Tags"
+            "duplicate": "Duobligi",
+            "favorite": "Favorato",
+            "move": "Movi",
+            "rename": "Renomi",
+            "trash": "Rubo",
+            "my_files": "Miaj dosieroj",
+            "delete": "Forigi",
+            "tags": "Etikedoj"
         },
         "prompts": {
             "trash": {
-                "delete": "Delete"
+                "delete": "Forigi"
             },
             "import": {
-                "file": "Import File",
-                "notebook": "Import Notebook",
-                "pdf_epub": "PDF/EPUB Import"
+                "file": "Importi Dosieron",
+                "notebook": "Importi Notlibron",
+                "pdf_epub": "PDF/EPUB-Importo"
             }
         }
     },
     "name_field": {
-        "cancel": "Cancel",
-        "empty_error": "Name cannot be empty",
-        "submit": "Confirm"
+        "cancel": "Nuligi",
+        "empty_error": "La nomo ne povas esti malplena",
+        "submit": "Konfirmi"
     },
     "sidebar": {
-        "debug": "Debug",
-        "extensions": "Extensions",
-        "favorites": "Favorites",
-        "filter": "Filter",
-        "language": "Language",
-        "made_by": "Made by RedTTG",
-        "settings": "Settings"
+        "debug": "Sencimigi",
+        "extensions": "Etendaĵoj",
+        "favorites": "Favoratoj",
+        "filter": "Filtrilo",
+        "language": "Lingvo",
+        "made_by": "Farita de RedTTG",
+        "settings": "Agordoj"
     },
     "quit": {
-        "quitting": "Quitting... Please wait for data to save",
-        "thanks": "Thank you for using {app_name}"
+        "quitting": "Forlasante... Bonvolu atendi ĝis la datumoj estos konservitaj",
+        "thanks": "Dankon pro uzado de {app_name}"
     },
     "settings": {
         "common": {
-            "experimental": "THIS IS AN EXPERIMENTAL FEATURE",
-            "unstable": "This feature may be unstable!"
+            "experimental": "ĈI TIU ESTAS EKSPERIMENTA TRAJTO",
+            "unstable": "Ĉi tiu funkcio eble estas malstabila!"
         },
         "default": {
-            "description": "Navigate using the sidebar in order to modify settings",
-            "title": "Welcome to the moss settings."
+            "description": "Navigadu per la flankmenuo por modifi agordojn",
+            "title": "Bonvenon al la muskaj agordoj."
         },
         "developer": {
             "debug": {
-                "footnote": "Please turn off any debug options that modify the UI, as a final check up on the elements, before finalizing changes.",
-                "title": "Main debug options",
+                "footnote": "Bonvolu malŝalti ĉiujn sencimigajn opciojn, kiuj modifas la uzantinterfacon, kiel finan kontrolon de la elementoj, antaŭ ol finpretigi la ŝanĝojn.",
+                "title": "Ĉefaj sencimigaj opcioj",
                 "toggle": {
-                    "footnote": "Global debug mode for logs or other options",
-                    "label": "Enable debug mode"
+                    "footnote": "Tutmonda sencimiga reĝimo por protokoloj aŭ aliaj opcioj",
+                    "label": "Ebligi sencimigan reĝimon"
                 },
                 "toggle_alignment": {
-                    "footnote": "This refers to the notebook lines file rendering and the way that rm_lines tries to align the whole page to a common center",
-                    "label": "Disable LINES alignment"
+                    "footnote": "Ĉi tio rilatas al la bildigo de la dosiero \"notbook lines\" kaj la maniero kiel \"rm_lines\" provas vicigi la tutan paĝon al komuna centro.",
+                    "label": "Malŝalti LINES-aranĝon"
                 },
                 "toggle_button_rects": {
-                    "footnote": "This adds a condition to the UI to show the rect of every button at the end of the loop. Each button is outlined in red, some rects may be wrong. This is useful for debugging button alignment issues.",
-                    "label": "Show button rects"
+                    "footnote": "Ĉi tio aldonas kondiĉon al la uzantinterfaco por montri la rektan flankon de ĉiu butono ĉe la fino de la buklo. Ĉiu butono estas konturita per ruĝo, kelkaj rektaj flankoj povas esti malĝustaj. Ĉi tio utilas por sencimigi problemojn pri butona vicigo.",
+                    "label": "Montri butonajn rektangulojn"
                 },
                 "toggle_lines_log": {
-                    "footnote": "This enables detailed logs for every stroke and item during LINES page rendering. It gets messy be aware!",
-                    "label": "Enable debug log for LINES renderer"
+                    "footnote": "Ĉi tio ebligas detalajn protokolojn por ĉiu streko kaj ero dum la bildigo de LINES-paĝo. Atentu, ĝi fariĝas malorda!",
+                    "label": "Ebligi sencimigan protokolon por LINES-bildigilo"
                 },
                 "toggle_log": {
-                    "footnote": "Weather or not to initiate logs in the terminal on startup",
-                    "label": "Enable debug logs"
+                    "footnote": "Ĉu komenci protokolojn en la terminalo ĉe starto aŭ ne?",
+                    "label": "Ebligi sencimigajn protokolojn"
                 },
                 "toggle_orphans": {
-                    "footnote": "This will show any documents or collections that have a missing parent.",
-                    "label": "Enable orphans"
+                    "footnote": "Ĉi tio montros iujn ajn dokumentojn aŭ kolektojn, kiuj havas mankantan gepatron.",
+                    "label": "Ebligi orfojn"
                 },
                 "toggle_viewer": {
-                    "footnote": "This enables info UI for the document viewer. It's useful for debugging issues with alignment or scale.",
-                    "label": "Enable document viewer debug"
+                    "footnote": "Ĉi tio ebligas la info-interfacon por la dokumentospektilo. Ĝi utilas por sencimigi problemojn pri vicigo aŭ skalo.",
+                    "label": "Ebligi sencimigadon de dokumentospektilo"
                 },
-                "warning": "Some of these require a restart to take effect!"
+                "warning": "Kelkaj el ĉi tiuj postulas rekomencon por ekvalidi!"
             },
             "debug_exports": {
-                "description": "These options are for debug exports on documents",
-                "title": "Debug export options",
+                "description": "Ĉi tiuj opcioj estas por sencimigi eksportojn en dokumentoj",
+                "title": "Sencimigaj eksportaj opcioj",
                 "toggle_raw": {
-                    "footnote": "This sorts and prettifies any metadata or content files",
-                    "label": "Enable RAW export"
+                    "footnote": "Ĉi tio ordigas kaj plibeligas iujn ajn metadatenojn aŭ enhavdosierojn",
+                    "label": "Ebligi RAW-eksportadon"
                 },
                 "toggle_raw_ext": {
-                    "footnote": "Whether to include .json at the end of metadata or content files",
-                    "label": "Add extension to RAW exports"
+                    "footnote": "Ĉu inkluzivi .json ĉe la fino de metadatenoj aŭ enhavdosieroj",
+                    "label": "Aldoni kromprogramon al RAW-eksportoj"
                 }
             },
-            "description": "Here you can find all the settings related to debugging Moss or experimental features",
-            "title": "Developer Settings"
+            "description": "Ĉi tie vi povas trovi ĉiujn agordojn rilatajn al sencimigado de Moss aŭ eksperimentaj funkcioj.",
+            "title": "Agordoj de programisto"
         },
         "menus": {
-            "developer": "Developer Settings",
-            "moss": "Moss Settings"
+            "developer": "Agordoj de programisto",
+            "moss": "Moss Agordoj"
         },
         "missing_template": {
-            "description": "Moss could not find the following menu.",
-            "info": "If you think this is a mistake, please raise an issue!",
-            "title": "Menu missing!"
+            "description": "Moss ne povis trovi la jenan menuon.",
+            "info": "Se vi opinias, ke ĉi tio estas eraro, bonvolu raporti problemon!",
+            "title": "Mankas menuo!"
         },
         "moss": {
-            "description": "You will find all the settings related to Moss here.",
+            "description": "Vi trovos ĉiujn agordojn rilatajn al Moss ĉi tie.",
             "options": {
-                "title": "Moss Options",
+                "title": "Moss Elektoj",
                 "toggle_portable": {
-                    "footnote": "This disables the installer screen on startup and allows you to run from an extracted folder without installing.",
-                    "label": "Portable mode"
+                    "footnote": "Ĉi tio malŝaltas la instalilan ekranon ĉe starto kaj permesas al vi ruli el eltirita dosierujo sen instali.",
+                    "label": "Portebla reĝimo"
                 },
                 "toggle_statistics": {
-                    "footnote": "This allows tracking usage statistics. As of currently this data is not shared but may be accessed by extensions.",
-                    "label": "Allow statistics"
+                    "footnote": "Ĉi tio permesas spuri uzstatistikojn. Nuntempe ĉi tiuj datumoj ne estas kundividataj sed povas esti aliritaj per kromprogramoj.",
+                    "label": "Permesi statistikojn"
                 }
             },
             "sync": {
-                "title": "Sync options",
+                "title": "Sinkronigaj opcioj",
                 "toggle_download_everything": {
-                    "footnote": "This option downloads any documents that are visible in the main menu and were not downloaded before.",
-                    "label": "Download everything"
+                    "footnote": "Ĉi tiu opcio elŝutas ĉiujn dokumentojn, kiuj estas videblaj en la ĉefa menuo kaj ne estis elŝutitaj antaŭe.",
+                    "label": "Elŝutu ĉion"
                 },
                 "toggle_download_last_page": {
-                    "footnote": "This feature downloads only the necessary data to create a preview thumbnail of the document, without having to open it.",
-                    "label": "Download last page to make preview"
+                    "footnote": "Ĉi tiu funkcio elŝutas nur la necesajn datumojn por krei antaŭrigardan bildeton de la dokumento, sen devi malfermi ĝin.",
+                    "label": "Elŝutu la lastan paĝon por fari antaŭrigardon"
                 },
                 "toggle_save_doc": {
-                    "footnote": "This option causes the document to be uploaded after closing the document viewer. This will update data such as the current page or last opened.",
-                    "label": "Save after closing a document"
+                    "footnote": "Ĉi tiu opcio kaŭzas, ke la dokumento estos alŝutita post fermo de la dokumentospektilo. Tio ĝisdatigos datumojn kiel la nunan paĝon aŭ la laste malfermitan.",
+                    "label": "Konservi post fermo de dokumento"
                 },
                 "toggle_save_path": {
-                    "footnote": "Enabling this will maintain the currently opened folder, every time you open the app. If you disable this it will maintain whichever folder it last saved. The default folder is \"My Files\".",
-                    "label": "Save last opened folder"
+                    "footnote": "Ebligante ĉi tion, la nuntempe malfermita dosierujo estos konservata ĉiufoje kiam vi malfermas la aplikaĵon. Se vi malebligas ĉi tion, ĝi konservos la dosierujon, kiun ĝi laste konservis. La defaŭlta dosierujo estas \"Miaj Dosieroj\".",
+                    "label": "Konservi laste malfermitan dosierujon"
                 },
                 "toggle_wait_for_everything": {
-                    "footnote": "This may lead to increased load times, depending on the size of your cloud.",
-                    "label": "Wait for everything to load"
+                    "footnote": "Tio povas konduki al plilongigitaj ŝarĝtempoj, depende de la grandeco de via nubo.",
+                    "label": "Atendu, ke ĉio ŝarĝiĝu"
                 }
             },
-            "title": "Moss Settings",
+            "title": "Moss Agordoj",
             "ui": {
-                "title": "UI options",
+                "title": "UI-opcioj",
                 "toggle_fake_refresh": {
-                    "footnote": "This is a deprecated feature, where some UI interactions cause the screen to do a fake eink refresh. This feature may be disturbing to some users or otherwise annoying.",
-                    "label": "Enable fake screen refresh"
+                    "footnote": "Ĉi tiu funkcio estas malrekomendinda, kie iuj interagoj en la uzulinterfaco kaŭzas, ke la ekrano faras falsan refreŝigon. Ĉi tiu funkcio povas ĝeni iujn uzantojn aŭ alie ĝeni ilin.",
+                    "label": "Ebligi falsan ekranrefreŝigon"
                 },
                 "toggle_maintain_aspect": {
-                    "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
-                    "label": "Maintain aspect size"
+                    "footnote": "Tio konservos la dokumentojn ŝargitajn en la dokumentospektilo laŭ la originala fenestrograndeco. Se vi malŝaltas tion, la paĝograndeco anstataŭe provos skali al kia ajn fenestrograndeco, kiun vi havas, se vi ŝanĝis la grandecon de la fenestro.",
+                    "label": "Konservi aspektograndecon"
                 }
             }
         }
     },
     "viewer": {
-        "close": "Close",
-        "loading": "Loading...",
-        "next_page": "Next Page",
-        "page_info": "Page {current} of {total}",
-        "prev_page": "Previous Page",
-        "zoom_in": "Zoom In",
-        "zoom_out": "Zoom Out"
+        "close": "Fermi",
+        "loading": "Ŝargante...",
+        "next_page": "Sekva Paĝo",
+        "page_info": "Paĝo {current} el {total}",
+        "prev_page": "Antaŭa Paĝo",
+        "zoom_in": "Zomu enen",
+        "zoom_out": "Zomu Malproksimen"
     }
 }
