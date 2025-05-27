@@ -6,7 +6,7 @@ import pygameextra as pe
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
 from . import xml_tools as tools
-from ...i18n import t
+from ...i10n import t
 
 if TYPE_CHECKING:
     from gui import GUI

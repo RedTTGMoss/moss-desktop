@@ -10,7 +10,7 @@ import gui.events as ev
 from gui.cloud_action_helper import import_files_to_cloud
 from gui.defaults import Defaults
 from gui.file_prompts import import_prompt
-from gui.i18n import t
+from gui.i10n import t
 from gui.pp_helpers import ContextBar
 from gui.pp_helpers.popups import ConfirmPopup
 from gui.screens.main_menu.context_menus import DeleteContextMenu, ImportContextMenu
@@ -30,7 +30,7 @@ class MainMenuContextBar(ContextBar):
             # noinspection PyTypeChecker
             self.BUTTONS = (
                 {
-                    "text": "menu.top_bar.menu",
+                    "text": "menu.top.menu",
                     "icon": "burger",
                     "action": 'open_menu'
                 }, *self.BUTTONS
@@ -115,17 +115,17 @@ class MainMenuContextBar(ContextBar):
 
 class TopBar(MainMenuContextBar):
     ADD_FOLDER = {
-        "text": "menu.top_bar.create_folder",
+        "text": "menu.top.create.folder",
         "icon": "folder_add",
         "action": 'create_collection'
     }
     BUTTONS = (
         {
-            "text": "menu.top_bar.create_notebook",
+            "text": "menu.top.create.notebook",
             "icon": "notebook_add",
             "action": 'create_notebook'
         }, dict(ADD_FOLDER), {
-            "text": "menu.top_bar.import",
+            "text": "menu.top.import",
             "icon": "import",
             "action": 'import_action',
             "context_menu": 'import_context',
@@ -175,29 +175,29 @@ class TopBar(MainMenuContextBar):
 class TopBarSelectOne(MainMenuContextBar):
     BUTTONS = (
         {
-            "text": "menu.top_bar.select_one.deselect",
+            "text": "menu.top.deselect",
             "icon": "x_medium",
             "action": "deselect"
         }, {
-            "text": "menu.top_bar.select_one.rename",
+            "text": "menu.common.rename",
             "icon": "text_edit",
             "action": "rename"
         }, {
-            "text": "menu.top_bar.select_one.favorite",
+            "text": "menu.common.favorite",
             "icon": "star",
             "action": "favorite"
         }, {
-            "text": "menu.top_bar.select_one.duplicate",
+            "text": "menu.common.duplicate",
             "icon": "duplicate",
             "action": "duplicate"
         }, {
-            "text": "menu.top_bar.select_one.trash",
+            "text": "menu.common.trash",
             "icon": "trashcan",
             "action": "trash",
             "context_menu": 'delete_context',
             "context_icon": "small_chevron_down"
         }, {
-            "text": "menu.top_bar.select_one.move",
+            "text": "menu.common.move",
             "icon": "move",
             "action": "move"
         },
@@ -356,7 +356,7 @@ class TopBarSelectOne(MainMenuContextBar):
 class TopBarTrash(MainMenuContextBar):
     BUTTONS = (
         {
-            "text": "menu.empty",
+            "text": "menu.top.empty_trash",
             "icon": "trashcan_delete",
             "action": 'delete_confirm'
         },
@@ -395,25 +395,25 @@ class TopBarTrash(MainMenuContextBar):
 class TopBarSelectMulti(TopBarSelectOne):
     BUTTONS = (
         {
-            "text": "menu.deselect",
+            "text": "menu.top.deselect",
             "icon": "x_medium",
             "action": "deselect"
         }, {
-            "text": "menu.favorite",
+            "text": "menu.common.favorite",
             "icon": "star",
             "action": "favorite"
         }, {
-            "text": "menu.duplicate",
+            "text": "menu.common.duplicate",
             "icon": "duplicate",
             "action": "duplicate"
         }, {
-            "text": "menu.trash",
+            "text": "menu.common.trash",
             "icon": "trashcan",
             "action": "trash",
             "context_menu": 'delete_context',
             "context_icon": "small_chevron_down"
         }, {
-            "text": "menu.move",
+            "text": "menu.common.move",
             "icon": "move",
             "action": "move"
         },
@@ -428,7 +428,7 @@ class TopBarSelectMove(TopBarSelectOne):
             "icon": "x_medium",
             "action": "cancel"
         }, {
-            "text": "menu.deselect",
+            "text": "menu.top.deselect",
             "icon": "x_medium",
             "action": "deselect"
         }, dict(TopBar.ADD_FOLDER), {

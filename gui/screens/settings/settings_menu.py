@@ -5,7 +5,7 @@ import pygameextra as pe
 from lxml import etree
 from lxml.etree import Element
 
-from gui.i18n import t
+from gui.i10n import t
 from gui.pp_helpers import ContextMenu
 from gui.screens.scrollable_view import ScrollableView
 from .settings_view import SettingsView

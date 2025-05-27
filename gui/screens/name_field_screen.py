@@ -4,7 +4,7 @@ import pygameextra as pe
 
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
-from gui.i18n import t
+from gui.i10n import t
 from gui.rendering import render_button_using_text
 from gui.screens.mixins import TitledMixin, ButtonReadyMixin
 

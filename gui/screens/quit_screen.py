@@ -5,7 +5,7 @@ import pygameextra as pe
 from gui.defaults import Defaults
 from gui.gui import APP_NAME
 from gui.screens.mixins import LogoMixin
-from gui.i18n import t
+from gui.i10n import t
 
 if TYPE_CHECKING:
     from gui.gui import GUI

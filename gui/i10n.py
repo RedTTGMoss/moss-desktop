@@ -16,7 +16,7 @@ def split_keys(keys):
     return ''.join(final)
 
 
-class I18nManager:
+class I10nManager:
     instance = None
     _translations: Dict[str, Dict[str, Any]]
     _lang: str
@@ -71,7 +71,7 @@ class I18nManager:
 @lru_cache(maxsize=500)  # Cache translations for performance
 def _t(key: str, default: Optional[str] = None) -> str:
     """Translate a key to the current language and format it with the given parameters"""
-    return I18nManager.instance.t(key, default)
+    return I10nManager.instance.t(key, default)
 
 
 def t(key: str, default: Optional[str] = None, **kwargs):

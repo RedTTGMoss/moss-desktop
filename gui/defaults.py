@@ -195,8 +195,12 @@ class Defaults(metaclass=DefaultsMeta):
             cls.TITLE_FONT = zh_font
             cls.SUBTITLE_FONT = zh_font
         else:
-            cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Imperator.ttf')
-            cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Imperator Bold.ttf')
+            if config.language == "en":
+                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Imperator.ttf')
+                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Imperator Bold.ttf')
+            else:
+                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Regular.ttf')
+                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Roboto-Medium.ttf')
             cls.MONO_FONT = os.path.join(cls.FONT_DIR, 'JetBrainsMono-Bold.ttf')
             cls.ROBOTO_REGULAR_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Regular.ttf')
             cls.ROBOTO_MEDIUM_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Medium.ttf')

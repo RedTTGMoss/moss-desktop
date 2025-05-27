@@ -17,7 +17,7 @@ from gui.screens.mixins import LogoMixin
 if TYPE_CHECKING:
     from gui.gui import GUI
     from rm_api import API
-    from gui.i18n import I18nManager
+    from gui.i10n import I10nManager
     from gui.extensions import ExtensionManager
 
 
@@ -123,7 +123,7 @@ class Loader(pe.ChildContext, LogoMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     icons: Dict[str, pe.Image]
     api: 'API'
-    i18n: 'I18nManager'
+    i10n: 'I10nManager'
     extension_manager: 'ExtensionManager'
     logo: pe.Text
     line_rect: pe.Rect
@@ -189,7 +189,7 @@ class Loader(pe.ChildContext, LogoMixin):
             if not lang_file.endswith('.json'):
                 continue
             lang = lang_file[:-5]
-            self.i18n.load_translations(lang)
+            self.i10n.load_translations(lang)
 
         # Begin loading extensions
         threading.Thread(target=self.load_extensions, daemon=True).start()

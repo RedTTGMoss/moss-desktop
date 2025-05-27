@@ -31,12 +31,12 @@ if TYPE_CHECKING:
 class ImportContextMenu(ContextMenu):
     BUTTONS = (
         {
-            "text": "menu.import.pdf_epub",
+            "text": "menu.prompts.import.pdf_epub",
             "icon": "import",
             "action": 'import_action'
         },
         {
-            "text": "menu.import.notebook",
+            "text": "menu.prompts.import.notebook",
             "icon": "notebook_add",
             "action": 'notebook_import'
         }
@@ -57,7 +57,7 @@ class ImportContextMenu(ContextMenu):
 class DeleteContextMenu(ContextMenu):
     BUTTONS = (
         {
-            "text": "menu.delete.confirm",
+            "text": "menu.common.delete",
             "icon": "trashcan_delete",
             "action": 'delete_confirm'
         },
@@ -383,14 +383,14 @@ class SideBar(ContextMenu):
     TOP_BUTTONS = 5
     BUTTONS = (
         {
-            "text": "menu.sidebar.my_files",
+            "text": "menu.common.my_files",
             "icon": "my_files",
             "action": "set_location",
             "data": "my_files",
             "inverted_id": "my_files"
         },
         {
-            "text": "menu.sidebar.filter",
+            "text": "sidebar.filter",
             "icon": "filter",
             "action": None,
             "inverted_id": "filter",
@@ -398,46 +398,46 @@ class SideBar(ContextMenu):
             "context_icon": "chevron_right",
         },
         {
-            "text": "menu.sidebar.favorites",
+            "text": "sidebar.favorites",
             "icon": "star",
             "action": None,
             "inverted_id": "favorites",
             "disabled": True
         },
         {
-            "text": "menu.sidebar.tags",
+            "text": "menu.common.tags",
             "icon": "tag",
             "action": None,
             "inverted_id": "tags",
             "disabled": True
         },
         {
-            "text": "menu.sidebar.extensions",
+            "text": "sidebar.extensions",
             "icon": "puzzle",
             "action": "custom_extensions_menu",
             "inverted_id": "extensions",
             "context_icon": "chevron_right"
         },
         {
-            "text": "menu.sidebar.trash",
+            "text": "menu.common.trash",
             "icon": "trashcan",
             "action": "set_location",
             "data": "trash",
             "inverted_id": "trash"
         },
         {
-            "text": "menu.sidebar.language",
+            "text": "sidebar.language",
             "icon": "language",
             "action": "language_menu",
             "context_icon": "chevron_right"
         },
         {
-            "text": "menu.sidebar.made_by",
+            "text": "sidebar.made_by",
             "icon": "heart",
             "action": None
         },
         {
-            "text": "menu.sidebar.settings",
+            "text": "sidebar.settings",
             "icon": "cog",
             "action": "settings",
             "disabled": False
@@ -449,7 +449,7 @@ class SideBar(ContextMenu):
     def __init__(self, context, *args, **kwargs):
         if context.config.debug:
             self.BUTTONS = (*self.BUTTONS, {
-                "text": "menu.sidebar.debug",
+                "text": "sidebar.debug",
                 "icon": "cog",
                 "action": "debug",
                 "context_icon": "chevron_right",
@@ -536,7 +536,7 @@ class LanguageMenu(ContextMenu):
                 "icon": "language",
                 "data": lang
             }
-            for lang in parent.i18n.available_languages
+            for lang in parent.i10n.available_languages
         ]
         super().__init__(parent, ideal_position)
 

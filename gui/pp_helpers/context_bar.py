@@ -6,7 +6,7 @@ from typing import Tuple, Dict, List, Optional, TYPE_CHECKING
 import pygameextra as pe
 
 from gui.defaults import Defaults
-from gui.i18n import t
+from gui.i10n import t
 from gui.literals import CONTEXT_BAR_DIRECTIONS
 
 if TYPE_CHECKING:

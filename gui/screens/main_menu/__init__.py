@@ -10,6 +10,7 @@ from rm_api.notifications.models import SyncRefresh, FileSyncProgress, NewDocume
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
 from gui.helpers import shorten_path
+from gui.i10n import t
 from gui.rendering import draw_bottom_loading_bar, get_bottom_bar_rect, render_header
 from gui.screens.main_menu.context_bars import TopBar, TopBarSelectOne, TopBarSelectMulti, TopBarSelectMove, TopBarTrash
 from gui.screens.main_menu.context_menus import SideBar
@@ -37,8 +38,8 @@ class MainMenu(pe.ChildContext):
     }
 
     HEADER_TEXTS = {
-        'my_files': "My files",
-        'trash': "Trash",
+        'my_files': "menu.common.my_files",
+        'trash': "menu.common.trash",
         'favorites': "Favorites",
         'tags': "Tags",
         'notebooks': "Notebooks",
@@ -104,7 +105,7 @@ class MainMenu(pe.ChildContext):
 
         # Header texts
         for key, text in self.HEADER_TEXTS.items():
-            self.texts[key] = pe.Text(text, Defaults.MAIN_MENU_FONT, self.ratios.main_menu_my_files_size,
+            self.texts[key] = pe.Text(t(text), Defaults.MAIN_MENU_FONT, self.ratios.main_menu_my_files_size,
                                       (0, 0), Defaults.TEXT_COLOR)
             self.texts[key].rect.topleft = (
                 self.ratios.main_menu_x_padding, self.ratios.main_menu_top_height + self.ratios.main_menu_top_padding)
@@ -134,7 +135,7 @@ class MainMenu(pe.ChildContext):
         parent.api.add_hook("main_menu_cache_invalidator", self.api_event_hook)
 
     def make_small_header_text(self, key, text):
-        self.texts[key] = pe.Text(text, Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
+        self.texts[key] = pe.Text(t(text), Defaults.MAIN_MENU_BAR_FONT, self.ratios.main_menu_bar_size,
                                   (0, 0), Defaults.TEXT_COLOR_H)
 
     @property

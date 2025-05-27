@@ -218,9 +218,9 @@ class GUI(pe.GameContext):
         setattr(pe.settings, 'indev', False)
 
         from .defaults import Defaults
-        from .i18n import I18nManager
+        from .i10n import I10nManager
         Defaults.init(self.config)  # Initialize Defaults with the loaded config
-        self.i18n = I18nManager(self)  # Initialize the I18nManager with the GUI instance
+        self.i10n = I10nManager(self)  # Initialize the I10nManager with the GUI instance
 
         try:
             from gui.extensions import ExtensionManager
@@ -539,7 +539,7 @@ class GUI(pe.GameContext):
             This means that your cloud session should already be validly set up.
             Hence, do not call this function unless Moss is fully loaded and unless fully necessary.
         """
-        from .i18n import _t
+        from .i10n import _t
         self.extension_manager.reset()
         for hook in list(self.api.hook_list.keys()):
             if hook == 'GUI':
@@ -567,7 +567,7 @@ class GUI(pe.GameContext):
         return self.size
 
     def set_language(self, lang):
-        self.i18n.language = lang
+        self.i10n.language = lang
         self.config.language = lang
         self.dirty_config = True
         self.loader.load()
