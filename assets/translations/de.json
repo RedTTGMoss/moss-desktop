@@ -187,8 +187,8 @@
         "loading": "Laden...",
         "next_page": "Nächste Seite",
         "page_info": "Seite {current} von {total}",
-        "prev_page": "Previous Page",
-        "zoom_in": "Zoom In",
-        "zoom_out": "Zoom Out"
+        "prev_page": "Vorherige Seite",
+        "zoom_in": "Vergrößern",
+        "zoom_out": "Verkleinern"
     }
 }
