@@ -1,195 +1,192 @@
 {
     "common": {
-        "items": "{count} items",
-        "pages": "{count} pages",
+        "items": "{count} Elemente",
+        "pages": "{count} Seiten",
         "read": "{percent} % gelesen"
     },
     "installer": {
         "cancel": "Abbrechen",
         "install": "Installieren",
         "installing": "Installiert...",
-        "progress": "Progress: {progress}%",
-        "reinstall": "Reinstall",
-        "title": "Installer"
+        "progress": "Fortschritt: {progress} %",
+        "reinstall": "Neu installieren",
+        "title": "Installationsprogramm"
     },
     "loader": {
-        "initializing": "Initializing...",
-        "loading": "Loading...",
-        "syncing": "Syncing..."
+        "initializing": "Initialisiere...",
+        "loading": "Laden...",
+        "syncing": "Synchronisiere..."
     },
     "menu": {
         "debug": {
             "copy_uuid": "Ordner UUID kopieren",
             "export_json": "Ordner als JSON exportieren",
             "export_stats": "Statistiken exportieren",
-            "global": "Global Debug Menu",
+            "global": "Globales Debug-Menü",
             "hot_reload": "Hot Reload",
             "import_dir": "Aus Ordner importieren",
-            "test_doc": "Test Document View"
+            "test_doc": "Testdokumentansicht"
         },
-        "import": "Import",
         "settings": {
             "back": "Zurück"
         },
         "top": {
-            "import": "Import",
-            "menu": "Menu",
+            "import": "Importieren",
+            "menu": "Menü",
             "create": {
-                "folder": "Create Folder",
-                "notebook": "Create Notebook"
+                "folder": "Ordner erstellen",
+                "notebook": "Notizbuch erstellen"
             },
-            "deselect": "Deselect"
+            "deselect": "Abwählen"
         },
         "common": {
-            "duplicate": "Duplicate",
-            "favorite": "Favorite",
-            "move": "Move",
-            "rename": "Rename",
-            "trash": "Trash"
+            "duplicate": "Duplizieren",
+            "favorite": "Favorisieren",
+            "move": "Verschieben",
+            "rename": "Umbenennen",
+            "trash": "Papierkorb"
         },
         "prompts": {
             "trash": {
-                "delete": "Delete"
+                "delete": "Löschen"
+            },
+            "import": {
+                "file": "Datei importieren",
+                "notebook": "Notizbuch importieren"
             }
         }
     },
     "name_field": {
         "cancel": "Abbrechen",
-        "empty_error": "Name cannot be empty",
+        "empty_error": "Name darf nicht leer sein",
         "submit": "Bestätigen"
     },
-    "prompts": {
-        "import": {
-            "file": "Datei importieren",
-            "notebook": "Import Notebook"
-        }
-    },
     "quit": {
-        "quitting": "Quitting... Please wait for data to save",
-        "thanks": "Thank you for using {app_name}"
+        "quitting": "Beenden... Bitte warten Sie, bis die Daten gespeichert wurden",
+        "thanks": "Vielen Dank für die Verwendung von {app_name}"
     },
     "settings": {
         "common": {
-            "experimental": "THIS IS AN EXPERIMENTAL FEATURE",
-            "unstable": "This feature may be unstable!"
+            "experimental": "DIES IST EINE EXPERIMENTELLE FUNKTION",
+            "unstable": "Diese Funktion ist möglicherweise instabil!"
         },
         "default": {
-            "description": "Navigate using the sidebar in order to modify settings",
-            "title": "Welcome to the moss settings."
+            "description": "Über die Seitenleiste navigieren, um Einstellungen zu ändern",
+            "title": "Willkommen bei den Moos-Einstellungen."
         },
         "developer": {
             "debug": {
-                "footnote": "Please turn off any debug options that modify the UI, as a final check up on the elements, before finalizing changes.",
-                "title": "Main debug options",
+                "footnote": "Bitte deaktivieren Sie alle Debug-Optionen, die die Oberfläche ändern, als letzte Überprüfung der Elemente, bevor Sie die Änderungen abschließen.",
+                "title": "Haupt-Debug-Optionen",
                 "toggle": {
-                    "footnote": "Global debug mode for logs or other options",
-                    "label": "Enable debug mode"
+                    "footnote": "Globaler Debug-Modus für Protokolle oder andere Optionen",
+                    "label": "Debug-Modus einschalten"
                 },
                 "toggle_alignment": {
-                    "footnote": "This refers to the notebook lines file rendering and the way that rm_lines tries to align the whole page to a common center",
-                    "label": "Disable LINES alignment"
+                    "footnote": "Dies bezieht sich auf die Darstellung der Notebook-Zeilendatei und die Art und Weise, wie rm_lines versucht, die gesamte Seite auf einen gemeinsamen Mittelpunkt auszurichten",
+                    "label": "Linienausrichtung deaktivieren"
                 },
                 "toggle_button_rects": {
-                    "footnote": "This adds a condition to the UI to show the rect of every button at the end of the loop. Each button is outlined in red, some rects may be wrong. This is useful for debugging button alignment issues.",
-                    "label": "Show button rects"
+                    "footnote": "Dies fügt der Benutzeroberfläche eine Bedingung hinzu, um das Rechteck jeder Schaltfläche am Ende der Schleife anzuzeigen. Jede Schaltfläche ist rot umrandet, einige Rechtecke können fehlerhaft sein. Dies ist nützlich, um Probleme mit der Schaltflächenausrichtung zu beheben.",
+                    "label": "Schaltflächenrechtecke anzeigen"
                 },
                 "toggle_lines_log": {
-                    "footnote": "This enables detailed logs for every stroke and item during LINES page rendering. It gets messy be aware!",
-                    "label": "Enable debug log for LINES renderer"
+                    "footnote": "Das ermöglicht detaillierte Protokolle für jeden Strich und jedes Element während der Erstellung der Seite. Sei dir bewusst, dass es chaotisch sein kann.",
+                    "label": "Debug-Protokoll für LINES-Renderer aktivieren"
                 },
                 "toggle_log": {
-                    "footnote": "Weather or not to initiate logs in the terminal on startup",
-                    "label": "Enable debug logs"
+                    "footnote": "Sollen beim Start Protokolle im Terminal angezeigt werden",
+                    "label": "Aktiviere Debug-Protokolle"
                 },
                 "toggle_orphans": {
-                    "footnote": "This will show any documents or collections that have a missing parent.",
-                    "label": "Enable orphans"
+                    "footnote": "Dadurch werden alle Dokumente oder Sammlungen angezeigt, bei denen ein übergeordnetes Element fehlt.",
+                    "label": "Waisen aktivieren"
                 },
                 "toggle_viewer": {
-                    "footnote": "This enables info UI for the document viewer. It's useful for debugging issues with alignment or scale.",
-                    "label": "Enable document viewer debug"
+                    "footnote": "Dadurch wird die Info-Benutzeroberfläche für den Dokument Betrachter aktiviert. Dies ist hilfreich beim Debuggen von Problemen mit Ausrichtung oder Skalierung.",
+                    "label": "Dokumenten-Viewer-Debug aktivieren"
                 },
-                "warning": "Some of these require a restart to take effect!"
+                "warning": "Einige davon erfordern einen Neustart, um wirksam zu werden!"
             },
             "debug_exports": {
-                "description": "These options are for debug exports on documents",
-                "title": "Debug export options",
+                "description": "Diese Optionen sind für Debug-Exporte von Dokumenten",
+                "title": "Debug-Exportoptionen",
                 "toggle_raw": {
-                    "footnote": "This sorts and prettifies any metadata or content files",
-                    "label": "Enable RAW export"
+                    "footnote": "Dies sortiert und verschönert alle Metadaten oder Inhaltsdateien",
+                    "label": "Aktiviere Roh-Exporte"
                 },
                 "toggle_raw_ext": {
-                    "footnote": "Whether to include .json at the end of metadata or content files",
-                    "label": "Add extension to RAW exports"
+                    "footnote": "Ob .json am Ende von Metadaten- oder Inhaltsdateien eingefügt werden soll",
+                    "label": "Erweiterung zu Roh-Exporten hinzufügen"
                 }
             },
-            "description": "Here you can find all the settings related to debugging Moss or experimental features",
-            "title": "Developer Settings"
+            "description": "Hier finden Sie alle Einstellungen zum Debuggen von Moss oder experimentellen Funktionen",
+            "title": "Entwicklereinstellungen"
         },
         "menus": {
-            "developer": "Developer Settings",
-            "moss": "Moss Settings"
+            "developer": "Entwicklereinstellungen",
+            "moss": "Moss-Einstellungen"
         },
         "missing_template": {
-            "description": "Moss could not find the following menu.",
-            "info": "If you think this is a mistake, please raise an issue!",
-            "title": "Menu missing!"
+            "description": "Moss konnte das folgende Menü nicht finden.",
+            "info": "Wenn du glaubst, dass es ein Versehen ist, dann erstelle ein Ticket.",
+            "title": "Menü fehlt!"
         },
         "moss": {
-            "description": "You will find all the settings related to Moss here.",
+            "description": "Alle Einstellungen rund um Moss finden Sie hier.",
             "options": {
-                "title": "Moss Options",
+                "title": "Moss-Optionen",
                 "toggle_portable": {
-                    "footnote": "This disables the installer screen on startup and allows you to run from an extracted folder without installing.",
-                    "label": "Portable mode"
+                    "footnote": "Dadurch wird der Installationsbildschirm beim Start deaktiviert und das Programm kann aus einem extrahierten Ordner ausgeführt werden, ohne es zu installieren.",
+                    "label": "Tragbarer Modus"
                 },
                 "toggle_statistics": {
-                    "footnote": "This allows tracking usage statistics. As of currently this data is not shared but may be accessed by extensions.",
-                    "label": "Allow statistics"
+                    "footnote": "Dies ermöglicht die Verfolgung von Nutzungsstatistiken. Derzeit werden diese Daten nicht weitergegeben, können aber über Erweiterungen abgerufen werden.",
+                    "label": "Statistiken zulassen"
                 }
             },
             "sync": {
-                "title": "Sync options",
+                "title": "Synchronisations-Optionen",
                 "toggle_download_everything": {
-                    "footnote": "This option downloads any documents that are visible in the main menu and were not downloaded before.",
-                    "label": "Download everything"
+                    "footnote": "Mit dieser Option werden alle Dokumente heruntergeladen, die im Hauptmenü sichtbar sind und zuvor noch nicht heruntergeladen wurden.",
+                    "label": "Alles herunterladen"
                 },
                 "toggle_download_last_page": {
-                    "footnote": "This feature downloads only the necessary data to create a preview thumbnail of the document, without having to open it.",
-                    "label": "Download last page to make preview"
+                    "footnote": "Diese Funktion lädt nur die erforderlichen Daten herunter, um eine Vorschau des Dokuments zu erstellen, ohne es öffnen zu müssen.",
+                    "label": "Letzte Seite herunterladen, um eine Vorschau zu erstellen"
                 },
                 "toggle_save_doc": {
-                    "footnote": "This option causes the document to be uploaded after closing the document viewer. This will update data such as the current page or last opened.",
-                    "label": "Save after closing a document"
+                    "footnote": "Diese Option bewirkt, dass das Dokument nach dem Schließen des Dokumentbetrachters hochgeladen wird. Dadurch werden Daten wie die aktuelle Seite oder die zuletzt geöffnete Seite aktualisiert.",
+                    "label": "Speichern nach dem Schließen eines Dokuments"
                 },
                 "toggle_save_path": {
-                    "footnote": "Enabling this will maintain the currently opened folder, every time you open the app. If you disable this it will maintain whichever folder it last saved. The default folder is \"My Files\".",
-                    "label": "Save last opened folder"
+                    "footnote": "Wenn Sie diese Option aktivieren, bleibt der aktuell geöffnete Ordner bei jedem Öffnen der App erhalten. Wenn Sie diese Option deaktivieren, bleibt der zuletzt gespeicherte Ordner erhalten. Der Standardordner ist „Meine Dateien“.",
+                    "label": "Zuletzt geöffneten Ordner speichern"
                 },
                 "toggle_wait_for_everything": {
-                    "footnote": "This may lead to increased load times, depending on the size of your cloud.",
-                    "label": "Wait for everything to load"
+                    "footnote": "Dies kann zu erhöhten Ladezeiten führen, abhängig von der Größe Ihrer Cloud.",
+                    "label": "Warte, bis alles geladen wird"
                 }
             },
-            "title": "Moss Settings",
+            "title": "Moss-Einstellungen",
             "ui": {
-                "title": "UI options",
+                "title": "UI Optionen",
                 "toggle_fake_refresh": {
-                    "footnote": "This is a deprecated feature, where some UI interactions cause the screen to do a fake eink refresh. This feature may be disturbing to some users or otherwise annoying.",
-                    "label": "Enable fake screen refresh"
+                    "footnote": "Dies ist eine veraltete Funktion, bei der einige UI-Interaktionen eine gefälschte E-Ink-Aktualisierung des Bildschirms verursachen. Diese Funktion kann für manche Benutzer störend oder anderweitig störend sein.",
+                    "label": "Simulierte Bildschirmaktualisierung aktivieren"
                 },
                 "toggle_maintain_aspect": {
-                    "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
-                    "label": "Maintain aspect size"
+                    "footnote": "Dadurch werden die im Dokumentbetrachter geladenen Dokumente in der Originalfenstergröße gehalten. Wenn Sie diese Option deaktivieren, wird die Seitengröße stattdessen an die aktuelle Fenstergröße angepasst, falls Sie die Fenstergröße ändern.",
+                    "label": "Seitenverhältnis beibehalten"
                 }
             }
         }
     },
     "viewer": {
-        "close": "Close",
-        "loading": "Loading...",
-        "next_page": "Next Page",
-        "page_info": "Page {current} of {total}",
+        "close": "Schließen",
+        "loading": "Laden...",
+        "next_page": "Nächste Seite",
+        "page_info": "Seite {current} von {total}",
         "prev_page": "Previous Page",
         "zoom_in": "Zoom In",
         "zoom_out": "Zoom Out"
