@@ -18,10 +18,6 @@
         "syncing": "Синхронизиране..."
     },
     "menu": {
-        "create": {
-            "folder": "Нова папка",
-            "notebook": "Нова тетрадка"
-        },
         "debug": {
             "copy_uuid": "Копирай UUID на папката",
             "export_json": "Износ на папка като JSON",
@@ -31,41 +27,29 @@
             "import_dir": "Внос на документ от директория",
             "test_doc": "Тест на панела за документи"
         },
-        "delete": {
-            "confirm": "Потвърди изтриването"
-        },
-        "import": {
-            "notebook": "Внос на тетрадка",
-            "pdf_epub": "Внос на PDF/EPUB документ"
-        },
+        "import": "Import",
         "settings": {
             "back": "Назад"
         },
-        "sidebar": {
-            "debug": "Дебъгване",
-            "extensions": "Разширения",
-            "favorites": "Любими",
-            "filter": "Филтър",
-            "language": "Език",
-            "made_by": "Поддържано от RedTTG",
-            "my_files": "Моите файлове",
-            "settings": "Настройки",
-            "tags": "Отбелезалки",
-            "trash": "Кошче"
+        "top": {
+            "import": "Import",
+            "menu": "Menu",
+            "create": {
+                "folder": "Create Folder",
+                "notebook": "Create Notebook"
+            },
+            "deselect": "Deselect"
         },
-        "top_bar": {
-            "create_folder": "Нова папка",
-            "create_notebook": "Нова тетрадка",
-            "import": "Внос",
-            "menu": "Меню",
-            "select_one": {
-                "deselect": "Размаркиране",
-                "duplicate": "Дубликирай",
-                "favorite": "Любимо",
-                "menu": "Меню",
-                "move": "Move",
-                "rename": "Rename",
-                "trash": "Кошче"
+        "common": {
+            "duplicate": "Duplicate",
+            "favorite": "Favorite",
+            "move": "Move",
+            "rename": "Rename",
+            "trash": "Trash"
+        },
+        "prompts": {
+            "trash": {
+                "delete": "Delete"
             }
         }
     },
