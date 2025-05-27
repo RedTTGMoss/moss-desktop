@@ -33,6 +33,7 @@
         "top": {
             "import": "Внос",
             "menu": "Меню",
+            "offline": "You are offline!",
             "create": {
                 "folder": "Нова папка",
                 "notebook": "Нова тетрадка"
@@ -69,6 +70,7 @@
     "sidebar": {
         "debug": "Дебъгване",
         "extensions": "Разширения",
+        "no_extensions": "No extension menus",
         "favorites": "Любими",
         "filter": "Филтър",
         "language": "Език",
