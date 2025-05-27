@@ -157,10 +157,10 @@
                 "title": "Главни настройки",
                 "toggle_portable": {
                     "footnote": "Тази настройка премахва инсталатора при началото на програмата, това ти позволява да стартираш без да инсталираш.",
-                    "label": "Portable mode"
+                    "label": "Преносим режим"
                 },
                 "toggle_statistics": {
-                    "footnote": "This allows tracking usage statistics. As of currently this data is not shared but may be accessed by extensions.",
+                    "footnote": "Тази настройка позволява да се износват статистически данни. Тези данни не се споделят, но може да се ползват от разширения.",
                     "label": "Allow statistics"
                 }
             },
