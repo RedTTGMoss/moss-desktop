@@ -37,7 +37,8 @@
                 "folder": "Create Folder",
                 "notebook": "Create Notebook"
             },
-            "deselect": "Deselect"
+            "deselect": "Deselect",
+            "empty_trash": "Empty trash"
         },
         "common": {
             "duplicate": "Duplicate",
