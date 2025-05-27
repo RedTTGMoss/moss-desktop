@@ -27,7 +27,6 @@
             "import_dir": "从目录导入",
             "test_doc": "测试文档视图"
         },
-        "import": "Import",
         "settings": {
             "back": "返回"
         },
@@ -50,6 +49,10 @@
         "prompts": {
             "trash": {
                 "delete": "Delete"
+            },
+            "import": {
+                "file": "Import File",
+                "notebook": "Import Notebook"
             }
         }
     },
@@ -57,12 +60,6 @@
         "cancel": "取消",
         "empty_error": "名称不能为空",
         "submit": "确定"
-    },
-    "prompts": {
-        "import": {
-            "file": "导入文件",
-            "notebook": "导入笔记本"
-        }
     },
     "quit": {
         "quitting": "正在退出...请等待数据保存完成",
