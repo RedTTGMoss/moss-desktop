@@ -1,0 +1,207 @@
+{
+    "common": {
+        "items": "{count} items",
+        "pages": "{count} pages",
+        "read": "Read {percent}%"
+    },
+    "installer": {
+        "cancel": "Cancel",
+        "install": "Install",
+        "installing": "Installing...",
+        "progress": "Progress: {progress}%",
+        "reinstall": "Reinstall",
+        "title": "Installer"
+    },
+    "loader": {
+        "initializing": "Initializing...",
+        "loading": "Loading...",
+        "syncing": "Syncing..."
+    },
+    "menu": {
+        "debug": {
+            "copy_uuid": "Copy Folder UUID",
+            "export_json": "Export Directory to JSON",
+            "export_stats": "Export Statistics",
+            "global": "Global Debug Menu",
+            "hot_reload": "Hot Reload",
+            "import_dir": "Import from Directory",
+            "test_doc": "Test Document View"
+        },
+        "settings": {
+            "back": "Back"
+        },
+        "top": {
+            "import": "Import",
+            "menu": "Menu",
+            "create": {
+                "folder": "Create Folder",
+                "notebook": "Create Notebook"
+            },
+            "deselect": "Deselect"
+        },
+        "common": {
+            "duplicate": "Duplicate",
+            "favorite": "Favorite",
+            "move": "Move",
+            "rename": "Rename",
+            "trash": "Trash",
+            "my_files": "My Files",
+            "delete": "Delete",
+            "tags": "Tags"
+        },
+        "prompts": {
+            "trash": {
+                "delete": "Delete"
+            },
+            "import": {
+                "file": "Import File",
+                "notebook": "Import Notebook",
+                "pdf_epub": "PDF/EPUB Import"
+            }
+        }
+    },
+    "name_field": {
+        "cancel": "Cancel",
+        "empty_error": "Name cannot be empty",
+        "submit": "Confirm"
+    },
+    "sidebar": {
+        "debug": "Debug",
+        "extensions": "Extensions",
+        "favorites": "Favorites",
+        "filter": "Filter",
+        "language": "Language",
+        "made_by": "Made by RedTTG",
+        "settings": "Settings"
+    },
+    "quit": {
+        "quitting": "Quitting... Please wait for data to save",
+        "thanks": "Thank you for using {app_name}"
+    },
+    "settings": {
+        "common": {
+            "experimental": "THIS IS AN EXPERIMENTAL FEATURE",
+            "unstable": "This feature may be unstable!"
+        },
+        "default": {
+            "description": "Navigate using the sidebar in order to modify settings",
+            "title": "Welcome to the moss settings."
+        },
+        "developer": {
+            "debug": {
+                "footnote": "Please turn off any debug options that modify the UI, as a final check up on the elements, before finalizing changes.",
+                "title": "Main debug options",
+                "toggle": {
+                    "footnote": "Global debug mode for logs or other options",
+                    "label": "Enable debug mode"
+                },
+                "toggle_alignment": {
+                    "footnote": "This refers to the notebook lines file rendering and the way that rm_lines tries to align the whole page to a common center",
+                    "label": "Disable LINES alignment"
+                },
+                "toggle_button_rects": {
+                    "footnote": "This adds a condition to the UI to show the rect of every button at the end of the loop. Each button is outlined in red, some rects may be wrong. This is useful for debugging button alignment issues.",
+                    "label": "Show button rects"
+                },
+                "toggle_lines_log": {
+                    "footnote": "This enables detailed logs for every stroke and item during LINES page rendering. It gets messy be aware!",
+                    "label": "Enable debug log for LINES renderer"
+                },
+                "toggle_log": {
+                    "footnote": "Weather or not to initiate logs in the terminal on startup",
+                    "label": "Enable debug logs"
+                },
+                "toggle_orphans": {
+                    "footnote": "This will show any documents or collections that have a missing parent.",
+                    "label": "Enable orphans"
+                },
+                "toggle_viewer": {
+                    "footnote": "This enables info UI for the document viewer. It's useful for debugging issues with alignment or scale.",
+                    "label": "Enable document viewer debug"
+                },
+                "warning": "Some of these require a restart to take effect!"
+            },
+            "debug_exports": {
+                "description": "These options are for debug exports on documents",
+                "title": "Debug export options",
+                "toggle_raw": {
+                    "footnote": "This sorts and prettifies any metadata or content files",
+                    "label": "Enable RAW export"
+                },
+                "toggle_raw_ext": {
+                    "footnote": "Whether to include .json at the end of metadata or content files",
+                    "label": "Add extension to RAW exports"
+                }
+            },
+            "description": "Here you can find all the settings related to debugging Moss or experimental features",
+            "title": "Developer Settings"
+        },
+        "menus": {
+            "developer": "Developer Settings",
+            "moss": "Moss Settings"
+        },
+        "missing_template": {
+            "description": "Moss could not find the following menu.",
+            "info": "If you think this is a mistake, please raise an issue!",
+            "title": "Menu missing!"
+        },
+        "moss": {
+            "description": "You will find all the settings related to Moss here.",
+            "options": {
+                "title": "Moss Options",
+                "toggle_portable": {
+                    "footnote": "This disables the installer screen on startup and allows you to run from an extracted folder without installing.",
+                    "label": "Portable mode"
+                },
+                "toggle_statistics": {
+                    "footnote": "This allows tracking usage statistics. As of currently this data is not shared but may be accessed by extensions.",
+                    "label": "Allow statistics"
+                }
+            },
+            "sync": {
+                "title": "Sync options",
+                "toggle_download_everything": {
+                    "footnote": "This option downloads any documents that are visible in the main menu and were not downloaded before.",
+                    "label": "Download everything"
+                },
+                "toggle_download_last_page": {
+                    "footnote": "This feature downloads only the necessary data to create a preview thumbnail of the document, without having to open it.",
+                    "label": "Download last page to make preview"
+                },
+                "toggle_save_doc": {
+                    "footnote": "This option causes the document to be uploaded after closing the document viewer. This will update data such as the current page or last opened.",
+                    "label": "Save after closing a document"
+                },
+                "toggle_save_path": {
+                    "footnote": "Enabling this will maintain the currently opened folder, every time you open the app. If you disable this it will maintain whichever folder it last saved. The default folder is \"My Files\".",
+                    "label": "Save last opened folder"
+                },
+                "toggle_wait_for_everything": {
+                    "footnote": "This may lead to increased load times, depending on the size of your cloud.",
+                    "label": "Wait for everything to load"
+                }
+            },
+            "title": "Moss Settings",
+            "ui": {
+                "title": "UI options",
+                "toggle_fake_refresh": {
+                    "footnote": "This is a deprecated feature, where some UI interactions cause the screen to do a fake eink refresh. This feature may be disturbing to some users or otherwise annoying.",
+                    "label": "Enable fake screen refresh"
+                },
+                "toggle_maintain_aspect": {
+                    "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
+                    "label": "Maintain aspect size"
+                }
+            }
+        }
+    },
+    "viewer": {
+        "close": "Close",
+        "loading": "Loading...",
+        "next_page": "Next Page",
+        "page_info": "Page {current} of {total}",
+        "prev_page": "Previous Page",
+        "zoom_in": "Zoom In",
+        "zoom_out": "Zoom Out"
+    }
+}
