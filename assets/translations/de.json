@@ -2,12 +2,12 @@
     "common": {
         "items": "{count} items",
         "pages": "{count} pages",
-        "read": "Read {percent}%"
+        "read": "{percent} % gelesen"
     },
     "installer": {
-        "cancel": "Cancel",
-        "install": "Install",
-        "installing": "Installing...",
+        "cancel": "Abbrechen",
+        "install": "Installieren",
+        "installing": "Installiert...",
         "progress": "Progress: {progress}%",
         "reinstall": "Reinstall",
         "title": "Installer"
@@ -19,64 +19,64 @@
     },
     "menu": {
         "create": {
-            "folder": "Create Folder",
-            "notebook": "Create Notebook"
+            "folder": "Ordner erstellen",
+            "notebook": "Notizbuch erstellen"
         },
         "debug": {
-            "copy_uuid": "Copy Folder UUID",
-            "export_json": "Export Directory to JSON",
-            "export_stats": "Export Statistics",
+            "copy_uuid": "Ordner UUID kopieren",
+            "export_json": "Ordner als JSON exportieren",
+            "export_stats": "Statistiken exportieren",
             "global": "Global Debug Menu",
             "hot_reload": "Hot Reload",
-            "import_dir": "Import from Directory",
+            "import_dir": "Aus Ordner importieren",
             "test_doc": "Test Document View"
         },
         "delete": {
-            "confirm": "Delete"
+            "confirm": "Löschen"
         },
         "import": {
             "notebook": "Import Notebook",
             "pdf_epub": "Import PDF/EPUB"
         },
         "settings": {
-            "back": "Back"
+            "back": "Zurück"
         },
         "sidebar": {
-            "debug": "Debug",
-            "extensions": "Extensions",
-            "favorites": "Favorites",
+            "debug": "Debuggen",
+            "extensions": "Erweiterungen",
+            "favorites": "Favoriten",
             "filter": "Filter",
-            "language": "Language",
+            "language": "Sprache",
             "made_by": "Made by RedTTG",
             "my_files": "My Files",
-            "settings": "Settings",
+            "settings": "Einstellungen",
             "tags": "Tags",
-            "trash": "Trash"
+            "trash": "Papierkorb"
         },
         "top_bar": {
-            "create_folder": "Create Folder",
-            "create_notebook": "Create Notebook",
-            "import": "Import",
-            "menu": "Menu",
+            "create_folder": "Ordner erstellen",
+            "create_notebook": "Notizbuch erstellen",
+            "import": "Importieren",
+            "menu": "Menü",
             "select_one": {
                 "deselect": "Deselect",
-                "duplicate": "Duplicate",
+                "duplicate": "Duplizieren",
                 "favorite": "Favorite",
-                "menu": "Menu",
-                "move": "Move",
-                "rename": "Rename",
-                "trash": "Trash"
+                "menu": "Menü",
+                "move": "Verschieben",
+                "rename": "Umbenennen",
+                "trash": "Papierkorb"
             }
         }
     },
     "name_field": {
-        "cancel": "Cancel",
+        "cancel": "Abbrechen",
         "empty_error": "Name cannot be empty",
-        "submit": "Confirm"
+        "submit": "Bestätigen"
     },
     "prompts": {
         "import": {
-            "file": "Import File",
+            "file": "Datei importieren",
             "notebook": "Import Notebook"
         }
     },
