@@ -37,7 +37,8 @@
                 "folder": "Ordner erstellen",
                 "notebook": "Notizbuch erstellen"
             },
-            "deselect": "Abwählen"
+            "deselect": "Abwählen",
+            "empty_trash": "Empty trash"
         },
         "common": {
             "duplicate": "Duplizieren",
@@ -45,9 +46,9 @@
             "move": "Verschieben",
             "rename": "Umbenennen",
             "trash": "Papierkorb",
-            "my_files": "My Files",
+            "my_files": "Meine Dateien",
             "delete": "Löschen",
-            "tags": "Tags"
+            "tags": "Schlagwörter"
         },
         "prompts": {
             "trash": {
@@ -67,12 +68,12 @@
     },
     "sidebar": {
         "debug": "Debug",
-        "extensions": "Extensions",
-        "favorites": "Favorites",
+        "extensions": "Erweiterungen",
+        "favorites": "Favoriten",
         "filter": "Filter",
-        "language": "Language",
-        "made_by": "Made by RedTTG",
-        "settings": "Settings"
+        "language": "Sprache",
+        "made_by": "Von RedTTG erstellt",
+        "settings": "Einstellungen"
     },
     "quit": {
         "quitting": "Beenden... Bitte warten Sie, bis die Daten gespeichert wurden",
