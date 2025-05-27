@@ -27,12 +27,11 @@
             "import_dir": "Внос на документ от директория",
             "test_doc": "Тест на панела за документи"
         },
-        "import": "Import",
         "settings": {
             "back": "Назад"
         },
         "top": {
-            "import": "Import",
+            "import": "Внос",
             "menu": "Menu",
             "create": {
                 "folder": "Create Folder",
@@ -50,6 +49,10 @@
         "prompts": {
             "trash": {
                 "delete": "Delete"
+            },
+            "import": {
+                "file": "Import File",
+                "notebook": "Import Notebook"
             }
         }
     },
@@ -57,12 +60,6 @@
         "cancel": "Откажи",
         "empty_error": "Името не може да бъде празно",
         "submit": "Потвърждаване"
-    },
-    "prompts": {
-        "import": {
-            "file": "Внос на файл",
-            "notebook": "Внос на тетрадка"
-        }
     },
     "quit": {
         "quitting": "Затваряне... Моля изчакайте да се запазят данните",
