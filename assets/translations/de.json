@@ -46,7 +46,8 @@
             "rename": "Umbenennen",
             "trash": "Papierkorb",
             "my_files": "My Files",
-            "delete": "Löschen"
+            "delete": "Löschen",
+            "tags": "Tags"
         },
         "prompts": {
             "trash": {
