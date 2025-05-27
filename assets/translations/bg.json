@@ -19,8 +19,8 @@
     },
     "menu": {
         "create": {
-            "folder": "Create Folder",
-            "notebook": "Create Notebook"
+            "folder": "Нова папка",
+            "notebook": "Нова тетрадка"
         },
         "debug": {
             "copy_uuid": "Копирай UUID на папката",
@@ -32,40 +32,40 @@
             "test_doc": "Тест на панела за документи"
         },
         "delete": {
-            "confirm": "Delete"
+            "confirm": "Потвърди изтриването"
         },
         "import": {
             "notebook": "Внос на тетрадка",
-            "pdf_epub": "Import PDF/EPUB"
+            "pdf_epub": "Внос на PDF/EPUB документ"
         },
         "settings": {
             "back": "Назад"
         },
         "sidebar": {
-            "debug": "Debug",
-            "extensions": "Extensions",
-            "favorites": "Favorites",
-            "filter": "Filter",
-            "language": "Language",
-            "made_by": "Made by RedTTG",
-            "my_files": "My Files",
-            "settings": "Settings",
-            "tags": "Tags",
-            "trash": "Trash"
+            "debug": "Дебъгване",
+            "extensions": "Разширения",
+            "favorites": "Любими",
+            "filter": "Филтър",
+            "language": "Език",
+            "made_by": "Поддържано от RedTTG",
+            "my_files": "Моите файлове",
+            "settings": "Настройки",
+            "tags": "Отбелезалки",
+            "trash": "Кошче"
         },
         "top_bar": {
-            "create_folder": "Create Folder",
-            "create_notebook": "Create Notebook",
-            "import": "Import",
-            "menu": "Menu",
+            "create_folder": "Нова папка",
+            "create_notebook": "Нова тетрадка",
+            "import": "Внос",
+            "menu": "Меню",
             "select_one": {
-                "deselect": "Deselect",
-                "duplicate": "Duplicate",
-                "favorite": "Favorite",
-                "menu": "Menu",
+                "deselect": "Размаркиране",
+                "duplicate": "Дубликирай",
+                "favorite": "Любимо",
+                "menu": "Меню",
                 "move": "Move",
                 "rename": "Rename",
-                "trash": "Trash"
+                "trash": "Кошче"
             }
         }
     },
