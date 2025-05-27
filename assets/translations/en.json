@@ -27,7 +27,6 @@
             "import_dir": "Import from Directory",
             "test_doc": "Test Document View"
         },
-        "import": "Import",
         "settings": {
             "back": "Back"
         },
@@ -50,6 +49,10 @@
         "prompts": {
             "trash": {
                 "delete": "Delete"
+            },
+            "import": {
+                "file": "Import File",
+                "notebook": "Import Notebook"
             }
         }
     },
@@ -57,12 +60,6 @@
         "cancel": "Cancel",
         "empty_error": "Name cannot be empty",
         "submit": "Confirm"
-    },
-    "prompts": {
-        "import": {
-            "file": "Import File",
-            "notebook": "Import Notebook"
-        }
     },
     "quit": {
         "quitting": "Quitting... Please wait for data to save",
