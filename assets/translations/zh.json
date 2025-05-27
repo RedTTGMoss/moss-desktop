@@ -72,8 +72,7 @@
         "filter": "Filter",
         "language": "Language",
         "made_by": "Made by RedTTG",
-        "settings": "Settings",
-        "trash": "Trash"
+        "settings": "Settings"
     },
     "quit": {
         "quitting": "正在退出...请等待数据保存完成",
