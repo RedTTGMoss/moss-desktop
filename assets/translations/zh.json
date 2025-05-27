@@ -19,8 +19,8 @@
     },
     "menu": {
         "create": {
-            "folder": "创建文件夹",
-            "notebook": "创建笔记本"
+            "folder": "Create Folder",
+            "notebook": "Create Notebook"
         },
         "debug": {
             "copy_uuid": "复制文件夹UUID",
@@ -32,40 +32,40 @@
             "test_doc": "测试文档视图"
         },
         "delete": {
-            "confirm": "删除"
+            "confirm": "Delete"
         },
         "import": {
             "notebook": "导入笔记本",
-            "pdf_epub": "导入PDF/EPUB"
+            "pdf_epub": "Import PDF/EPUB"
         },
         "settings": {
             "back": "返回"
         },
         "sidebar": {
-            "debug": "调试",
-            "extensions": "扩展",
-            "favorites": "收藏夹",
-            "filter": "筛选",
-            "language": "语言",
-            "made_by": "由RedTTG制作",
-            "my_files": "我的文件",
-            "settings": "设置",
-            "tags": "标签",
-            "trash": "回收站"
+            "debug": "Debug",
+            "extensions": "Extensions",
+            "favorites": "Favorites",
+            "filter": "Filter",
+            "language": "Language",
+            "made_by": "Made by RedTTG",
+            "my_files": "My Files",
+            "settings": "Settings",
+            "tags": "Tags",
+            "trash": "Trash"
         },
         "top_bar": {
-            "create_folder": "创建文件夹",
-            "create_notebook": "创建笔记本",
-            "import": "导入",
-            "menu": "菜单",
+            "create_folder": "Create Folder",
+            "create_notebook": "Create Notebook",
+            "import": "Import",
+            "menu": "Menu",
             "select_one": {
-                "deselect": "取消选择",
-                "duplicate": "复制",
-                "favorite": "收藏",
-                "menu": "菜单",
-                "move": "移动",
-                "rename": "重命名",
-                "trash": "回收站"
+                "deselect": "Deselect",
+                "duplicate": "Duplicate",
+                "favorite": "Favorite",
+                "menu": "Menu",
+                "move": "Move",
+                "rename": "Rename",
+                "trash": "Trash"
             }
         }
     },
