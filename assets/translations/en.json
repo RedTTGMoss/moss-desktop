@@ -44,7 +44,9 @@
             "favorite": "Favorite",
             "move": "Move",
             "rename": "Rename",
-            "trash": "Trash"
+            "trash": "Trash",
+            "my_files": "My Files",
+            "delete": "Delete"
         },
         "prompts": {
             "trash": {
@@ -69,9 +71,7 @@
         "filter": "Filter",
         "language": "Language",
         "made_by": "Made by RedTTG",
-        "my_files": "My Files",
         "settings": "Settings",
-        "tags": "Tags",
         "trash": "Trash"
     },
     "quit": {
