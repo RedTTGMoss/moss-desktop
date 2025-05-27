@@ -33,6 +33,7 @@
         "top": {
             "import": "Import",
             "menu": "Menu",
+            "offline": "You are offline!",
             "create": {
                 "folder": "Create Folder",
                 "notebook": "Create Notebook"
@@ -69,6 +70,7 @@
     "sidebar": {
         "debug": "Debug",
         "extensions": "Extensions",
+        "no_extensions": "No extension menus",
         "favorites": "Favorites",
         "filter": "Filter",
         "language": "Language",
