@@ -308,7 +308,7 @@ class CustomExtensionsMenu(ContextMenu):
     extension_manager: 'ExtensionManager'
     DEFAULT_BUTTONS = (
         {
-            "text": "No extension menus",
+            "text": "sidebar.no_extensions",
             "icon": "puzzle",
             "action": None
         },

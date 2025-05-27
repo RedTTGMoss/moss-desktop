@@ -70,6 +70,7 @@
     "sidebar": {
         "debug": "Debug",
         "extensions": "Extensions",
+        "no_extensions": "No extension menus",
         "favorites": "Favorites",
         "filter": "Filter",
         "language": "Language",
