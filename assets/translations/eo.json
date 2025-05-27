@@ -33,6 +33,7 @@
         "top": {
             "import": "Importi",
             "menu": "Menuo",
+            "offline": "You are offline!",
             "create": {
                 "folder": "Krei dosierujon",
                 "notebook": "Krei Notlibron"
@@ -69,6 +70,7 @@
     "sidebar": {
         "debug": "Sencimigi",
         "extensions": "Etendaĵoj",
+        "no_extensions": "No extension menus",
         "favorites": "Favoratoj",
         "filter": "Filtrilo",
         "language": "Lingvo",
