@@ -52,7 +52,8 @@
             },
             "import": {
                 "file": "Import File",
-                "notebook": "Import Notebook"
+                "notebook": "Import Notebook",
+                "pdf_epub": "PDF/EPUB Import"
             }
         }
     },
@@ -60,6 +61,18 @@
         "cancel": "取消",
         "empty_error": "名称不能为空",
         "submit": "确定"
+    },
+    "sidebar": {
+        "debug": "Debug",
+        "extensions": "Extensions",
+        "favorites": "Favorites",
+        "filter": "Filter",
+        "language": "Language",
+        "made_by": "Made by RedTTG",
+        "my_files": "My Files",
+        "settings": "Settings",
+        "tags": "Tags",
+        "trash": "Trash"
     },
     "quit": {
         "quitting": "正在退出...请等待数据保存完成",
