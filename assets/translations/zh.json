@@ -18,10 +18,6 @@
         "syncing": "同步中..."
     },
     "menu": {
-        "create": {
-            "folder": "Create Folder",
-            "notebook": "Create Notebook"
-        },
         "debug": {
             "copy_uuid": "复制文件夹UUID",
             "export_json": "导出目录到JSON",
@@ -31,41 +27,29 @@
             "import_dir": "从目录导入",
             "test_doc": "测试文档视图"
         },
-        "delete": {
-            "confirm": "Delete"
-        },
-        "import": {
-            "notebook": "导入笔记本",
-            "pdf_epub": "Import PDF/EPUB"
-        },
+        "import": "Import",
         "settings": {
             "back": "返回"
         },
-        "sidebar": {
-            "debug": "Debug",
-            "extensions": "Extensions",
-            "favorites": "Favorites",
-            "filter": "Filter",
-            "language": "Language",
-            "made_by": "Made by RedTTG",
-            "my_files": "My Files",
-            "settings": "Settings",
-            "tags": "Tags",
-            "trash": "Trash"
-        },
-        "top_bar": {
-            "create_folder": "Create Folder",
-            "create_notebook": "Create Notebook",
+        "top": {
             "import": "Import",
             "menu": "Menu",
-            "select_one": {
-                "deselect": "Deselect",
-                "duplicate": "Duplicate",
-                "favorite": "Favorite",
-                "menu": "Menu",
-                "move": "Move",
-                "rename": "Rename",
-                "trash": "Trash"
+            "create": {
+                "folder": "Create Folder",
+                "notebook": "Create Notebook"
+            },
+            "deselect": "Deselect"
+        },
+        "common": {
+            "duplicate": "Duplicate",
+            "favorite": "Favorite",
+            "move": "Move",
+            "rename": "Rename",
+            "trash": "Trash"
+        },
+        "prompts": {
+            "trash": {
+                "delete": "Delete"
             }
         }
     },
