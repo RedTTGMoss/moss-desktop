@@ -541,7 +541,5 @@ class LanguageMenu(ContextMenu):
         super().__init__(parent, ideal_position)
 
     def set_language(self, lang):
-        if self.main_menu.parent_context.set_language(lang):
-            self.close()
-        else:
-            print(f"Failed to set language to {lang}")
+        self.main_menu.parent_context.set_language(lang)
+        self.close()

@@ -42,10 +42,9 @@ class I18nManager:
     @language.setter
     def language(self, lang: str):
         """Set the current language and load its translations"""
-        if lang != self._lang and lang in self._translations:
-            self._lang = lang
-            return
-        raise ValueError(f"Language '{lang}' not available. Available languages: {self.available_languages}")
+        if lang not in self._translations:
+            raise ValueError(f"Language '{lang}' not available. Available languages: {self.available_languages}")
+        self._lang = lang
 
     @property
     def available_languages(self) -> List[str]:

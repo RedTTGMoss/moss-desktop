@@ -189,8 +189,6 @@ class Loader(pe.ChildContext, LogoMixin):
             if not lang_file.endswith('.json'):
                 continue
             lang = lang_file[:-5]
-            if lang == self.i18n.language:
-                continue
             self.i18n.load_translations(lang)
 
         # Begin loading extensions
