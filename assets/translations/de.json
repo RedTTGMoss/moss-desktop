@@ -200,11 +200,9 @@
     },
     "viewer": {
         "close": "Schließen",
-        "loading": "Laden...",
-        "next_page": "Nächste Seite",
-        "page_info": "Seite {current} von {total}",
-        "prev_page": "Vorherige Seite",
-        "zoom_in": "Vergrößern",
-        "zoom_out": "Verkleinern"
+        "modes": {
+            "to_read": "Switch to read mode",
+            "to_free": "Switch to free mode"
+        }
     }
 }
