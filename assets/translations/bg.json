@@ -12,10 +12,20 @@
         "reinstall": "Преинсталирай",
         "title": "Инсталатор"
     },
-    "loader": {
-        "initializing": "Initializing...",
-        "loading": "Loading...",
-        "syncing": "Syncing..."
+    "sync": {
+        "stages": {
+            "start": "Започване на синхронизацията",
+            "get_root": "Хващане на главния файл",
+            "export_documents": "Износ на документи",
+            "diff_check_documents": "Проверка на документи",
+            "prepare_data": "Подготвяне на данни",
+            "compile_data": "Компилиране на данни",
+            "prepare_root": "Приготвяне на главния файл",
+            "prepare_operations": "Подготовка на операции",
+            "upload": "Качване",
+            "update_root": "Качване на главния файл",
+            "sync": "Синхронизиране"
+        }
     },
     "menu": {
         "debug": {
