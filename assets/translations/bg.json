@@ -13,9 +13,9 @@
         "title": "Инсталатор"
     },
     "loader": {
-        "initializing": "Инициализира се...",
-        "loading": "Зарежда се...",
-        "syncing": "Синхронизиране..."
+        "initializing": "Initializing...",
+        "loading": "Loading...",
+        "syncing": "Syncing..."
     },
     "menu": {
         "debug": {
