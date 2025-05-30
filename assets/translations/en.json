@@ -12,10 +12,21 @@
         "reinstall": "Reinstall",
         "title": "Installer"
     },
-    "loader": {
-        "initializing": "Initializing...",
-        "loading": "Loading...",
-        "syncing": "Syncing..."
+    "sync": {
+        "syncing": "Syncing...",
+        "stages": {
+            "start": "Starting sync",
+            "get_root":  "Getting root",
+            "export_documents": "Exporting documents",
+            "diff_check_documents":  "Checking documents",
+            "prepare_data": "Preparing data",
+            "compile_data":  "Compiling data",
+            "prepare_root": "Preparing root",
+            "prepare_operations":  "Preparing operations",
+            "upload": "Uploading",
+            "update_root":  "Updating root",
+            "sync": "Syncing"
+        }
     },
     "menu": {
         "debug": {
