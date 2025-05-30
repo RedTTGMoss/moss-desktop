@@ -13,9 +13,9 @@
         "title": "Installationsprogramm"
     },
     "loader": {
-        "initializing": "Initialisiere...",
-        "loading": "Laden...",
-        "syncing": "Synchronisiere..."
+        "initializing": "Initializing...",
+        "loading": "Loading...",
+        "syncing": "Syncing..."
     },
     "menu": {
         "debug": {
