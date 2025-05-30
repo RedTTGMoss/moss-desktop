@@ -33,7 +33,7 @@
         "top": {
             "import": "Внос",
             "menu": "Меню",
-            "offline": "You are offline!",
+            "offline": "Няма връзка към интернет!",
             "create": {
                 "folder": "Нова папка",
                 "notebook": "Нова тетрадка"
@@ -70,7 +70,7 @@
     "sidebar": {
         "debug": "Дебъгване",
         "extensions": "Разширения",
-        "no_extensions": "No extension menus",
+        "no_extensions": "Менюта на разширения, ще се покажат тук",
         "favorites": "Любими",
         "filter": "Филтър",
         "language": "Език",
@@ -201,8 +201,8 @@
     "viewer": {
         "close": "Затвори",
         "modes": {
-            "to_read": "Switch to read mode",
-            "to_free": "Switch to free mode"
+            "to_read": "Превключване в режим на четене",
+            "to_free": "Превключване в свободен режим"
         }
     }
 }
