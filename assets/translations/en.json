@@ -13,7 +13,6 @@
         "title": "Installer"
     },
     "sync": {
-        "syncing": "Syncing...",
         "stages": {
             "start": "Starting sync",
             "get_root":  "Getting root",
