@@ -2,6 +2,7 @@ import atexit
 import json
 import logging
 import os
+import sys
 import time
 from numbers import Number
 from os import makedirs
@@ -26,6 +27,7 @@ try:
     import pymupdf
 except Exception:
     pymupdf = None
+from rm_lines_sys import lib as rm_lines_lib
 
 from rm_api import API
 from .aspect_ratio import Ratios
@@ -96,6 +98,7 @@ class ConfigDict(TypedDict):
     allow_statistics: bool
     portable_mode: bool
     extensions: dict
+    guides: dict
     language: str
 
 
@@ -109,7 +112,7 @@ DEFAULT_CONFIG: ConfigDict = {
     'last_root': None,
     'last_guide': 'welcome',
     'pdf_render_mode': 'pymupdf',
-    'notebook_render_mode': 'rm_lines_svg_inker',
+    'notebook_render_mode': 'librm_lines_renderer',
     'document_viewer_mode': 'read',
     'download_everything': False,
     'download_last_opened_page_to_make_preview': False,
@@ -133,10 +136,37 @@ DEFAULT_CONFIG: ConfigDict = {
     'allow_statistics': False,
     'portable_mode': False,
     'extensions': {},
+    # True for passed guides, False for not passed
+    'guides': {
+        'introduction_to_menu': False,
+        'introduction_to_viewer': False,
+        'switch_to_librm_lines': True,
+    },
     'language': 'en'
 }
 
 ConfigType = Box[ConfigDict]
+
+def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
+    """
+    Merges the current configuration with the default configuration.
+    If a key is missing in the current configuration, it will be added from the default.
+    Returns a tuple of the merged configuration and a boolean indicating if changes were made.
+    """
+    changes = False
+    merged = {}
+    for key, value in default.items():
+        if key in current:
+            if isinstance(value, dict) and isinstance(current[key], dict):
+                merged[key], sub_changes = merge_dictionaries(current[key], value)
+                changes = changes or sub_changes
+            else:
+                merged[key] = current[key]
+        else:
+            merged[key] = value
+            changes = True
+
+    return merged, changes
 
 
 def load_config() -> ConfigType:
@@ -169,27 +199,52 @@ def load_config() -> ConfigType:
         with open(file) as f:
             current_json = json.load(f)
             # Check if there are any new keys
-            changes = len(config.keys() - current_json.keys()) != 0
-            config = {**config, **current_json}
+            config, changes = merge_dictionaries(current_json, config)
     else:
         changes = True
         exists = False
+
+    _box = Box(config)
+    if _box.pdf_render_mode not in PDF_RENDER_MODES.__args__:
+        raise ValueError(f"Invalid pdf_render_mode: {_box.pdf_render_mode}")
+    if _box.pdf_render_mode == 'retry':
+        _box.pdf_render_mode = 'pymupdf'
+        changes = True
+    if _box.pdf_render_mode == 'cef':
+        print(f"{Fore.RED}Sorry but CEF is no longer supported!{Fore.RESET}")
+        _box.pdf_render_mode = 'pymupdf'
+        changes = True
+    if _box.pdf_render_mode == 'pymupdf' and not pymupdf:
+        print(f"{Fore.YELLOW}PyMuPDF is not installed or is not compatible with your python version.{Fore.RESET}")
+        _box.pdf_render_mode = 'retry'
+        changes = True
+
+    if _box.notebook_render_mode == 'rm_lines_svg_inker':
+        # Check if user used the old rm_lines_svg_inker mode before the changes
+        _box.guides.switch_to_librm_lines = False  # Trigger switch guide
+        _box.notebook_render_mode = 'rm_lines_svg_inker_OLD'  # Rename to the old mode
+        changes = True
+
+    if _box.notebook_render_mode not in NOTEBOOK_RENDER_MODES.__args__:
+        # Check for user error in config
+        raise ValueError(f"Invalid notebook_render_mode: {_box.notebook_render_mode}")
+    if _box.notebook_render_mode == 'retry':
+        # In case of retry, we will use the default mode
+        _box.notebook_render_mode = 'librm_lines_renderer'
+        changes = True
+
+    if _box.notebook_render_mode == 'librm_lines_renderer' and not rm_lines_lib:
+        print(f"{Fore.YELLOW}rm_lines_lib is not installed or is not compatible with your system.{Fore.RESET}")
+        _box.notebook_render_mode = 'rm_lines_svg_inker_OLD'  # Fallback to the old mode
+        changes = True
+
     if changes:
         with open(file, "w") as f:
-            json.dump(config, f, indent=4)
+            json.dump(_box, f, indent=4)
         if not exists:
             print("Config file created. You can edit it manually if you want.")
-    if config['pdf_render_mode'] not in PDF_RENDER_MODES.__args__:
-        raise ValueError(f"Invalid pdf_render_mode: {config['pdf_render_mode']}")
-    if config['pdf_render_mode'] == 'retry':
-        config['pdf_render_mode'] = 'pymupdf'
-    if config['pdf_render_mode'] == 'cef':
-        print(f"{Fore.RED}Sorry but CEF is no longer supported!{Fore.RESET}")
-        config['pdf_render_mode'] = 'pymupdf'
-    if config['pdf_render_mode'] == 'pymupdf' and not pymupdf:
-        print(f"{Fore.YELLOW}PyMuPDF is not installed or is not compatible with your python version.{Fore.RESET}")
-        config['pdf_render_mode'] = 'retry'
-    return Box(config)
+
+    return _box
 
 
 class GUI(pe.GameContext):
@@ -254,6 +309,7 @@ class GUI(pe.GameContext):
         self.data = {}
         self.shift_hold = False
         self.ctrl_hold = False
+        self.ctrl_key = pe.KMOD_META if sys.platform == 'darwin' else pe.KMOD_CTRL
         self._import_screen: Union[ImportScreen, None] = None
         self.main_menu: Union['MainMenu', None] = None
         from gui.screens.integrity_checker import IntegrityChecker
@@ -347,6 +403,10 @@ class GUI(pe.GameContext):
             pixels ^= 2 ** 32 - 1
             del pixels
 
+        mods = pe.pygame.key.get_mods()
+        self.ctrl_hold = mods & self.ctrl_key
+        self.shift_hold = mods & pe.pygame.KMOD_SHIFT
+
         super().pre_loop()
 
     def quick_refresh(self):
@@ -439,14 +499,6 @@ class GUI(pe.GameContext):
         pass
 
     def handle_event(self, e: pe.event.Event):
-        if pe.event.key_DOWN(pe.K_LCTRL) or pe.event.key_DOWN(pe.K_RCTRL):
-            self.ctrl_hold = True
-        elif pe.event.key_UP(pe.K_LCTRL) or pe.event.key_UP(pe.K_RCTRL):
-            self.ctrl_hold = False
-        if pe.event.key_DOWN(pe.K_LSHIFT) or pe.event.key_DOWN(pe.K_RSHIFT):
-            self.shift_hold = True
-        elif pe.event.key_UP(pe.K_LSHIFT) or pe.event.key_UP(pe.K_RSHIFT):
-            self.shift_hold = False
         if pe.event.resize_check():
             self.api.spread_event(ResizeEvent(pe.display.get_size()))
         if self.current_screen.handle_event != self.handle_event:

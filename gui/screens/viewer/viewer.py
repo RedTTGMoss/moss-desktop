@@ -42,6 +42,7 @@ class DocumentRenderer(pe.ChildContext):
     PAGE_NAVIGATION_SPEED = 0.1  # After initial button press delay
     ZOOM_SENSITIVITY = 10  # How fast the zoom changes
     ZOOM_WAIT = 0.2  # How long to wait after zoom before handling intense scaling tasks
+    parent_context: 'GUI'
 
     def __init__(self, parent: 'GUI', document: 'Document', ui: 'DocumentViewerUI'):
         self.document = document
@@ -89,9 +90,13 @@ class DocumentRenderer(pe.ChildContext):
         self.last_opened_uuid = self.document.content.c_pages.last_opened.value
         self.current_page_index = self.document.content.c_pages.get_index_from_uuid(self.last_opened_uuid) or 0
         self.renderer = None
+        self.enable_drawing = False
         super().__init__(parent)
-        if self.config.notebook_render_mode == 'rm_lines_svg_inker':
+        if self.config.notebook_render_mode == 'rm_lines_svg_inker_OLD':
             self.notebook_renderer = Notebook_rM_Lines_Renderer(self)
+        elif self.config.notebook_render_mode == 'librm_lines_renderer':
+            self.notebook_renderer = Notebook_LIB_rM_Lines_Renderer(self)
+            self.enable_drawing = True
         else:
             self.close()
             print(f"{Fore.RED}Notebook render mode `{self.config.notebook_render_mode}` unavailable{Fore.RESET}")
