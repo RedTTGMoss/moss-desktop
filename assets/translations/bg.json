@@ -200,11 +200,9 @@
     },
     "viewer": {
         "close": "Затвори",
-        "loading": "Зарежда се...",
-        "next_page": "Следваща страница",
-        "page_info": "Страница {current} от {total}",
-        "prev_page": "Предишна страница",
-        "zoom_in": "Увеличи",
-        "zoom_out": "Намали"
+        "modes": {
+            "to_read": "Switch to read mode",
+            "to_free": "Switch to free mode"
+        }
     }
 }
