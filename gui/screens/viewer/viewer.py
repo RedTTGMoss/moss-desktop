@@ -13,6 +13,7 @@ from rm_api.defaults import RM_SCREEN_SIZE, RM_SCREEN_CENTER
 from .renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
 from .renderers.pdf.pymupdf import PDF_PyMuPDF_Viewer
 from ...events import ResizeEvent
+from ...i10n import t
 
 if TYPE_CHECKING:
     from gui.gui import GUI, ConfigType
@@ -201,8 +202,8 @@ class DocumentRenderer(pe.ChildContext):
             return
         self.draggable.pos = self.pos = (
             0, (-self.height / 2) + (
-                    RM_SCREEN_CENTER[1] * self.zoom * self.ratios.rm_scaled(RM_SCREEN_SIZE[0])
-            ) + self.ratios.document_viewer_top_height + self.ratios.document_viewer_top_margin * 2
+                RM_SCREEN_CENTER[1] * self.zoom * self.ratios.rm_scaled(RM_SCREEN_SIZE[0])
+        ) + self.ratios.document_viewer_top_height + self.ratios.document_viewer_top_margin * 2
         )
 
     @property
@@ -354,14 +355,14 @@ class DocumentModeToggler(TogglerButton):
     def instance(self):
         if self.ui.mode == 'free':
             return {
-                'icon': 'free_mode',
-                'hint': 'Switch to read mode',
+                'icon': 'free_mode',  # Free mode icon
+                'hint': 'viewer.modes.to_read',
                 'action': self.switch_to_read_mode
             }
         else:
             return {
-                'icon': 'glasses',
-                'hint': 'Switch to free mode',
+                'icon': 'glasses',  # Read mode icon
+                'hint': 'viewer.modes.to_free',
                 'action': self.switch_to_free_mode
             }
 
@@ -377,7 +378,7 @@ class DocumentViewerUI(pe.ChildContext):
     R_BUTTONS = (
         {
             'icon': 'x_small',
-            'hint': 'Close',
+            'hint': 'viewer.close',
             'action': 'close'
         },
         'DocumentModeToggler'
@@ -463,7 +464,7 @@ class DocumentViewerUI(pe.ChildContext):
     @lru_cache
     def get_hint_text(self, text):
         return pe.Text(
-            text, Defaults.BUTTON_FONT,
+            t(text), Defaults.BUTTON_FONT,
             self.ratios.document_viewer_hint_size, colors=Defaults.TEXT_COLOR
         )
 
