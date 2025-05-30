@@ -2,6 +2,7 @@ from functools import partial
 from typing import Tuple, Union, Optional
 
 from gui.events import MossFatal
+from gui.i10n import t
 from gui.sync_stages import SYNC_STAGE_TEXTS, SYNC_STAGE_ICONS
 from rm_api import DocumentCollection, Document, Metadata, APIFatal
 from .shared_types import AccessorInstanceBox, AccessorTypes
@@ -42,7 +43,7 @@ class SyncExtensionFunctionHelper:
 
     @property
     def text(self):
-        return SYNC_STAGE_TEXTS[self.index]
+        return t(SYNC_STAGE_TEXTS[self.index])
 
     @text.setter
     def text(self, text):

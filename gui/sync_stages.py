@@ -4,17 +4,17 @@ from gui.literals import SYNC_STAGE_ICON_TYPES
 from rm_api.sync_stages import *
 
 SYNC_STAGE_TEXTS = {
-    STAGE_START: "Starting sync",
-    STAGE_GET_ROOT: "Getting root",
-    STAGE_EXPORT_DOCUMENTS: "Exporting documents",
-    STAGE_DIFF_CHECK_DOCUMENTS: "Checking documents",
-    STAGE_PREPARE_DATA: "Preparing data",
-    STAGE_COMPILE_DATA: "Compiling data",
-    STAGE_PREPARE_ROOT: "Preparing root",
-    STAGE_PREPARE_OPERATIONS: "Preparing operations",
-    STAGE_UPLOAD: "Uploading",
-    STAGE_UPDATE_ROOT: "Updating root",
-    STAGE_SYNC: "Syncing",
+    STAGE_START: "sync.stages.start",
+    STAGE_GET_ROOT: "sync.stages.get_root",
+    STAGE_EXPORT_DOCUMENTS: "sync.stages.export_documents",
+    STAGE_DIFF_CHECK_DOCUMENTS: "sync.stages.diff_check_documents",
+    STAGE_PREPARE_DATA: "sync.stages.prepare_data",
+    STAGE_COMPILE_DATA: "sync.stages.compile_data",
+    STAGE_PREPARE_ROOT: "sync.stages.prepare_root",
+    STAGE_PREPARE_OPERATIONS: "sync.stages.prepare_operations",
+    STAGE_UPLOAD: "sync.stages.upload",
+    STAGE_UPDATE_ROOT: "sync.stages.update_root",
+    STAGE_SYNC: "sync.stages.sync",
 }
 
 SYNC_STAGE_ICONS: Dict[int, SYNC_STAGE_ICON_TYPES] = {

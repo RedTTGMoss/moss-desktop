@@ -7,6 +7,7 @@ import time
 import humanize
 from slashr import SlashR
 
+from gui.i10n import t
 from gui.sync_stages import SYNC_STAGE_TEXTS
 from rm_api import API, FileSyncProgress
 
@@ -36,7 +37,7 @@ def keep_track(progress: FileSyncProgress):
     with SlashR() as sr:
         while not progress.finished:
             sr.print(
-                f"{SYNC_STAGE_TEXTS[progress.stage]} {progress.done} / {progress.total}")
+                f"{t(SYNC_STAGE_TEXTS[progress.stage])} {progress.done} / {progress.total}")
             time.sleep(0.1)
 
 
