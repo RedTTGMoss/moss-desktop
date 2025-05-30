@@ -33,13 +33,13 @@
         "top": {
             "import": "Importi",
             "menu": "Menuo",
-            "offline": "You are offline!",
+            "offline": "Vi estas nekonektita.",
             "create": {
                 "folder": "Krei dosierujon",
                 "notebook": "Krei Notlibron"
             },
             "deselect": "Malelekti",
-            "empty_trash": "Empty trash"
+            "empty_trash": "Malplenigu la rubujon"
         },
         "common": {
             "duplicate": "Duobligi",
@@ -70,7 +70,7 @@
     "sidebar": {
         "debug": "Sencimigi",
         "extensions": "Etendaĵoj",
-        "no_extensions": "No extension menus",
+        "no_extensions": "Neniuj etendaĵaj menuoj",
         "favorites": "Favoratoj",
         "filter": "Filtrilo",
         "language": "Lingvo",
@@ -201,8 +201,8 @@
     "viewer": {
         "close": "Fermi",
         "modes": {
-            "to_read": "Switch to read mode",
-            "to_free": "Switch to free mode"
+            "to_read": "Ŝalti al legreĝimo",
+            "to_free": "Ŝanĝi al libera reĝimo"
         }
     }
 }
