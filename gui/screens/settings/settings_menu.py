@@ -1,5 +1,5 @@
 import time
-from typing import TYPE_CHECKING, List, Tuple, Optional
+from typing import TYPE_CHECKING, List, Tuple, Optional, Union
 
 import pygameextra as pe
 from lxml import etree
@@ -139,7 +139,7 @@ class SettingsSidebarChain(ScrollableView):
     TRANSITION_TIME = 0.2
 
     def __init__(self, settings: 'Settings'):
-        self.stack: List[ContextMenu] = []
+        self.stack: List[Union[SettingsContextMenu, ContextMenu]] = []
         self.settings = settings
 
         self.transitioning = False
@@ -157,6 +157,9 @@ class SettingsSidebarChain(ScrollableView):
         super().__init__(settings.parent_context)
 
         self.append(SettingsContextMenu(settings, self.settings.MENUS))
+        #     add other menus here if needed (extensions)
+
+
 
     def get_surface(self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)):
         context_menu.check_hover = self.in_focus

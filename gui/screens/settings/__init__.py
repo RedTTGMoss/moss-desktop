@@ -18,7 +18,7 @@ class Settings(pe.ChildContext):
     LAYER = pe.AFTER_LOOP_LAYER
     MENUS = [
         {
-            'text': f'{APP_NAME} Settings',
+            'text': f'settings.moss.title',
             'icon': 'moss',
             'action': 'moss',
             'data': 'xml_settings',
@@ -34,8 +34,15 @@ class Settings(pe.ChildContext):
     def __init__(self, parent: 'GUI'):
         super().__init__(parent)
         self.sidebar = SettingsSidebarChain(self)
-
         self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get(f'xml_settings/default'))[0], self)
+
+        if len(self.sidebar.stack[0].BUTTONS) == 1:
+            # If there is only one button in the sidebar, we open the moss settings directly
+            self.sidebar.stack[0].open_sub('xml_settings')  # Open the default settings
+            del self.sidebar.stack[0]  # Remove the empty menu from the stack
+            self.sidebar.transitioning = False  # Reset the transitioning state
+            self.sidebar.stack[-1].open_sub('xml_settings/moss')  # Open the moss settings
+
         self.back_button = BackButton(self)
         self.api.add_hook('settings_resize_check', self.handle_resize_event)
 
