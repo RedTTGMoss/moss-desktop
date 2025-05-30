@@ -33,13 +33,13 @@
         "top": {
             "import": "Importieren",
             "menu": "Menü",
-            "offline": "You are offline!",
+            "offline": "Du bist offline!",
             "create": {
                 "folder": "Ordner erstellen",
                 "notebook": "Notizbuch erstellen"
             },
             "deselect": "Abwählen",
-            "empty_trash": "Empty trash"
+            "empty_trash": "Papierkorb leeren"
         },
         "common": {
             "duplicate": "Duplizieren",
@@ -70,7 +70,7 @@
     "sidebar": {
         "debug": "Debug",
         "extensions": "Erweiterungen",
-        "no_extensions": "No extension menus",
+        "no_extensions": "Keine Erweiterungsmenüs",
         "favorites": "Favoriten",
         "filter": "Filter",
         "language": "Sprache",
@@ -201,8 +201,8 @@
     "viewer": {
         "close": "Schließen",
         "modes": {
-            "to_read": "Switch to read mode",
-            "to_free": "Switch to free mode"
+            "to_read": "In den Lesemodus wechseln",
+            "to_free": "Zum freien Modus wechseln"
         }
     }
 }
