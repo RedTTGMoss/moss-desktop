@@ -8,7 +8,8 @@ An app for working with your documents in the reMarkable cloud
 ![GitHub Repo stars](https://img.shields.io/github/stars/RedTTGMoss/moss-desktop)
 [![wakatime](https://wakatime.com/badge/github/RedTTGMoss/moss-desktop.svg)](https://wakatime.com/badge/github/RedTTGMoss/moss-desktop)
 
-### [Docs](https://redttg.gitbook.io/moss/)
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://redttg.gitbook.io/moss/ "Go to project documentation")
+[![Crowdin - Translations](https://img.shields.io/badge/Crowdin-Translations-2ea44f?style=for-the-badge&logo=crowdin)](https://crowdin.com/project/redttg-moss)
 
 This project is entirely open source.
 If you encounter any issues, you can use the GitHub issues to let the contributors know!
