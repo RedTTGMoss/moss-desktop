@@ -13,9 +13,9 @@
         "title": "Instalilo"
     },
     "loader": {
-        "initializing": "Inicialigante...",
-        "loading": "Ŝargante...",
-        "syncing": "Sinkronigante..."
+        "initializing": "Initializing...",
+        "loading": "Loading...",
+        "syncing": "Syncing..."
     },
     "menu": {
         "debug": {
