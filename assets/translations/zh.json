@@ -13,9 +13,9 @@
         "title": "安装"
     },
     "loader": {
-        "initializing": "初始化中...",
-        "loading": "加载中...",
-        "syncing": "同步中..."
+        "initializing": "Initializing...",
+        "loading": "Loading...",
+        "syncing": "Syncing..."
     },
     "menu": {
         "debug": {
