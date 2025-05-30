@@ -200,11 +200,9 @@
     },
     "viewer": {
         "close": "Fermi",
-        "loading": "Ŝargante...",
-        "next_page": "Sekva Paĝo",
-        "page_info": "Paĝo {current} el {total}",
-        "prev_page": "Antaŭa Paĝo",
-        "zoom_in": "Zomu enen",
-        "zoom_out": "Zomu Malproksimen"
+        "modes": {
+            "to_read": "Switch to read mode",
+            "to_free": "Switch to free mode"
+        }
     }
 }
