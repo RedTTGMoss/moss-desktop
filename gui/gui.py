@@ -21,7 +21,7 @@ from .events import ResizeEvent, MossFatal, ScreenClosure
 from .literals import PDF_RENDER_MODES, NOTEBOOK_RENDER_MODES, MAIN_MENU_MODES, MAIN_MENU_LOCATIONS, \
     DOCUMENT_VIEWER_MODES
 
-Defaults = None
+Defaults: 'Defaults' = None
 
 try:
     import pymupdf
@@ -147,6 +147,7 @@ DEFAULT_CONFIG: ConfigDict = {
 
 ConfigType = Box[ConfigDict]
 
+
 def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
     """
     Merges the current configuration with the default configuration.
@@ -165,6 +166,10 @@ def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
         else:
             merged[key] = value
             changes = True
+
+    for key, value in current.items():  # Add any extra keys from current that are not in default
+        if key not in default and key.startswith('_'):  # Only include keys that start with '_'
+            merged[key] = value
 
     return merged, changes
 
@@ -335,6 +340,10 @@ class GUI(pe.GameContext):
         self.last_screen_count = 1
         self.api.add_hook('GUI', self.handle_api_event)
         pe.display.set_icon(Defaults.APP_ICON)
+        self.create_directories()
+
+    @staticmethod
+    def create_directories():
         makedirs(Defaults.EXTENSIONS_DIR, exist_ok=True)
         makedirs(Defaults.TEMP_DIR, exist_ok=True)
         makedirs(Defaults.OPTIONS_DIR, exist_ok=True)
