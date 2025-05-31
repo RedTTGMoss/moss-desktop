@@ -4,10 +4,10 @@ from colorama import Fore, Back
 from slashr import SlashR
 from rm_api import API, check_file_exists, get_file
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = json.load(f)
 
-api = API(uri=config['uri'], discovery_uri=config['discovery_uri'])
+api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token', sync_file_path='../sync')
 api.debug = True
 api.check_for_document_storage()
 

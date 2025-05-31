@@ -6,10 +6,11 @@ from slashr import SlashR
 from rm_api import API, get_file, get_file_contents, Metadata, update_root, put_file, File, make_hash, \
     DocumentSyncProgress
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = json.load(f)
 
-api = API(uri=config['uri'], discovery_uri=config['discovery_uri'])
+api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token',
+          sync_file_path='../sync')
 api.debug = True
 api.ignore_error_protection = True
 

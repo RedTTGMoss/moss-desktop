@@ -112,7 +112,7 @@ def generate_html(call_data, output_file="coverage.html"):
 
 
 # Example usage
-with open('./content/.temporary/extension_calls.json', 'r') as f:
+with open('../content/.temporary/extension_calls.json', 'r') as f:
     call_data = json.load(f)[sys.argv[1] if len(sys.argv) > 1 else input("Enter the SDK tester extension name: ")]
 
 generate_html({key: call_data[key] for key in sorted(call_data, key=lambda x: x[1:] if x[0] == '_' else x)})

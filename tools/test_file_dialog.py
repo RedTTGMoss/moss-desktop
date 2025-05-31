@@ -3,7 +3,7 @@ from pprint import pprint
 from pygameextra import settings
 from box import Box
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = Box(json.load(f))
 
 class gc:

@@ -5,10 +5,10 @@ import time
 from slashr import SlashR
 from rm_api import API, Document
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = json.load(f)
 
-api = API(uri=config['uri'], discovery_uri=config['discovery_uri'])
+api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token', sync_file_path='../sync')
 api.debug = True
 
 with SlashR(False) as sr:
@@ -36,15 +36,15 @@ meows = set()
 for document in api.documents.values():
     meows.add(document.metadata.visible_name)
 
-with open('assets/data/light.pdf', 'rb') as f:
+with open('../assets/data/light.pdf', 'rb') as f:
     light = f.read()
 
 docs = []
-for i in range(1500):
+for i in range(100):
     name = f"this is a very accurate test ;3 [{i}]"
     print(name)
     if name in meows:
         continue
-    docs.append(Document.new_pdf(api, name, light, parent='ea917dde-cbab-431b-b355-58968d899835'))
+    docs.append(Document.new_pdf(api, name, light, parent='debug'))
 
 api.upload_many_documents(docs)

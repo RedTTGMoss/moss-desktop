@@ -11,11 +11,11 @@ colorama.init()
 
 with SlashR(False) as sr:
     sr.print(f"{Fore.BLUE}Loading configuration...{Fore.RESET}")
-    with open('config.json', 'r') as f:
+    with open('../config.json', 'r') as f:
         config = json.load(f)
 
     sr.print(f"{Fore.BLUE}Logging in using the API{Fore.RESET}")
-    api = API(uri=config['uri'], discovery_uri=config['discovery_uri'])
+    api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token', sync_file_path='../sync')
     api.debug = True
     api.ignore_error_protection = True
 

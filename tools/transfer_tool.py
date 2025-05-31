@@ -49,11 +49,12 @@ def hook(event):
 if os.path.exists(DIR):
     shutil.rmtree(DIR)
 
-with open('config.json', 'r') as f:
+with open('../config.json', 'r') as f:
     config = json.load(f)
 
-api = API(uri=config['uri'], discovery_uri=config['discovery_uri'])
-api2 = API(token_file_path='token2', log_file='2' + api.log_file)
+api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token',
+          sync_file_path='../sync')
+api2 = API(token_file_path='../token2', log_file='2' + api.log_file, sync_file_path='../sync')
 api.debug = True
 api2.debug = True
 
