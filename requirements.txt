@@ -1,7 +1,7 @@
 colorama>=0.4.6
 pillow>=11.2.1
 python-box>=7.2.0
-requests>=2.32.3
+requests>=2.32.4
 appdirs>=1.4.4
 lxml>=5.3.1
 crossfiledialog>=1.0.0
