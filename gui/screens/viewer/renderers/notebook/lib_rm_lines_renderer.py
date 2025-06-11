@@ -32,5 +32,4 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
         pass
 
     def close(self):
-        # pylibrm_lines needs to implement the methods to destroy the renderer and scene tree
-        return
+        self.tree.destroy()  # This will also destroy the renderer
