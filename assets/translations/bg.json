@@ -215,49 +215,49 @@
             "to_free": "Превключване в свободен режим"
         },
         "errors": {
-            "rendering_error": "Could not display this page.",
-            "no_pdf_renderer": "Could not render this PDF page.",
-            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
-            "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
-            "unknown_format": "Unknown format. Could not render document.",
-            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
+            "rendering_error": "Тази страница не можа да се покаже.",
+            "no_pdf_renderer": "Тази PDF страница не можа да се покаже.",
+            "retry_pdf_renderer": "Не можа да се покаже PDF файла. Проверете конфигурацията си.",
+            "unknown_pdf_renderer": "PDF файлът не можа да се покаже. Уверете се, че имате съвместими настройки за PDF.",
+            "unknown_format": "Неизвестен формат. Документът не можа да се покаже.",
+            "failed_to_build_tree": "Неуспешно изграждане. (Опитайте с друга страница или документ)"
         }
     },
     "popups": {
         "confirms": {
             "switch_to_librm_lines": {
-                "title": "Switch to LIB rM Lines?",
-                "description": "Experience the new LIB rM Lines renderer for better performance and features.\nThis includes improved quality of notes and real time rendering.",
-                "confirm": "Switch to LIB rM Lines",
-                "close": "Keep deprecated SVG renderer"
+                "title": "Преминаване към LIB rM четеца?",
+                "description": "Ползвайте новия LIB rM четез за по-добра скорост и повече функции.\nТова включва подобрено качество на бележките и рендериране в реално време.",
+                "confirm": "Преминаване към LIB rM четеца",
+                "close": "Запазване на остарелия SVG вариант"
             },
             "confirm": "Потвърждаване",
             "close": "Затвори"
         },
         "warnings": {
             "outdated_pge": {
-                "title": "PygameExtra is outdated",
-                "description": "You are running from source.\nThe main package that {app_name} uses is outdated!\nPlease update PygameExtra to {pge_version}\nThis should resolve any issues you may experience\n\nDo not report issues unless you have updated PygameExtra!"
+                "title": "PygameExtra е остарял",
+                "description": "Изпълнявате от изходния код.\nОсновният пакет, който {app_name} използва, е остарял!\nМоля, актуализирайте PygameExtra до {pge_version}\nТова би трябвало да реши всички проблеми, които може да срещнете\n\nНе докладвайте проблеми, освен ако не сте актуализирали PygameExtra!"
             },
             "git_behind": {
-                "title": "New commits available!",
-                "description": "There are new commits available for this branch.\nPlease pull the changes to stay up to date.\n\nDo not report issues unless you have pulled the changes!"
+                "title": "Има нови записи в GIT!",
+                "description": "Има нови записи, налични за този клон.\nАко искате, изтеглете промените.\n\nНе докладвайте за проблеми, освен ако не сте изтеглили промените!"
             },
             "git_ahead": {
-                "title": "You've created new commits!",
-                "description": "Can't wait for you to share them!\nDisable this message by enabling debug.\n\nDo not report issues unless you have pushed these changes!"
+                "title": "Вие сте създали нови записи!",
+                "description": "Нямам търпение да ги споделите!\nДеактивирай това съобщение, като активираш дебъг режима.\n\nНе докладвай за проблеми, освен ако не си публикувал тези промени!"
             },
             "git_check_failed": {
-                "title": "Failed to check for updates.",
-                "description": "Failed to check for updates, please check manually for any new commits."
+                "title": "Не може да се провери за актуализации.",
+                "description": "Неуспешна проверка за актуализации, моля, проверете ръчно за нови промени към кода."
             },
-            "close": "Close warning"
+            "close": "Затвори предупреждение"
         }
     },
     "installs": {
         "install_extension_from_zip": {
-            "title": "Install extension from zip?",
-            "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
+            "title": "Разширението от zip файл?",
+            "description": "{app_name} намери zip файл в директорията с разширенията.\nМоля, уверете се, че имате доверие на това разширение, преди да го инсталирате!\n\nИскате ли да инсталирате и активирате {extension_name}?"
         },
         "confirm": "Инсталирай"
     }
