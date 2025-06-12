@@ -14,17 +14,17 @@
     },
     "sync": {
         "stages": {
-            "start": "Starting sync",
-            "get_root": "Getting root",
-            "export_documents": "Exporting documents",
-            "diff_check_documents": "Checking documents",
-            "prepare_data": "Preparing data",
-            "compile_data": "Compiling data",
-            "prepare_root": "Preparing root",
-            "prepare_operations": "Preparing operations",
-            "upload": "Uploading",
-            "update_root": "Updating root",
-            "sync": "Syncing"
+            "start": "Komencante sinkronigadon",
+            "get_root": "Akiri radikon",
+            "export_documents": "Eksportado de dokumentoj",
+            "diff_check_documents": "Kontrolado de dokumentoj",
+            "prepare_data": "Preparante datumojn",
+            "compile_data": "Kompilante datumojn",
+            "prepare_root": "Preparante radikon",
+            "prepare_operations": "Preparante operaciojn",
+            "upload": "Alŝutado",
+            "update_root": "Ĝisdatigante radikan abonanton",
+            "sync": "Sinkronigado"
         }
     },
     "menu": {
@@ -215,49 +215,49 @@
             "to_free": "Ŝanĝi al libera reĝimo"
         },
         "errors": {
-            "rendering_error": "Could not display this page.",
-            "no_pdf_renderer": "Could not render this PDF page.",
-            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
-            "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
-            "unknown_format": "Unknown format. Could not render document.",
-            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
+            "rendering_error": "Ne eblis montri ĉi tiun paĝon.",
+            "no_pdf_renderer": "Ne eblis bildigi ĉi tiun PDF-paĝon.",
+            "retry_pdf_renderer": "Ne eblis bildigi PDF-on. Kontrolu vian agordon.",
+            "unknown_pdf_renderer": "Ne eblis bildigi PDF-on. Certigu, ke vi havas kongruan PDF-bildigilon.",
+            "unknown_format": "Nekonata formato. Ne eblis bildigi la dokumenton.",
+            "failed_to_build_tree": "Malsukcesis konstrui arbon. (Provu alian paĝon aŭ dokumenton)"
         }
     },
     "popups": {
         "confirms": {
             "switch_to_librm_lines": {
-                "title": "Switch to LIB rM Lines?",
-                "description": "Experience the new LIB rM Lines renderer for better performance and features.\nThis includes improved quality of notes and real time rendering.",
-                "confirm": "Switch to LIB rM Lines",
-                "close": "Keep deprecated SVG renderer"
+                "title": "Ŝanĝu al LIB rM-linioj?",
+                "description": "Spertu la novan LIB rM Lines bildiganton por pli bona rendimento kaj funkcioj.\nĈi tio inkluzivas plibonigitan kvaliton de notoj kaj realtempan bildigon.",
+                "confirm": "Ŝanĝu al LIB rM-linioj",
+                "close": "Konservu malrekomenditan SVG-bildiganton"
             },
             "confirm": "Konfirmi",
             "close": "Fermi"
         },
         "warnings": {
             "outdated_pge": {
-                "title": "PygameExtra is outdated",
-                "description": "You are running from source.\nThe main package that {app_name} uses is outdated!\nPlease update PygameExtra to {pge_version}\nThis should resolve any issues you may experience\n\nDo not report issues unless you have updated PygameExtra!"
+                "title": "PygameExtra estas malaktuala",
+                "description": "Vi kuras de la fontkodo.\nLa ĉefa pakaĵo, kiun {app_name} uzas, estas malaktuala!\nBonvolu ĝisdatigi PygameExtra al {pge_version}\nĈi tio devus solvi iujn ajn problemojn, kiujn vi eble spertos.\n\nNe raportu problemojn krom se vi ĝisdatigis PygameExtra!"
             },
             "git_behind": {
-                "title": "New commits available!",
-                "description": "There are new commits available for this branch.\nPlease pull the changes to stay up to date.\n\nDo not report issues unless you have pulled the changes!"
+                "title": "Novaj engaĝiĝoj haveblas!",
+                "description": "Estas novaj ŝanĝoj disponeblaj por ĉi tiu branĉo.\nBonvolu transpreni la ŝanĝojn por resti ĝisdata.\n\nNe raportu problemojn krom se vi transprenis la ŝanĝojn!"
             },
             "git_ahead": {
-                "title": "You've created new commits!",
-                "description": "Can't wait for you to share them!\nDisable this message by enabling debug.\n\nDo not report issues unless you have pushed these changes!"
+                "title": "Vi kreis novajn enmetitajn ŝanĝojn!",
+                "description": "Mi ne povas atendi, ke vi kunhavigu ilin!\nMalŝaltu ĉi tiun mesaĝon per ebligado de sencimigado.\n\nNe raportu problemojn krom se vi puŝis ĉi tiujn ŝanĝojn!"
             },
             "git_check_failed": {
-                "title": "Failed to check for updates.",
-                "description": "Failed to check for updates, please check manually for any new commits."
+                "title": "Malsukcesis serĉi por ĝisdatigoj.",
+                "description": "Malsukcesis kontroli ĝisdatigojn, bonvolu kontroli permane por novaj ŝanĝoj."
             },
-            "close": "Close warning"
+            "close": "Fermi averton"
         }
     },
     "installs": {
         "install_extension_from_zip": {
-            "title": "Install extension from zip?",
-            "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
+            "title": "Ĉu instali kromprogramon el zip?",
+            "description": "{app_name} trovis zip-dosieron en la dosierujo de kromprogramoj.\nBonvolu certigi, ke vi fidas ĉi tiun kromprogramon antaŭ ol instali ĝin!\n\nĈu vi ŝatus instali kaj ebligi {extension_name}?"
         },
         "confirm": "Instali"
     }
