@@ -10,13 +10,15 @@ from gui.defaults import Defaults
 from gui.pp_helpers import DraggablePuller, FullTextPopup
 from rm_api import models
 from rm_api.defaults import RM_SCREEN_SIZE, RM_SCREEN_CENTER
+
+from .renderers.notebook.lib_rm_lines_renderer import Notebook_LIB_rM_Lines_Renderer
 from .renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
 from .renderers.pdf.pymupdf import PDF_PyMuPDF_Viewer
 from ...events import ResizeEvent
 from ...i10n import t
 
 if TYPE_CHECKING:
-    from gui.gui import GUI, ConfigType
+    from gui.gui import GUI, ConfigType, ConfigDict
     from queue import Queue
     from rm_api.models import Document, Content
 
@@ -88,6 +90,8 @@ class DocumentRenderer(pe.ChildContext):
         self.loading_timer = time.time()
 
         self.mode = 'nocontent'
+        self.notebook = False
+        self.need_to_calculate_base_zoom = True
         self.last_opened_uuid = self.document.content.c_pages.last_opened.value
         self.current_page_index = self.document.content.c_pages.get_index_from_uuid(self.last_opened_uuid) or 0
         self.renderer = None
@@ -101,6 +105,12 @@ class DocumentRenderer(pe.ChildContext):
         else:
             self.close()
             print(f"{Fore.RED}Notebook render mode `{self.config.notebook_render_mode}` unavailable{Fore.RESET}")
+
+    def calculate_base_zoom(self):
+        if not self.notebook:  # This is meant to be used for notebooks only
+            return
+
+        self.base_zoom = self.maintain_aspect_size[0] / self.notebook_renderer.frame_width
 
     @property
     def zoom(self):
@@ -129,7 +139,7 @@ class DocumentRenderer(pe.ChildContext):
     @error.setter
     def error(self, value):
         self._error = pe.Text(
-            value,
+            t(value),
             Defaults.DOCUMENT_ERROR_FONT,
             self.ratios.document_viewer_error_font_size,
             pe.Rect(0, 0, *self.size).center,
@@ -245,20 +255,22 @@ class DocumentRenderer(pe.ChildContext):
                 self.loading += 1
                 self.renderer = PDF_PyMuPDF_Viewer(self)
             elif self.config.pdf_render_mode == 'none':
-                self.error = 'Could not render PDF'
+                self.error = 'viewer.errors.no_pdf_renderer'
             elif self.config.pdf_render_mode == 'retry':
-                self.error = 'Could not render PDF. Check your configuration'
+                self.error = 'viewer.errors.retry_pdf_renderer'
             else:
-                self.error = 'Could not render PDF. Make sure you have a compatible PDF renderer'
+                self.error = 'viewer.errors.unknown_pdf_renderer'
 
         elif self.document.content.file_type == 'notebook':
+            self.notebook = True
             pass
         else:
-            self.error = 'Unknown format. Could not render document'
+            self.error = 'viewer.errors.unknown_format'
         if self.renderer:
             self.renderer.load()
         self.loading += 1
         self.notebook_renderer.load()
+        self.need_to_calculate_base_zoom = True
 
     def pre_loop(self):
         if not self.began_loading:
@@ -314,10 +326,13 @@ class DocumentRenderer(pe.ChildContext):
             self.debug_display.init()
             self.debug_display.rect.bottomright = self.size
             self.debug_display.display()
+        if not self.loading and not self.error and self.need_to_calculate_base_zoom:
+            self.calculate_base_zoom()
+            self.need_to_calculate_base_zoom = False
 
     @property
     def debug_text(self):
-        if self.notebook_renderer and self.notebook_renderer.expanded_notebook:
+        if self.notebook_renderer and getattr(self.notebook_renderer, 'expanded_notebook', None):
             rm_position = tuple(
                 (
                         (
@@ -499,6 +514,7 @@ class DocumentViewer(pe.ChildContext):
     top_puller: DraggablePuller
     ui: DocumentViewerUI
     document_renderer: DocumentRenderer
+    config: 'ConfigDict'
 
     def __init__(self, parent: 'GUI', document_uuid: str):
         super().__init__(parent)
@@ -516,13 +532,20 @@ class DocumentViewer(pe.ChildContext):
             draw_callback_y=self.draw_close_indicator
         )
         self.ui = DocumentViewerUI(parent, self)
-        try:
-            self.document_renderer = DocumentRenderer(parent, self.document, self.ui)
-        except UnusableContent:
-            self.PROBLEMATIC_DOCUMENTS.add(document_uuid)
-            raise CannotRenderDocument(self.document)
+        if self.config.notebook_render_mode == 'rm_lines_svg_inker_OLD' and not self.config.guides.switch_to_librm_lines:
+            from gui.pp_helpers.popups import SwitchToLibRmLines
+            self.document_renderer = SwitchToLibRmLines(self.parent_context, self)
+        else:
+            self.init_renderer()
 
         self.api.add_hook(self.EVENT_HOOK_NAME.format(id(self)), self.resize_check_hook)
+
+    def init_renderer(self):
+        try:
+            self.document_renderer = DocumentRenderer(self.parent_context, self.document, self.ui)
+        except UnusableContent:
+            self.PROBLEMATIC_DOCUMENTS.add(self.document.uuid)
+            raise CannotRenderDocument(self.document)
 
     def loop(self):
         self.document_renderer()
@@ -533,6 +556,12 @@ class DocumentViewer(pe.ChildContext):
         self.document_renderer.handle_event(event)
         if pe.event.key_DOWN(pe.K_ESCAPE):
             self.close()
+        if self.config.debug and self.ctrl_hold and pe.event.key_DOWN(pe.K_p):
+            if self.config.notebook_render_mode == 'rm_lines_svg_inker_OLD':
+                self.config.notebook_render_mode = 'librm_lines_renderer'
+            else:
+                self.config.notebook_render_mode = 'rm_lines_svg_inker_OLD'
+            self.init_renderer()
 
     def resize_check_hook(self, event):
         if isinstance(event, ResizeEvent):

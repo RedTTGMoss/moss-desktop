@@ -68,6 +68,10 @@ class rM_Lines_ExpandedNotebook(ExpandedNotebook):
         #  or use something else to render SVGs
         return pe.Sprite(BytesIO(encoded_svg_content), (final_width, final_height))
 
+    def update_scales(self, frames, scale: float):
+        for frame in frames.values():
+            if frame.loaded:
+                frame.sprite.scale = (scale, scale)
 
 # noinspection PyPep8Naming
 class Notebook_rM_Lines_Renderer(AbstractRenderer):

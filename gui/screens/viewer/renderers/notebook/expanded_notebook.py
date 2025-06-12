@@ -52,13 +52,15 @@ class ExpandedNotebook(ABC):
                         visible_frames.append((frame_x, frame_y))
 
         frames = {}
-
         for frame in visible_frames:
             frames[frame] = self.task_frame_from_initial(*frame)
-            if frames[frame].loaded:
-                frames[frame].sprite.scale = (scale, scale)
 
+        self.update_scales(frames, scale)
         return frames
+
+    @abstractmethod
+    def update_scales(self, frames, scale: float):
+        ...
 
     @abstractmethod
     def get_frame_from_initial(self, frame_x, frame_y, final_width: int = None, final_height: int = None) -> pe.Sprite:
