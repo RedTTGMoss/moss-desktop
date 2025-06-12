@@ -217,7 +217,7 @@
         "errors": {
             "rendering_error": "Could not display this page.",
             "no_pdf_renderer": "Could not render this PDF page.",
-            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
+            "retry_pdf_renderer": "Could not render PDF. Check your configuration.",
             "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
             "unknown_format": "Unknown format. Could not render document.",
             "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
