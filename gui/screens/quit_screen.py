@@ -23,7 +23,7 @@ class QuitScreen(pe.ChildContext, LogoMixin):
             t("quit.quitting"),
             Defaults.CUSTOM_FONT, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR)
         self.love_text = pe.Text(
-            t("quit.thanks", app_name=APP_NAME),
+            t("quit.thanks"),
             Defaults.CUSTOM_FONT_BOLD, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR
         )
         self.quit_text.rect.midtop = self.line_rect.midbottom

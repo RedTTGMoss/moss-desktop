@@ -56,6 +56,33 @@ class AbstractRenderer(ABC):
         scale = max(2, min(9, self.document_renderer.zoom // 0.5)) * 0.5
         return scale / self.document_renderer.config.scale
 
+    def get_expected_frame_sizes(self):
+        expected_frame_sizes = tuple(
+            # Calculate frame size for both zoom levels to determine the zoom scaling offset
+            (
+                self.frame_width * zoom *
+                self.gui.ratios.rm_scaled(self.frame_width),
+                self.frame_height * zoom *
+                self.gui.ratios.rm_scaled(self.frame_width)
+            )
+            for zoom in (self.document_renderer.zoom, self.document_renderer.zoom + 1)
+        )
+        self.document_renderer.zoom_scaling_offset = tuple(
+            # Half the change when changing zooming by 1 unit
+            (expected_frame_sizes[0][_] - expected_frame_sizes[1][_]) / 2
+            for _ in range(2)
+        )
+        self.document_renderer.zoom_reference_size = expected_frame_sizes[0]
+        return expected_frame_sizes
+
+    @property
+    def frame_width(self):
+        return self.expanded_notebook.frame_width
+
+    @property
+    def frame_height(self):
+        return self.expanded_notebook.frame_height
+
 
 class LoadTask:
     def __init__(self, function, *args, **kwargs):

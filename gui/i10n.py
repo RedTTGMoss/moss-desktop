@@ -27,6 +27,8 @@ class I10nManager:
         self._translations = {}
         self.load_translations(gui.config.language)
         self._lang = gui.config.language
+        from .gui import APP_NAME
+        self.APP_NAME = APP_NAME
 
     def load_translations(self, lang: str):
         """Load a translation file from the translations directory"""
@@ -76,4 +78,9 @@ def _t(key: str, default: Optional[str] = None) -> str:
 
 def t(key: str, default: Optional[str] = None, **kwargs):
     """Helper function to translate a key with optional formatting parameters"""
-    return _t(key, default).format(**kwargs)
+    return (
+        _t(key, default)
+        .format(**kwargs, **{
+            'app_name': I10nManager.instance.APP_NAME
+        })
+    )

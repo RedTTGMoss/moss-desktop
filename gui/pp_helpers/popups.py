@@ -5,28 +5,36 @@ import pygameextra as pe
 from gui import APP_NAME
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
+from gui.gui import ConfigDict
+from gui.i10n import t
 from gui.rendering import render_button_using_text
 from gui.screens.mixins import TitledMixin, ButtonReadyMixin
 
 if TYPE_CHECKING:
     from gui import GUI
 
+def translation_pair(key: str) -> tuple[str, str]:
+    """Returns the title and description for a popup based on the given key."""
+    return (
+        f'popups.{key}.title',
+        f'popups.{key}.description'
+    )
 
 class Popup(pe.ChildContext, ButtonReadyMixin, TitledMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     COLOR = (*Defaults.TRANSPARENT_COLOR[:3], 175)
     TITLE_COLORS = Defaults.TEXT_COLOR_H
-    CLOSE_TEXT = "Close"
+    CLOSE_TEXT = "popups.confirm.close"
     BUTTON_TEXTS = {
         'close': "",
     }
 
-    def __init__(self, parent: "GUI", title: str, description: str):
+    def __init__(self, parent: "GUI", title: str, description: str, **kwargs):
         super().__init__(parent)
-        self.handle_title(title)
+        self.handle_title(title, **kwargs)
         self.BUTTON_TEXTS['close'] = self.CLOSE_TEXT
-        self.handle_texts()
-        self.description = pe.Text(description, Defaults.DEBUG_FONT, self.ratios.popup_description_size,
+        self.handle_texts(**kwargs)
+        self.description = pe.Text(t(description, None, **kwargs), Defaults.DEBUG_FONT, self.ratios.popup_description_size,
                                    colors=self.TITLE_COLORS)
         self.description.rect.left = self.title.rect.left
         self.description.rect.top = self.title.rect.bottom + self.ratios.popup_description_padding
@@ -55,9 +63,9 @@ class Popup(pe.ChildContext, ButtonReadyMixin, TitledMixin):
 
 
 class ConfirmPopup(Popup):
-    CLOSE_TEXT = "Cancel"
+    CLOSE_TEXT = "popups.confirms.close"
     BUTTON_TEXTS = {
-        'confirm': "Confirm",
+        'confirm': "popups.confirms.confirm",
         'close': "",
     }
 
@@ -90,7 +98,7 @@ class ConfirmPopup(Popup):
 
 class InstallPopup(ConfirmPopup):
     BUTTON_TEXTS = {
-        'confirm': "Install",
+        'confirm': "popups.installs.confirm",
         'close': "",
     }
 
@@ -115,5 +123,39 @@ class GUISyncLockedPopup(GUIConfirmPopup):
         )
 
 
+class SwitchToLibRmLines(GUIConfirmPopup):
+    TYPE = "switch_to_lib_rm_lines"
+    BUTTON_TEXTS = {
+        'confirm': "popups.switch_to_librm_lines.confirm",
+        'close': "",
+    }
+    CLOSE_TEXT = "popups.switch_to_librm_lines.close"
+
+    config: "ConfigDict"
+
+    def __init__(self, parent: "GUI", document_viewer: "DocumentViewer"):
+        self.document_viewer = document_viewer
+        super().__init__(
+            parent,
+            *translation_pair('confirms.switch_to_librm_lines'),
+            confirm_action=self.switch_to_lib_rm_lines,
+            cancel_action=self.initialise_svg_renderer
+        )
+
+    def switch_to_lib_rm_lines(self):
+        self.config.guides.switch_to_librm_lines = True
+        self.config.notebook_render_mode = 'librm_lines_renderer'
+        self.parent_context.dirty_config = True
+        self.document_viewer.init_renderer()
+
+    def initialise_svg_renderer(self):
+        self.config.guides.switch_to_librm_lines = True
+        self.parent_context.dirty_config = True
+        self.document_viewer.init_renderer()
+
+    def handle_event(self, e):  # Required for DocumentViewer
+        pass
+
+
 class WarningPopup(Popup):
-    CLOSE_TEXT = "Close warning"
+    CLOSE_TEXT = "popups.warnings.close"

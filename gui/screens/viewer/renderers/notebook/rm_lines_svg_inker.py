@@ -79,7 +79,7 @@ class Notebook_rM_Lines_Renderer(AbstractRenderer):
     """
 
     pages: Dict[str, Union[rM_Lines_ExpandedNotebook, None]]
-    RENDER_ERROR = 'Error rendering writing for this page'
+    RENDER_ERROR = 'viewer.errors.rendering_error'
     expanded_notebook: rM_Lines_ExpandedNotebook
 
     def __init__(self, document_renderer):
@@ -137,22 +137,7 @@ class Notebook_rM_Lines_Renderer(AbstractRenderer):
                 *self.size, self.document_renderer.zoom
             )
 
-            expected_frame_sizes = tuple(
-                # Calculate frame size for both zoom levels to determine the zoom scaling offset
-                (
-                    self.expanded_notebook.frame_width * zoom *
-                    self.gui.ratios.rm_scaled(self.expanded_notebook.frame_width),
-                    self.expanded_notebook.frame_height * zoom *
-                    self.gui.ratios.rm_scaled(self.expanded_notebook.frame_width)
-                )
-                for zoom in (self.document_renderer.zoom, self.document_renderer.zoom + 1)
-            )
-            self.document_renderer.zoom_scaling_offset = tuple(
-                # Half the change when changing zooming by 1 unit
-                (expected_frame_sizes[0][_] - expected_frame_sizes[1][_]) / 2
-                for _ in range(2)
-            )
-            self.document_renderer.zoom_reference_size = expected_frame_sizes[0]
+            expected_frame_sizes = self.get_expected_frame_sizes()
 
             rotate_icon = self.gui.icons['rotate']
 

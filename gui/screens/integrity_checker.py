@@ -9,7 +9,7 @@ import pygameextra as pe
 
 from gui.events import ResizeEvent
 from gui.gui import APP_NAME, Defaults
-from gui.pp_helpers.popups import WarningPopup, InstallPopup
+from gui.pp_helpers.popups import WarningPopup, InstallPopup, translation_pair
 from gui.screens.mixins import LogoMixin
 
 if TYPE_CHECKING:
@@ -57,12 +57,8 @@ class IntegrityChecker(pe.ChildContext, LogoMixin):
             if pe.__version__ != self.versions['pygameextra']:
                 self.warnings.put(WarningPopup(
                     self.parent_context,
-                    "PygameExtra is outdated",
-                    f"You are running from source.\n"
-                    f"The main package that {APP_NAME} uses is outdated!\n"
-                    f"Please update PygameExtra to {self.versions['pygameextra']}\n"
-                    "This should resolve any issues you may experience\n\n"
-                    "Do not report issues unless you have updated PygameExtra!"
+                    *translation_pair('warnings.outdated_pge'),
+                    pge_version=self.versions['pygameextra']
                 ))
         if os.path.exists('.git'):
             # Check for new commit
@@ -83,34 +79,25 @@ class IntegrityChecker(pe.ChildContext, LogoMixin):
                 if '[behind' in status:
                     self.warnings.put(WarningPopup(
                         self.parent_context,
-                        "New commits available!",
-                        "There are new commits available for this branch.\n"
-                        "Please pull the changes to stay up to date.\n\n"
-                        "Do not report issues unless you have pulled the changes!"
+                        *translation_pair('warnings.git_behind')
                     ))
                 elif '[ahead' in status and not self.config.debug:
                     self.warnings.put(WarningPopup(
                         self.parent_context,
-                        "You've created new commits!",
-                        "Can't wait for you to share them!\n"
-                        "Disable this message by enabling debug.\n\n"
-                        "Do not report issues unless you have pushed these changes!"
+                        *translation_pair('warnings.git_ahead')
                     ))
             except (FileNotFoundError, GitCheckException):
                 self.warnings.put(WarningPopup(
                     self.parent_context,
-                    "Failed to check for updates.",
-                    "Failed to check for updates, please check manually for any new commits."
+                    *translation_pair('warnings.git_check_failed')
                 ))
         for extension_name in os.listdir(Defaults.EXTENSIONS_DIR):
             if extension_name.endswith('.zip'):
                 extension_directory = os.path.join(Defaults.EXTENSIONS_DIR, extension_name[:-4])
                 self.warnings.put(InstallPopup(
-                    self.parent_context, "Install extension from zip?",
-                    f"Moss has found a zip file in the extensions directory.\n"
-                    "Please make sure you trust this extension before installing it!\n\n"
-                    f"Would you like to install and enable {extension_name}?",
-                    partial(
+                    self.parent_context,
+                    *translation_pair('popups.install_extension'),
+                    confirm_action=partial(
                         self.extract_zip,
                         os.path.join(Defaults.EXTENSIONS_DIR, extension_name),
                         extension_directory

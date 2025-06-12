@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import pygameextra as pe
 
 from gui.defaults import Defaults
+from gui.i10n import t
 
 if TYPE_CHECKING:
     from gui.aspect_ratio import Ratios
@@ -17,10 +18,10 @@ class ButtonReadyMixin:
     width: int
     height: int
 
-    def handle_texts(self):
+    def handle_texts(self, **kwargs):
         self.texts = {
             key: pe.Text(
-                text,
+                t(text, None, **kwargs),
                 Defaults.BUTTON_FONT, self.ratios.import_screen_button_size,
                 colors=Defaults.TEXT_COLOR_T)
             for key, text in self.BUTTON_TEXTS.items()
