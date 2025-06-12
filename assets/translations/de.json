@@ -213,6 +213,52 @@
         "modes": {
             "to_read": "In den Lesemodus wechseln",
             "to_free": "Zum freien Modus wechseln"
+        },
+        "errors": {
+            "rendering_error": "Could not display this page.",
+            "no_pdf_renderer": "Could not render this PDF page.",
+            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
+            "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
+            "unknown_format": "Unknown format. Could not render document.",
+            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
         }
+    },
+    "popups": {
+        "confirms": {
+            "switch_to_librm_lines": {
+                "title": "Switch to LIB rM Lines?",
+                "description": "Experience the new LIB rM Lines renderer for better performance and features.\nThis includes improved quality of notes and real time rendering.",
+                "confirm": "Switch to LIB rM Lines",
+                "close": "Keep deprecated SVG renderer"
+            },
+            "confirm": "Bestätigen",
+            "close": "Schließen"
+        },
+        "warnings": {
+            "outdated_pge": {
+                "title": "PygameExtra is outdated",
+                "description": "You are running from source.\nThe main package that {app_name} uses is outdated!\nPlease update PygameExtra to {pge_version}\nThis should resolve any issues you may experience\n\nDo not report issues unless you have updated PygameExtra!"
+            },
+            "git_behind": {
+                "title": "New commits available!",
+                "description": "There are new commits available for this branch.\nPlease pull the changes to stay up to date.\n\nDo not report issues unless you have pulled the changes!"
+            },
+            "git_ahead": {
+                "title": "You've created new commits!",
+                "description": "Can't wait for you to share them!\nDisable this message by enabling debug.\n\nDo not report issues unless you have pushed these changes!"
+            },
+            "git_check_failed": {
+                "title": "Failed to check for updates.",
+                "description": "Failed to check for updates, please check manually for any new commits."
+            },
+            "close": "Close warning"
+        }
+    },
+    "installs": {
+        "install_extension_from_zip": {
+            "title": "Install extension from zip?",
+            "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
+        },
+        "confirm": "Installieren"
     }
 }
