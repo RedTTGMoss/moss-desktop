@@ -70,8 +70,9 @@ class rM_Lines_ExpandedNotebook(ExpandedNotebook):
 
     def update_scales(self, frames, scale: float):
         for frame in frames.values():
-            if frame.loaded:
-                frame.sprite.scale = (scale, scale)
+            if not frame.loaded:
+                continue
+            frame.sprite.scale = (scale, scale)
 
 # noinspection PyPep8Naming
 class Notebook_rM_Lines_Renderer(AbstractRenderer):
