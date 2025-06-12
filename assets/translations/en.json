@@ -15,15 +15,15 @@
     "sync": {
         "stages": {
             "start": "Starting sync",
-            "get_root":  "Getting root",
+            "get_root": "Getting root",
             "export_documents": "Exporting documents",
-            "diff_check_documents":  "Checking documents",
+            "diff_check_documents": "Checking documents",
             "prepare_data": "Preparing data",
-            "compile_data":  "Compiling data",
+            "compile_data": "Compiling data",
             "prepare_root": "Preparing root",
-            "prepare_operations":  "Preparing operations",
+            "prepare_operations": "Preparing operations",
             "upload": "Uploading",
-            "update_root":  "Updating root",
+            "update_root": "Updating root",
             "sync": "Syncing"
         }
     },
@@ -217,7 +217,7 @@
         "errors": {
             "rendering_error": "Could not display this page.",
             "no_pdf_renderer": "Could not render this PDF page.",
-            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
+            "retry_pdf_renderer": "Could not render PDF. Check your configuration.",
             "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
             "unknown_format": "Unknown format. Could not render document.",
             "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
