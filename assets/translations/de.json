@@ -14,17 +14,17 @@
     },
     "sync": {
         "stages": {
-            "start": "Starting sync",
-            "get_root": "Getting root",
-            "export_documents": "Exporting documents",
-            "diff_check_documents": "Checking documents",
-            "prepare_data": "Preparing data",
-            "compile_data": "Compiling data",
-            "prepare_root": "Preparing root",
-            "prepare_operations": "Preparing operations",
-            "upload": "Uploading",
-            "update_root": "Updating root",
-            "sync": "Syncing"
+            "start": "Sync gestartet",
+            "get_root": "Root erhalten",
+            "export_documents": "Export von Dokumenten",
+            "diff_check_documents": "Dokumente prüfen",
+            "prepare_data": "Daten werden vorbereitet",
+            "compile_data": "Kompiliere Daten",
+            "prepare_root": "Wurzel vorbereiten",
+            "prepare_operations": "Vorgänge vorbereiten",
+            "upload": "Hochladen",
+            "update_root": "Root aktualisieren",
+            "sync": "Synchronisiere"
         }
     },
     "menu": {
@@ -215,49 +215,49 @@
             "to_free": "Zum freien Modus wechseln"
         },
         "errors": {
-            "rendering_error": "Could not display this page.",
-            "no_pdf_renderer": "Could not render this PDF page.",
-            "retry_pdf_renderer": "Could not render PDF. Check your configuration",
-            "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
-            "unknown_format": "Unknown format. Could not render document.",
-            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
+            "rendering_error": "Diese Seite konnte nicht angezeigt werden.",
+            "no_pdf_renderer": "Diese PDF-Seite konnte nicht gerendert werden.",
+            "retry_pdf_renderer": "PDF konnte nicht gerendert werden. Überprüfen Sie Ihre Konfiguration",
+            "unknown_pdf_renderer": "PDF konnte nicht gerendert werden. Stellen Sie sicher, dass Sie einen kompatiblen PDF-Renderer haben.",
+            "unknown_format": "Unbekanntes Format. Dokument konnte nicht gerendert werden.",
+            "failed_to_build_tree": "Der Baum konnte nicht erstellt werden. (Versuchen Sie es mit einer anderen Seite oder einem anderen Dokument.)"
         }
     },
     "popups": {
         "confirms": {
             "switch_to_librm_lines": {
-                "title": "Switch to LIB rM Lines?",
-                "description": "Experience the new LIB rM Lines renderer for better performance and features.\nThis includes improved quality of notes and real time rendering.",
-                "confirm": "Switch to LIB rM Lines",
-                "close": "Keep deprecated SVG renderer"
+                "title": "Zu LIB rM Lines wechseln?",
+                "description": "Erleben Sie den neuen LIB rM Lines-Renderer für bessere Leistung und Funktionen.\nDazu gehören eine verbesserte Qualität der Notizen und Echtzeit-Rendering.",
+                "confirm": "Zu LIB rM Lines wechseln",
+                "close": "Veralteten SVG-Renderer beibehalten"
             },
             "confirm": "Bestätigen",
             "close": "Schließen"
         },
         "warnings": {
             "outdated_pge": {
-                "title": "PygameExtra is outdated",
-                "description": "You are running from source.\nThe main package that {app_name} uses is outdated!\nPlease update PygameExtra to {pge_version}\nThis should resolve any issues you may experience\n\nDo not report issues unless you have updated PygameExtra!"
+                "title": "PygameExtra ist veraltet",
+                "description": "Sie führen es von der Quelle aus.\nDas von {app_name} verwendete Hauptpaket ist veraltet!\nBitte aktualisieren Sie PygameExtra auf {pge_version}\nDies sollte alle auftretenden Probleme beheben.\n\nMelden Sie keine Probleme, solange Sie PygameExtra nicht aktualisiert haben!"
             },
             "git_behind": {
-                "title": "New commits available!",
-                "description": "There are new commits available for this branch.\nPlease pull the changes to stay up to date.\n\nDo not report issues unless you have pulled the changes!"
+                "title": "Neue Commits verfügbar!",
+                "description": "Für diesen Zweig sind neue Commits verfügbar.\nBitte ziehen Sie die Änderungen, um auf dem neuesten Stand zu bleiben.\n\nMelden Sie keine Probleme, bevor Sie die Änderungen gezogen haben!"
             },
             "git_ahead": {
-                "title": "You've created new commits!",
-                "description": "Can't wait for you to share them!\nDisable this message by enabling debug.\n\nDo not report issues unless you have pushed these changes!"
+                "title": "Sie haben neue Commits erstellt!",
+                "description": "Ich kann es kaum erwarten, dass du sie teilst!\nDeaktiviere diese Nachricht, indem du das Debugging aktivierst.\n\nMelde keine Probleme, es sei denn, du hast diese Änderungen gepusht!"
             },
             "git_check_failed": {
-                "title": "Failed to check for updates.",
-                "description": "Failed to check for updates, please check manually for any new commits."
+                "title": "Suche nach Aktualisierungen fehlgeschlagen.",
+                "description": "Die Suche nach Updates ist fehlgeschlagen. Bitte suchen Sie manuell nach neuen Commits."
             },
-            "close": "Close warning"
+            "close": "Warnung schließen"
         }
     },
     "installs": {
         "install_extension_from_zip": {
-            "title": "Install extension from zip?",
-            "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
+            "title": "Erweiterung aus Zip installieren?",
+            "description": "{app_name} hat eine ZIP-Datei im Erweiterungsverzeichnis gefunden.\nBitte stellen Sie sicher, dass Sie dieser Erweiterung vertrauen, bevor Sie sie installieren!\n\nMöchten Sie {extension_name}installieren und aktivieren?"
         },
         "confirm": "Installieren"
     }
