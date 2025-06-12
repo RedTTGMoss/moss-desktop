@@ -21,7 +21,7 @@ from .events import ResizeEvent, MossFatal, ScreenClosure
 from .literals import PDF_RENDER_MODES, NOTEBOOK_RENDER_MODES, MAIN_MENU_MODES, MAIN_MENU_LOCATIONS, \
     DOCUMENT_VIEWER_MODES
 
-Defaults: 'Defaults' = None
+Defaults: 'defaults.Defaults' = None
 
 try:
     import pymupdf
@@ -33,6 +33,7 @@ from rm_api import API
 from .aspect_ratio import Ratios
 
 if TYPE_CHECKING:
+    import defaults
     from gui.screens.main_menu import MainMenu
     from .screens.import_screen import ImportScreen
     from .extensions import ExtensionManager
