@@ -145,11 +145,14 @@ DEFAULT_CONFIG: ConfigDict = {
     },
     'language': 'en'
 }
+DYNAMIC_CONFIG_KEYS = (
+    'extensions',
+)
 
 ConfigType = Box[ConfigDict]
 
 
-def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
+def merge_dictionaries(current: dict, default: dict, dynamic: bool = False) -> tuple[ConfigType, bool]:
     """
     Merges the current configuration with the default configuration.
     If a key is missing in the current configuration, it will be added from the default.
@@ -160,7 +163,7 @@ def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
     for key, value in default.items():
         if key in current:
             if isinstance(value, dict) and isinstance(current[key], dict):
-                merged[key], sub_changes = merge_dictionaries(current[key], value)
+                merged[key], sub_changes = merge_dictionaries(current[key], value, key in DYNAMIC_CONFIG_KEYS)
                 changes = changes or sub_changes
             else:
                 merged[key] = current[key]
@@ -169,7 +172,7 @@ def merge_dictionaries(current: dict, default: dict) -> tuple[ConfigType, bool]:
             changes = True
 
     for key, value in current.items():  # Add any extra keys from current that are not in default
-        if key not in default and key.startswith('_'):  # Only include keys that start with '_'
+        if dynamic or key not in default and key.startswith('_'):  # Only include keys that start with '_'
             merged[key] = value
 
     return merged, changes
