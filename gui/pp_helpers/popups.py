@@ -13,12 +13,14 @@ from gui.screens.mixins import TitledMixin, ButtonReadyMixin
 if TYPE_CHECKING:
     from gui import GUI
 
+
 def translation_pair(key: str) -> tuple[str, str]:
     """Returns the title and description for a popup based on the given key."""
     return (
         f'popups.{key}.title',
         f'popups.{key}.description'
     )
+
 
 class Popup(pe.ChildContext, ButtonReadyMixin, TitledMixin):
     LAYER = pe.AFTER_LOOP_LAYER
@@ -34,7 +36,8 @@ class Popup(pe.ChildContext, ButtonReadyMixin, TitledMixin):
         self.handle_title(title, **kwargs)
         self.BUTTON_TEXTS['close'] = self.CLOSE_TEXT
         self.handle_texts(**kwargs)
-        self.description = pe.Text(t(description, None, **kwargs), Defaults.DEBUG_FONT, self.ratios.popup_description_size,
+        self.description = pe.Text(t(description, None, **kwargs), Defaults.DEBUG_FONT,
+                                   self.ratios.popup_description_size,
                                    colors=self.TITLE_COLORS)
         self.description.rect.left = self.title.rect.left
         self.description.rect.top = self.title.rect.bottom + self.ratios.popup_description_padding
@@ -126,10 +129,10 @@ class GUISyncLockedPopup(GUIConfirmPopup):
 class SwitchToLibRmLines(GUIConfirmPopup):
     TYPE = "switch_to_lib_rm_lines"
     BUTTON_TEXTS = {
-        'confirm': "popups.switch_to_librm_lines.confirm",
+        'confirm': "popups.confirms.switch_to_librm_lines.confirm",
         'close': "",
     }
-    CLOSE_TEXT = "popups.switch_to_librm_lines.close"
+    CLOSE_TEXT = "popups.confirms.switch_to_librm_lines.close"
 
     config: "ConfigDict"
 
