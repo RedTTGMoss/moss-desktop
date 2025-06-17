@@ -6,6 +6,6 @@ python3 -m nuitka --mode=app \
 --include-data-dir=assets=assets \
 --include-data-dir=${PYGAMEEXTRA_DIR}/assets=pygameextra/assets \
 --include-data-files=LICENSE=LICENSE \
---include-data-files=${EXTISM_DIR}/libextism_sys.so=extism_sys/libextism_sys.so \
+--include-data-files=${EXTISM_DIR}/extism_sys.so=extism_sys/extism_sys.so \
 --assume-yes-for-downloads --output-dir=build --script-name=moss.py --linux-icon=assets/icons/moss.png \
 --deployment --disable-console
