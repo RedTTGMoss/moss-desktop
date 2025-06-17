@@ -8,7 +8,7 @@ from rm_lines import DocumentSizeTracker
 from gui.defaults import Defaults
 from gui.screens.viewer.renderers.notebook.expanded_notebook import ExpandedNotebook
 from gui.screens.viewer.renderers.shared_model import AbstractRenderer
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, List, Tuple
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -43,17 +43,128 @@ class LIB_rM_Lines_SizeTracker(DocumentSizeTracker):
         self.track_right = max(self.track_right, size_tracker.right)
 
 
+class LIB_rM_Lines_ChunkTask:
+    def __init__(self, renderer: 'Renderer', agent: 'LIB_rM_Lines_ChunkingAgent', chunk_rect: pe.Rect):
+        self.renderer = renderer
+        self.agent = agent
+        self.chunk_rect = chunk_rect
+
+        # We undo the scaling of chunk_rect to match the agent's scale
+        # We also adjust to add the base_rect offset which is in rm size
+        self.rm_area = pe.Rect(
+            chunk_rect.x / agent.scale + agent.base_rect.x,
+            chunk_rect.y / agent.scale + agent.base_rect.y,
+            chunk_rect.width / agent.scale,
+            chunk_rect.height / agent.scale
+        )
+        self.loaded = False
+        self.scale = agent.scale
+        self.image: pe.Image = None
+        threading.Thread(target=self.load, daemon=True).start()
+
+    def load(self):
+        # We need to load the data now from the renderer
+
+        # self.rm_area = pe.Rect(-100, -100, 200, 200)
+
+        scale = (self.chunk_rect.width / self.rm_area.width)
+        scaled_area = self.rm_area.copy()
+        # scaled_area.left -= scaled_area.width * scale
+        # scaled_area.top -= scaled_area.height * scale
+
+        with self.agent.lock:
+            print(f"Getting the frame of {self.rm_area} AKA {scaled_area} with chunk {self.chunk_rect.size} {scale}")
+            raw = self.renderer.get_frame_raw(
+                *scaled_area.topleft,
+                *scaled_area.size,
+                *self.chunk_rect.size
+                # TODO: Potentially enable the user to pick if they want antialiasing
+            )
+        self.image = pe.Image(pe.pygame.image.frombytes(raw, self.chunk_rect.size, 'RGBA'))
+        self.loaded = True
+
+    @staticmethod
+    def generate_hash(agent: 'LIB_rM_Lines_ChunkingAgent', chunk_rect: pe.Rect) -> int:
+        return hash(
+            f"{agent.base_rect.topleft}-{agent.base_rect.size}-"
+            f"{agent.scale}-{chunk_rect.topleft}-{chunk_rect.size}"
+        )
+
+
+# noinspection PyPep8Naming
+class LIB_rM_Lines_ChunkingAgent:
+    CHUNK_SIZE = 100
+
+    def __init__(self, renderer: 'Renderer', base_rect: pe.Rect, lock: threading.Lock):
+        self.renderer = renderer
+        self.base_rect = base_rect  # As scaled to the document as base size
+        self.scale = 1  # Assuming no scale yet
+        self.lock = lock
+        self.cache = {}  # A hashmap to cache chunks
+
+    def get_chunks(self, rect: pe.Rect):
+        chunk_rects: List[pe.Rect] = []
+        x_offset = 0
+        y_offset = 0
+        while y_offset < rect.height:
+            while x_offset < rect.width:
+                chunk_rect = pe.Rect(
+                    x_offset,
+                    y_offset,
+                    self.CHUNK_SIZE,
+                    self.CHUNK_SIZE
+                )
+                chunk_rects.append(chunk_rect)
+                x_offset += self.CHUNK_SIZE
+            x_offset = 0
+            y_offset += self.CHUNK_SIZE
+
+        screen_rect = pe.Rect(0, 0, *pe.display.get_size())
+
+        chunks: List[LIB_rM_Lines_ChunkTask] = []
+        for chunk_rect in chunk_rects:
+            aligned_chunk_rect = chunk_rect.move(rect.topleft)
+            if not aligned_chunk_rect.colliderect(screen_rect):
+                continue
+            hash_of_chunk = LIB_rM_Lines_ChunkTask.generate_hash(self, chunk_rect)
+            if hash_of_chunk in self.cache:
+                chunks.append(self.cache[hash_of_chunk])
+                continue
+            chunk = LIB_rM_Lines_ChunkTask(
+                self.renderer,
+                self, chunk_rect
+            )
+            self.cache[hash_of_chunk] = chunk
+            chunks.append(chunk)
+        return chunks
+
+
 # noinspection PyPep8Naming
 class LIB_rM_Lines_ExpandedNotebook(ExpandedNotebook):
     def __init__(self, renderer: 'Renderer'):
         super().__init__(LIB_rM_Lines_SizeTracker(renderer))
         self.renderer = renderer
+        self.lock = threading.Lock()
 
-    def get_frame_from_initial(self, frame_x, frame_y, final_width: int = None, final_height: int = None) -> pe.Sprite:
-        print(f"frame: {frame_x}x{frame_y} {final_width}x{final_height}")
+    def get_frame_from_initial(self, frame_x, frame_y, final_width: int = None,
+                               final_height: int = None) -> LIB_rM_Lines_ChunkingAgent:
+        final_width = final_width or self.frame_width
+        final_height = final_height or self.frame_height
+        return LIB_rM_Lines_ChunkingAgent(
+            self.renderer,
+            pe.Rect(
+                frame_x * self.frame_width,
+                frame_y * self.frame_height,
+                final_width,
+                final_height
+            ), self.lock
+        )
 
     def update_scales(self, frames, scale: float):
-        pass
+        for frame in frames.values():
+            if not frame.loaded:
+                continue
+            frame.sprite.scale = scale
 
 
 # noinspection PyPep8Naming
@@ -117,10 +228,22 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
                 frame_x * expected_frame_sizes[0][0],
                 frame_y * expected_frame_sizes[0][1]
             )
-            icon_rect.center = rect.center
 
-            rotate_icon.display(icon_rect.topleft)
-            pe.draw.rect(Defaults.LINE_GRAY, rect, self.gui.ratios.line)
+            if self.gui.config.debug_viewer:
+                pe.draw.rect(Defaults.LINE_GRAY, rect, self.gui.ratios.line)
+
+            if frame_task.loaded:
+                frame: LIB_rM_Lines_ChunkingAgent = frame_task.sprite
+
+            chunks = frame.get_chunks(rect)
+            for chunk in chunks:
+                aligned_chunk_rect = chunk.chunk_rect.move(rect.topleft)
+                if not chunk.loaded:
+                    pe.draw.rect(Defaults.BUTTON_DISABLED_LIGHT_COLOR, aligned_chunk_rect)
+                else:
+                    chunk.image.display(aligned_chunk_rect.topleft)
+                if self.gui.config.debug_viewer:
+                    pe.draw.rect(pe.colors.red, aligned_chunk_rect, self.gui.ratios.line)
 
     def close(self):
         del self.tree
