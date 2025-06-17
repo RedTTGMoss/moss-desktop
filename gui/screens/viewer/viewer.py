@@ -58,6 +58,8 @@ class DocumentRenderer(pe.ChildContext):
         self.hold_timer = 0
         self.base_zoom = 1
         self._zoom = 1
+        self.min_zoom = 0.2
+        self.max_zoom = 3
         self.zoom_scaling_offset = (0, 0)
         self.zoom_reference_size = RM_SCREEN_SIZE
         self.last_zoom_time = time.time()
@@ -101,6 +103,7 @@ class DocumentRenderer(pe.ChildContext):
             self.notebook_renderer = Notebook_rM_Lines_Renderer(self)
         elif self.config.notebook_render_mode == 'librm_lines_renderer':
             self.notebook_renderer = Notebook_LIB_rM_Lines_Renderer(self)
+            self.max_zoom = 10
             self.enable_drawing = True
         else:
             self.close()
@@ -151,7 +154,7 @@ class DocumentRenderer(pe.ChildContext):
         if self.ctrl_hold and event.type == pe.pygame.MOUSEWHEEL:
             zoom_before = self.zoom
             self._zoom += event.y * self.ZOOM_SENSITIVITY * self.delta_time
-            self._zoom = max(0.2, min(3, self._zoom))
+            self._zoom = max(self.min_zoom, min(self.max_zoom, self._zoom))
             zoom_delta = zoom_before - self.zoom
 
             if zoom_delta:
