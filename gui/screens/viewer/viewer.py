@@ -230,16 +230,22 @@ class DocumentRenderer(pe.ChildContext):
     def can_do_previous(self):
         return self.current_page_index > 0
 
+    def reset_viewport(self):
+        self.base_zoom = 1
+        self._zoom = 1
+        # noinspection PyTypeChecker
+        if not self.draggable.active:
+            self.draggable.pos = (0, 0)
+        self.need_to_calculate_base_zoom = True
+
     def do_next(self):
         if self.can_do_next:
-            self.base_zoom = 1
-            self._zoom = 1
+            self.reset_viewport()
             self.current_page_index += 1
 
     def do_previous(self):
         if self.can_do_previous:
-            self.base_zoom = 1
-            self._zoom = 1
+            self.reset_viewport()
             self.current_page_index -= 1
 
     def handle_event(self, event):
