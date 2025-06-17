@@ -64,16 +64,9 @@ class LIB_rM_Lines_ChunkTask:
 
     def load(self):
         # We need to load the data now from the renderer
-
-        # self.rm_area = pe.Rect(-100, -100, 200, 200)
-
-        scale = (self.chunk_rect.width / self.rm_area.width)
         scaled_area = self.rm_area.copy()
-        # scaled_area.left -= scaled_area.width * scale
-        # scaled_area.top -= scaled_area.height * scale
 
         with self.agent.lock:
-            print(f"Getting the frame of {self.rm_area} AKA {scaled_area} with chunk {self.chunk_rect.size} {scale}")
             raw = self.renderer.get_frame_raw(
                 *scaled_area.topleft,
                 *scaled_area.size,
