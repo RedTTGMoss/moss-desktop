@@ -12,4 +12,4 @@ extism==1.0.4
 slashr==1.0.0
 rm_api==1.0.3
 rm_lines==1.0.1
-pylibrm_lines==1.1.3
+pylibrm_lines==1.1.4
