@@ -58,7 +58,7 @@ class I10nManager:
         box = self._translations[self._lang]
         try:
             return eval(f'box{split_keys(key_path)}')
-        except (KeyError, TypeError, AttributeError):
+        except (KeyError, TypeError, AttributeError, SyntaxError):
             return None
 
     def t(self, key: str, default: Optional[str] = None) -> str:
