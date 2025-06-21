@@ -67,6 +67,9 @@ class LIB_rM_Lines_ChunkTask:
         scaled_area = self.rm_area.copy()
 
         with self.agent.lock:
+            if self.scale != self.agent.scale:
+                # Since the scale already changed, we must skip this chunk render task to free the lock for other tasks
+                return
             raw = self.renderer.get_frame_raw(
                 *scaled_area.topleft,
                 *scaled_area.size,
