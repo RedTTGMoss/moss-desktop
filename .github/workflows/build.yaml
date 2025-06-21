@@ -69,7 +69,7 @@ jobs:
             LICENSE=LICENSE
             ${{ env.PYGAMEEXTRA_DIR }}/assets/font.ttf=pygameextra/assets/font.ttf
             ${{ matrix.os == 'windows-latest' && format('{0}/libpng16-16.dll=libpng16-16.dll', env.PYGAME_DIR) || '' }}
-            ${{ matrix.os == 'windows-latest' && format('{0}/extism_sys.dll=extism_sys/extism_sys.dll', env.EXTISM_DIR) || matrix.os == 'ubuntu-latest' && format('{0}/libextism_sys.so=extism_sys/libextism_sys.so', env.EXTISM_DIR) || format('{0}/libextism_sys.dylib=extism_sys/libextism_sys.dylib', env.EXTISM_DIR) }}
+            ${{ matrix.os == 'windows-latest' && format('{0}/extism_sys.so=extism_sys/extism_sys.so', env.EXTISM_DIR) || matrix.os == 'ubuntu-latest' && format('{0}/libextism_sys.so=extism_sys/libextism_sys.so', env.EXTISM_DIR) || format('{0}/libextism_sys.dylib=extism_sys/libextism_sys.dylib', env.EXTISM_DIR) }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
