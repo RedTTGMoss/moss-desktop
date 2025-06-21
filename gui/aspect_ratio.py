@@ -94,6 +94,7 @@ class Ratios:
         self.document_viewer_loading_square = int(100 * scale)
         self.document_viewer_loading_circle_radius = int(5 * scale)
         self.document_viewer_error_font_size = int(20 * scale)
+        self.document_viewer_rendering_status_margin = int(15 * scale)
         self.document_viewer_top_margin = int(10 * scale)
         self.document_viewer_top_rounding = int(5 * scale)
         self.document_viewer_top_outline = int(2 * scale)

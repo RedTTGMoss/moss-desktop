@@ -1,4 +1,6 @@
 import threading
+import math
+from random import shuffle
 
 from pylibrm_lines import SceneTree, FailedToBuildTree
 from pylibrm_lines.renderer import Renderer
@@ -8,7 +10,7 @@ from rm_lines import DocumentSizeTracker
 from gui.defaults import Defaults
 from gui.screens.viewer.renderers.notebook.expanded_notebook import ExpandedNotebook
 from gui.screens.viewer.renderers.shared_model import AbstractRenderer
-from typing import TYPE_CHECKING, Optional, List, Tuple
+from typing import TYPE_CHECKING, Optional, List, Tuple, Dict
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -60,7 +62,14 @@ class LIB_rM_Lines_ChunkTask:
         self.loaded = False
         self.scale = agent.scale
         self.image: pe.Image = None
-        threading.Thread(target=self.load, daemon=True).start()
+        agent.total_tasks += 1
+        threading.Thread(target=self._load, daemon=True).start()
+
+    def _load(self):
+        try:
+            self.load()
+        finally:
+            self.agent.total_tasks -= 1
 
     def load(self):
         # We need to load the data now from the renderer
@@ -91,14 +100,32 @@ class LIB_rM_Lines_ChunkTask:
 class LIB_rM_Lines_ChunkingAgent:
     CHUNK_SIZE = 100
 
-    def __init__(self, renderer: 'Renderer', base_rect: pe.Rect, lock: threading.Lock):
+    def __init__(self, renderer: 'Renderer', base_rect: pe.Rect, expanded_notebook: 'LIB_rM_Lines_ExpandedNotebook'):
         self.renderer = renderer
         self.base_rect = base_rect  # As scaled to the document as base size
         self.scale = 1  # Assuming no scale yet
-        self.lock = lock
+        self.expanded_notebook = expanded_notebook
         self.cache = {}  # A hashmap to cache chunks
 
-    def get_chunks(self, rect: pe.Rect):
+    @property
+    def lock(self):
+        return self.expanded_notebook.lock
+
+    @property
+    def total_tasks(self):
+        return self.expanded_notebook.tasks
+
+    @total_tasks.setter
+    def total_tasks(self, value: int):
+        self.expanded_notebook.tasks = value
+
+    def get_chunks(self, rect: pe.Rect, size_multiplier: float = 1):
+        chunk_size = int(self.CHUNK_SIZE * size_multiplier)
+        chunk_count = math.ceil(rect.width / chunk_size) * math.ceil(rect.height / chunk_size)
+        if chunk_count > 20:
+            # If we have too many chunks, we can maybe adjust the size a little
+            return self.get_chunks(rect, size_multiplier * 1.1)
+
         chunk_rects: List[pe.Rect] = []
         x_offset = 0
         y_offset = 0
@@ -107,17 +134,19 @@ class LIB_rM_Lines_ChunkingAgent:
                 chunk_rect = pe.Rect(
                     x_offset,
                     y_offset,
-                    self.CHUNK_SIZE,
-                    self.CHUNK_SIZE
+                    chunk_size,
+                    chunk_size
                 )
                 chunk_rects.append(chunk_rect)
-                x_offset += self.CHUNK_SIZE
+
+                x_offset += chunk_size
             x_offset = 0
-            y_offset += self.CHUNK_SIZE
+            y_offset += chunk_size
 
         screen_rect = pe.Rect(0, 0, *pe.display.get_size())
 
         chunks: List[LIB_rM_Lines_ChunkTask] = []
+        shuffle(chunk_rects)  # Randomize the order for more even rendering
         for chunk_rect in chunk_rects:
             aligned_chunk_rect = chunk_rect.move(rect.topleft)
             if not aligned_chunk_rect.colliderect(screen_rect):
@@ -134,18 +163,47 @@ class LIB_rM_Lines_ChunkingAgent:
             chunks.append(chunk)
         return chunks
 
+class LIB_rM_Lines_Preview:
+    def __init__(self, renderer: 'Renderer', frame_x: int, frame_y: int, lock: threading.Lock):
+        self._sprite: pe.Sprite = None
+        threading.Thread(target=self.load, args=(renderer, frame_x, frame_y, lock), daemon=True).start()
+
+    def get_preview(self, size) -> Optional[pe.Sprite]:
+        if not self._sprite:
+            return None
+        self._sprite.resize = size
+        return self._sprite
+
+    def load(self, renderer: 'Renderer', frame_x: int, frame_y: int, lock: threading.Lock):
+        with lock:
+            raw_frame = renderer.get_frame_raw(
+                frame_x * renderer.paper_size[0],
+                frame_y * renderer.paper_size[1],
+                *renderer.paper_size,
+                *renderer.paper_size
+            )
+        image = pe.pygame.image.frombytes(raw_frame, renderer.paper_size, 'RGBA')
+        self._sprite = pe.Sprite(image)
+
 
 # noinspection PyPep8Naming
 class LIB_rM_Lines_ExpandedNotebook(ExpandedNotebook):
     def __init__(self, renderer: 'Renderer'):
         super().__init__(LIB_rM_Lines_SizeTracker(renderer))
         self.renderer = renderer
+        self.previews: Dict[Tuple[int, int], LIB_rM_Lines_Preview] = {}
         self.lock = threading.Lock()
+        self.tasks = 0
+
+    def get_preview(self, frame_x: int, frame_y: int):
+        return self.previews.get((frame_x, frame_y))
 
     def get_frame_from_initial(self, frame_x, frame_y, final_width: int = None,
                                final_height: int = None) -> LIB_rM_Lines_ChunkingAgent:
         final_width = final_width or self.frame_width
         final_height = final_height or self.frame_height
+        if not self.previews.get(frame_hash := (frame_x, frame_y)):
+            self.previews[frame_hash] = LIB_rM_Lines_Preview(self.renderer, frame_x, frame_y, self.lock)
         return LIB_rM_Lines_ChunkingAgent(
             self.renderer,
             pe.Rect(
@@ -153,7 +211,7 @@ class LIB_rM_Lines_ExpandedNotebook(ExpandedNotebook):
                 frame_y * self.frame_height,
                 final_width,
                 final_height
-            ), self.lock
+            ), self
         )
 
     def update_scales(self, frames, scale: float):
@@ -177,6 +235,8 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
         self.rm_render_rect = None
         self.error = None
         self.current_page_uuid = None
+        self.rotate_icon = self.gui.icons['rotate']
+        self.icon_rect = pe.Rect(0, 0, *self.rotate_icon.size)
 
     def _load(self, page_uuid: str):
         try:
@@ -214,11 +274,9 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
 
         expected_frame_sizes = self.get_expected_frame_sizes()
 
-        rotate_icon = self.gui.icons['rotate']
-
         for (frame_x, frame_y), frame_task in frames.items():
             rect = pe.Rect(0, 0, *expected_frame_sizes[0])
-            icon_rect = pe.Rect(0, 0, *rotate_icon.size)
+
             rect.center = self.document_renderer.center
             rect.move_ip(
                 frame_x * expected_frame_sizes[0][0],
@@ -230,16 +288,32 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
 
             if frame_task.loaded:
                 frame: LIB_rM_Lines_ChunkingAgent = frame_task.sprite
+            else:
+                continue
+
+            preview = self.expanded_notebook.get_preview(frame_x, frame_y)
+            preview_sprite = preview.get_preview(rect.size) if preview else None
+            preview_frame = preview_sprite.get_finished_surface() if preview_sprite else None
 
             chunks = frame.get_chunks(rect)
             for chunk in chunks:
                 aligned_chunk_rect = chunk.chunk_rect.move(rect.topleft)
-                if not chunk.loaded:
-                    pe.draw.rect(Defaults.BUTTON_DISABLED_LIGHT_COLOR, aligned_chunk_rect)
-                else:
+                if chunk.loaded:
                     chunk.image.display(aligned_chunk_rect.topleft)
+                elif preview_frame:
+                    pe.display.blit(preview_frame, aligned_chunk_rect.topleft, chunk.chunk_rect)
                 if self.gui.config.debug_viewer:
                     pe.draw.rect(pe.colors.red, aligned_chunk_rect, self.gui.ratios.line)
+
+        if self.expanded_notebook.tasks > 0:
+            # Chunk rendering is happening, display a loading icon.
+
+            self.icon_rect.bottomright = self.gui.size
+            self.icon_rect.move_ip(
+                -self.gui.ratios.document_viewer_rendering_status_margin,
+                -self.gui.ratios.document_viewer_rendering_status_margin
+            )
+            self.rotate_icon.display(self.icon_rect.topleft)
 
     def close(self):
         del self.tree

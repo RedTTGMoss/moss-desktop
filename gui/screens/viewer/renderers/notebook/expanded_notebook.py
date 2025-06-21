@@ -5,11 +5,11 @@ import pygameextra as pe
 from pygameextra import settings
 
 from gui.screens.viewer.renderers.shared_model import LoadTask
-from rm_lines.inker.document_size_tracker import NotebookSizeTracker
+from rm_lines.inker.document_size_tracker import DocumentSizeTracker
 
 
 class ExpandedNotebook(ABC):
-    def __init__(self, track_xy: NotebookSizeTracker):
+    def __init__(self, track_xy: DocumentSizeTracker):
         self.frame_width = track_xy.frame_width
         self.frame_height = track_xy.frame_height
         self.frame_size = (self.frame_width, self.frame_height)
