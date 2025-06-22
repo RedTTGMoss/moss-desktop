@@ -6,6 +6,7 @@ import sys
 import time
 from numbers import Number
 from os import makedirs
+from pprint import pformat
 from typing import TypedDict, Union, TYPE_CHECKING
 
 import appdirs
@@ -91,6 +92,7 @@ class ConfigDict(TypedDict):
     add_ext_to_raw_exports: bool
     debug: bool
     debug_log: bool
+    debug_api_events: bool
     debug_disable_lines_alignment: bool
     debug_lines: bool
     debug_viewer: bool
@@ -129,6 +131,7 @@ DEFAULT_CONFIG: ConfigDict = {
     'add_ext_to_raw_exports': True,
     'debug': False,
     'debug_log': False,
+    'debug_api_events': False,
     'debug_disable_lines_alignment': False,
     'debug_lines': False,
     'debug_viewer': False,
@@ -573,6 +576,8 @@ class GUI(pe.GameContext):
             self.quit()
 
     def handle_api_event(self, e):
+        if self.config.debug_api_events:
+            print(f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(e.__dict__)}{Fore.RESET}")
         if isinstance(e, APIFatal):
             self.quit_next = True
             self.api.log(msg := "A FATAL API ERROR OCCURRED, CRASHING!")

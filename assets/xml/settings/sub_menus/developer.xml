@@ -12,6 +12,9 @@
     <toggle key="debug_log">settings.developer.debug.toggle_log.label</toggle>
     <subtext>settings.developer.debug.toggle_log.footnote</subtext>
 
+    <toggle key="debug_api_events">settings.developer.debug.toggle_events.label</toggle>
+    <subtext>settings.developer.debug.toggle_events.footnote</subtext>
+
     <toggle key="debug_disable_lines_alignment">settings.developer.debug.toggle_alignment.label</toggle>
     <subtext>settings.developer.debug.toggle_alignment.footnote</subtext>
 
