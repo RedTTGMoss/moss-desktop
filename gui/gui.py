@@ -16,7 +16,7 @@ from box import Box
 from colorama import Fore, Style
 from rm_api.auth import FailedToRefreshToken
 from rm_api.models import make_uuid
-from rm_api.notifications.models import APIFatal
+from rm_api.notifications.models import APIFatal, Notification, LongLasting
 
 from .events import ResizeEvent, MossFatal, ScreenClosure
 from .literals import PDF_RENDER_MODES, NOTEBOOK_RENDER_MODES, MAIN_MENU_MODES, MAIN_MENU_LOCATIONS, \
@@ -577,7 +577,8 @@ class GUI(pe.GameContext):
 
     def handle_api_event(self, e):
         if self.config.debug_api_events:
-            print(f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(e.__dict__)}{Fore.RESET}")
+            event_dict = {k: v.__dict__ if isinstance(v, Notification) or isinstance(v, LongLasting) else v for k, v in e.__dict__.items()}
+            print(f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(event_dict)}{Fore.RESET}")
         if isinstance(e, APIFatal):
             self.quit_next = True
             self.api.log(msg := "A FATAL API ERROR OCCURRED, CRASHING!")
