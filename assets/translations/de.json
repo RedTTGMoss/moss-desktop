@@ -134,8 +134,8 @@
                 },
                 "warning": "Einige davon erfordern einen Neustart, um wirksam zu werden!",
                 "toggle_events": {
-                    "label": "Enable debug event log",
-                    "footnote": "Show event details for each event that is received on the event hook"
+                    "label": "Debug-Ereignisprotokoll aktivieren",
+                    "footnote": "Ereignisdetails für jedes Ereignis anzeigen, das am Ereignis-Hook empfangen wird"
                 }
             },
             "debug_exports": {
