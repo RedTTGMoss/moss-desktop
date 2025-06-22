@@ -132,7 +132,11 @@
                     "footnote": "This enables info UI for the document viewer. It's useful for debugging issues with alignment or scale.",
                     "label": "Enable document viewer debug"
                 },
-                "warning": "Some of these require a restart to take effect!"
+                "warning": "Some of these require a restart to take effect!",
+                "toggle_events": {
+                    "label": "Enable debug event log",
+                    "footnote": "Show event details for each event that is received on the event hook"
+                }
             },
             "debug_exports": {
                 "description": "These options are for debug exports on documents",
