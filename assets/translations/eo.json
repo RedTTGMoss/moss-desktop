@@ -132,7 +132,11 @@
                     "footnote": "Ĉi tio ebligas la info-interfacon por la dokumentospektilo. Ĝi utilas por sencimigi problemojn pri vicigo aŭ skalo.",
                     "label": "Ebligi sencimigadon de dokumentospektilo"
                 },
-                "warning": "Kelkaj el ĉi tiuj postulas rekomencon por ekvalidi!"
+                "warning": "Kelkaj el ĉi tiuj postulas rekomencon por ekvalidi!",
+                "toggle_events": {
+                    "label": "Enable debug event log",
+                    "footnote": "Show event details for each event that is received on the event hook"
+                }
             },
             "debug_exports": {
                 "description": "Ĉi tiuj opcioj estas por sencimigi eksportojn en dokumentoj",

@@ -132,7 +132,11 @@
                     "footnote": "Dadurch wird die Info-Benutzeroberfläche für den Dokument Betrachter aktiviert. Dies ist hilfreich beim Debuggen von Problemen mit Ausrichtung oder Skalierung.",
                     "label": "Dokumenten-Viewer-Debug aktivieren"
                 },
-                "warning": "Einige davon erfordern einen Neustart, um wirksam zu werden!"
+                "warning": "Einige davon erfordern einen Neustart, um wirksam zu werden!",
+                "toggle_events": {
+                    "label": "Enable debug event log",
+                    "footnote": "Show event details for each event that is received on the event hook"
+                }
             },
             "debug_exports": {
                 "description": "Diese Optionen sind für Debug-Exporte von Dokumenten",

@@ -132,7 +132,11 @@
                     "footnote": "启用文档查看器的调试信息 UI。 用于排查对齐或缩放问题。",
                     "label": "启用文档查看器调试"
                 },
-                "warning": "其中一些更改需要重启后才会生效！"
+                "warning": "其中一些更改需要重启后才会生效！",
+                "toggle_events": {
+                    "label": "Enable debug event log",
+                    "footnote": "Show event details for each event that is received on the event hook"
+                }
             },
             "debug_exports": {
                 "description": "这些选项用于导出文档时的调试信息",
