@@ -163,6 +163,7 @@ class LIB_rM_Lines_ChunkingAgent:
             chunks.append(chunk)
         return chunks
 
+
 class LIB_rM_Lines_Preview:
     def __init__(self, renderer: 'Renderer', frame_x: int, frame_y: int, lock: threading.Lock):
         self._sprite: pe.Sprite = None
@@ -237,15 +238,24 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
         self.current_page_uuid = None
         self.rotate_icon = self.gui.icons['rotate']
         self.icon_rect = pe.Rect(0, 0, *self.rotate_icon.size)
+        self.unloadable_pages = set()
 
     def _load(self, page_uuid: str):
+        # if self.document.content_data.get(file_uuid := f'{self.document.uuid}/{page_uuid}.rm'):
         try:
             self.tree = SceneTree.from_document(self.document, page_uuid)
+            self.error = None
+        except FileNotFoundError:
+            self.tree = None
+            self.error = None
         except FailedToBuildTree:
+            self.tree = None
+            self.unloadable_pages.add(page_uuid)
             self.error = self.FAILED_TO_BUILD_TREE_ERROR
             return
-        self.renderer = Renderer(self.tree)
-        self.expanded_notebook = LIB_rM_Lines_ExpandedNotebook(self.renderer)
+        if self.tree:
+            self.renderer = Renderer(self.tree)
+            self.expanded_notebook = LIB_rM_Lines_ExpandedNotebook(self.renderer)
         self.document_renderer.loading -= 1
 
     def load(self):
@@ -261,8 +271,12 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
         pass
 
     def render(self, page_uuid: str):
-        if (self.tree and self.tree.page_uuid != page_uuid) or self.current_page_uuid != page_uuid:
+        if page_uuid not in self.unloadable_pages and (
+                self.tree and self.tree.page_uuid != page_uuid
+        ) or self.current_page_uuid != page_uuid:
             self.check_and_load_page(page_uuid)
+            return
+        if not self.tree:
             return
         if self.error:
             return
@@ -316,4 +330,9 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
             self.rotate_icon.display(self.icon_rect.topleft)
 
     def close(self):
-        del self.tree
+        if not self.tree:
+            return
+        try:
+            del self.tree
+        except ValueError:
+            pass

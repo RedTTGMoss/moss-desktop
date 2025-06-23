@@ -141,6 +141,9 @@ class DocumentRenderer(pe.ChildContext):
 
     @error.setter
     def error(self, value):
+        if value is None:
+            self._error = None
+            return
         self._error = pe.Text(
             t(value),
             Defaults.DOCUMENT_ERROR_FONT,
