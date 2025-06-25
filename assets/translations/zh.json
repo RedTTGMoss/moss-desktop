@@ -24,7 +24,8 @@
             "prepare_operations": "Preparing operations",
             "upload": "Uploading",
             "update_root": "Updating root",
-            "sync": "Syncing"
+            "sync": "Syncing",
+            "download_content": "Downloading"
         }
     },
     "menu": {
