@@ -7,13 +7,13 @@ from typing import Dict, Tuple, Union, TYPE_CHECKING
 
 import pygameextra as pe
 from pygameextra import settings
+from rm_api import Document
+from rm_lines import rm_bytes_to_svg
+from rm_lines.inker.document_size_tracker import NotebookSizeTracker
 
 from gui.defaults import Defaults
 from gui.screens.viewer.renderers.notebook.expanded_notebook import ExpandedNotebook
 from gui.screens.viewer.renderers.shared_model import AbstractRenderer
-from rm_api import Document
-from rm_lines import rm_bytes_to_svg
-from rm_lines.inker.document_size_tracker import NotebookSizeTracker
 
 if TYPE_CHECKING:
     pass
@@ -66,13 +66,18 @@ class rM_Lines_ExpandedNotebook(ExpandedNotebook):
         # else:
         # TODO: Instead of rendering each page render the SVG once and then slice it
         #  or use something else to render SVGs
-        return pe.Sprite(BytesIO(encoded_svg_content), (final_width, final_height))
+        if self.lock:
+            with self.use_lock:
+                return pe.Sprite(BytesIO(encoded_svg_content), (final_width, final_height))
+        else:
+            return pe.Sprite(BytesIO(encoded_svg_content), (final_width, final_height))
 
     def update_scales(self, frames, scale: float):
         for frame in frames.values():
             if not frame.loaded:
                 continue
             frame.sprite.scale = (scale, scale)
+
 
 # noinspection PyPep8Naming
 class Notebook_rM_Lines_Renderer(AbstractRenderer):

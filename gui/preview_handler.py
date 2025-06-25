@@ -4,13 +4,13 @@ from traceback import print_exc
 from typing import Dict, Tuple, List, Optional
 
 import pygameextra as pe
-
-from gui.defaults import Defaults
-from gui.screens.viewer.renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
 from rm_api import Document
 from rm_api.models import Page
 from rm_api.storage.common import FileHandle
-from rm_api.storage.v3 import get_file_contents, check_file_exists
+from rm_api.storage.v3 import get_file_contents, check_file_exists, CacheMiss
+
+from gui.defaults import Defaults
+from gui.screens.viewer.renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
 
 try:
     import pymupdf
@@ -24,6 +24,7 @@ class PreviewHandler:
     CACHED_PREVIEW: Dict[str, Tuple[str, Optional[pe.Sprite]]] = {}
     PREVIEW_LOAD_TASKS: List[str] = []
     PYGAME_THREAD_LOCK = threading.Lock()
+    TASK_LOCK = threading.Lock()
 
     @classmethod
     def get_preview(cls, document: Document, size: Tuple[int, int]) -> Optional[pe.Sprite]:
@@ -58,7 +59,8 @@ class PreviewHandler:
                 return preview[1]
         # If the preview is not cached, load it
         if os.path.exists(location):
-            sprite = pe.Sprite(location)
+            with PreviewHandler.PYGAME_THREAD_LOCK:
+                sprite = pe.Sprite(location)
             cls.CACHED_PREVIEW[document_id] = (page_id, sprite)
             return cls._get_preview(document)
 
@@ -73,7 +75,8 @@ class PreviewHandler:
     @classmethod
     def handle_loading_task(cls, loading_task, document: Document, page_id: str):
         try:
-            cls._handle_loading_task(document, page_id)
+            with cls.TASK_LOCK:
+                cls._handle_loading_task(document, page_id)
         except:
             print_exc()
             cls.CACHED_PREVIEW[document.uuid] = (page_id, None)
@@ -94,8 +97,11 @@ class PreviewHandler:
 
             if page and page.redirect:
                 pdf_file = document.files_available.get(f'{document.uuid}.pdf')
-
-                document.load_files_from_cache()
+                try:
+                    document.load_files_from_cache()
+                except CacheMiss:
+                    cls.CACHED_PREVIEW[document.uuid] = (page_id, None)
+                    return
 
                 if pdf_file and (stream := document.content_data.get(pdf_file.uuid)) and pymupdf:
                     if isinstance(stream, FileHandle):
@@ -116,8 +122,9 @@ class PreviewHandler:
                     pix = pdf_page.get_pixmap(matrix=matrix)
                     mode = "RGBA" if pix.alpha else "RGB"
                     # noinspection PyTypeChecker
-                    base_img = pe.Surface(
-                        surface=pe.pygame.image.frombuffer(pix.samples, (pix.width, pix.height), mode))
+                    with PreviewHandler.PYGAME_THREAD_LOCK:
+                        base_img = pe.Surface(
+                            surface=pe.pygame.image.frombuffer(pix.samples, (pix.width, pix.height), mode))
 
         if not document.provision:
             document.unload_files()

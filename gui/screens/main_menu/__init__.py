@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Dict, List, Union
 import pygameextra as pe
 from rm_api.models import Document
 from rm_api.notifications.models import SyncRefresh, FileSyncProgress, NewDocuments, DocumentSyncProgress
+from rm_api.sync_stages import DOWNLOAD_CONTENT
 
 from gui.defaults import Defaults
 from gui.events import ResizeEvent
@@ -330,6 +331,10 @@ class MainMenu(pe.ChildContext):
             draw_bottom_loading_bar(self.parent_context, 1, 1, finish=True)
         elif time.time() - loader.loading_complete_marker < 1:  # For 1 second after loading is complete
             draw_bottom_loading_bar(self.parent_context, 1, 1, finish=True)
+        elif self.api.downloading:
+            self.previous_t = draw_bottom_loading_bar(self.parent_context, self.api.download_done,
+                                                      self.api.download_total,
+                                                      self.previous_t, False, DOWNLOAD_CONTENT, True)
 
     def _critical_event_hook(self, event):
         if isinstance(event, ResizeEvent):

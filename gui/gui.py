@@ -576,8 +576,9 @@ class GUI(pe.GameContext):
             self.quit()
 
     def handle_api_event(self, e):
-        if self.config.debug_api_events:
-            event_dict = {k: v.__dict__ if isinstance(v, Notification) or isinstance(v, LongLasting) else v for k, v in e.__dict__.items()}
+        if self.config.debug_api_events and self.running:
+            event_dict = {k: v.__dict__ if isinstance(v, Notification) or isinstance(v, LongLasting) else v for k, v in
+                          e.__dict__.items()}
             print(f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(event_dict)}{Fore.RESET}")
         if isinstance(e, APIFatal):
             self.quit_next = True

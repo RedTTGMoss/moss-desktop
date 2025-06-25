@@ -3,13 +3,13 @@ from math import ceil
 from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
+from rm_api import DocumentCollection, Document
 
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
 from gui.literals import MAIN_MENU_MODES
 from gui.rendering import render_document, render_collection
 from gui.screens.scrollable_view import ScrollableView
-from rm_api import DocumentCollection, Document
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -226,6 +226,8 @@ class DocumentTreeViewer(ScrollableView, ABC):
                     if document_sync_operation.finished:
                         del self.gui.main_menu.document_sync_operations[document.uuid]
                         document_sync_operation = None
+                elif document.downloading:
+                    document_sync_operation = document.download_progress
                 else:
                     document_sync_operation = None
                 render_document(self.gui, rect, self.texts, document, document_sync_operation,

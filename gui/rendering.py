@@ -2,6 +2,8 @@ from functools import lru_cache
 from typing import TYPE_CHECKING, Dict, Tuple, Optional
 
 import pygameextra as pe
+from humanize import naturalsize
+from rm_api import DocumentSyncProgress, STAGE_SYNC
 
 from gui.defaults import Defaults
 from gui.pp_helpers import FullTextPopup, DocumentDebugPopup
@@ -9,7 +11,6 @@ from gui.preview_handler import PreviewHandler
 from gui.screens.viewer import DocumentViewer
 from gui.screens.viewer.viewer import CannotRenderDocument
 from gui.sync_stages import SYNC_STAGE_ICONS
-from rm_api import DocumentSyncProgress, STAGE_SYNC
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -216,7 +217,7 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
         sub_text.display()
 
     # Render the notebook icon if there is no preview
-    preview = PreviewHandler.get_preview(document, rect.size)
+    preview = PreviewHandler.get_preview(document, rect.size) if gui.loader.files_to_load is None else None
     if not preview:
         notebook_large: pe.Image = gui.icons['notebook_large'].copy()
         notebook_large.resize(tuple(v * scale for v in notebook_large.size))
@@ -228,15 +229,18 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
 
     # Render the availability cloud icon
     is_problematic = not document.content.usable or document.uuid in DocumentViewer.PROBLEMATIC_DOCUMENTS
+    cloud_icon: Optional[pe.Image] = None
     if is_problematic or not document.available or document.provision:
-        if document.downloading:
-            cloud_icon: pe.Image = gui.icons['cloud_download']
+        if document_sync_operation and document.downloading:
+            if document_sync_operation.done == 0:
+                cloud_icon = gui.icons['cloud_download']
         elif document.provision:
-            cloud_icon: pe.Image = gui.icons['export']
+            cloud_icon = gui.icons['export']
         elif is_problematic:
-            cloud_icon: pe.Image = gui.icons['warning_circle']
+            cloud_icon = gui.icons['warning_circle']
         else:
-            cloud_icon: pe.Image = gui.icons['cloud']
+            cloud_icon = gui.icons['cloud']
+    if cloud_icon:
         cloud_icon_rect = pe.Rect(0, 0, *cloud_icon.size)
 
         # Add padding
@@ -309,7 +313,7 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
         else:
             open_document_debug_menu(gui, document, inflated_rect.topleft)
 
-    if document.provision and document_sync_operation:
+    if document_sync_operation and (document.provision or document.downloading) and document_sync_operation.done > 0:
         progress_rect = rect.copy()
         progress_rect.width -= gui.ratios.document_sync_progress_margin * 2
         progress_rect.height = gui.ratios.document_sync_progress_height
@@ -427,7 +431,8 @@ def draw_bottom_loading_bar(
         gui: 'GUI',
         current: int, total: int,
         previous_t: float = 0,
-        finish: bool = False, stage: int = STAGE_SYNC
+        finish: bool = False, stage: int = STAGE_SYNC,
+        is_bytes: bool = False,
 ):
     draw_bottom_bar(gui)
     bottom_bar_rect = get_bottom_bar_rect(gui)
@@ -442,7 +447,7 @@ def draw_bottom_loading_bar(
     t = (current / total) if total else 0
     if t == 0 or t == 1:
         smooth_t = t
-    elif abs(t - previous_t) > 0.01:
+    elif abs(t - previous_t) > 0.05:
         smooth_t = previous_t + (t - previous_t) * pe.settings.game_context.delta_time * 10
     else:
         smooth_t = t
@@ -475,7 +480,11 @@ def draw_bottom_loading_bar(
             icon = base_icon
             icon_rect = base_icon_rect
 
-        text = pe.Text(f"{current} / {total}", Defaults.MAIN_MENU_PROGRESS_FONT, gui.ratios.bottom_bar_size,
+        if is_bytes:
+            text_str = f"{naturalsize(current)} / {naturalsize(total)}"
+        else:
+            text_str = f"{current} / {total}"
+        text = pe.Text(text_str, Defaults.MAIN_MENU_PROGRESS_FONT, gui.ratios.bottom_bar_size,
                        colors=Defaults.TEXT_COLOR_H)
 
         # Position the texts and icon

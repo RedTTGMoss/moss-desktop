@@ -8,4 +8,4 @@ NOTEBOOK_RENDER_MODES = Literal[
 CONTEXT_BAR_DIRECTIONS = Literal['down', 'right']
 DOCUMENT_VIEWER_MODES = Literal['free', 'read']
 SYNC_STAGE_ICON_TYPES = Literal[
-    'rotate_inverted', 'export_inverted', 'import_inverted', 'pencil_inverted', 'filter_inverted']
+    'rotate_inverted', 'export_inverted', 'import_inverted', 'pencil_inverted', 'filter_inverted', 'cloud_download_inverted']

@@ -10,6 +10,7 @@ pygameextra==2.0.84
 pymupdf==1.25.0
 extism==1.0.4
 slashr==1.0.0
-rm_api==1.0.3
+rm_api==1.1.0
 rm_lines==1.0.1
 pylibrm_lines==1.1.5
+humanize>=4.12.3

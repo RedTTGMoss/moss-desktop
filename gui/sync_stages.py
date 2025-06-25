@@ -1,7 +1,8 @@
 from typing import Dict
 
-from gui.literals import SYNC_STAGE_ICON_TYPES
 from rm_api.sync_stages import *
+
+from gui.literals import SYNC_STAGE_ICON_TYPES
 
 SYNC_STAGE_TEXTS = {
     STAGE_START: "sync.stages.start",
@@ -15,6 +16,7 @@ SYNC_STAGE_TEXTS = {
     STAGE_UPLOAD: "sync.stages.upload",
     STAGE_UPDATE_ROOT: "sync.stages.update_root",
     STAGE_SYNC: "sync.stages.sync",
+    DOWNLOAD_CONTENT: "sync.stages.download_content",
 }
 
 SYNC_STAGE_ICONS: Dict[int, SYNC_STAGE_ICON_TYPES] = {
@@ -29,4 +31,5 @@ SYNC_STAGE_ICONS: Dict[int, SYNC_STAGE_ICON_TYPES] = {
     STAGE_UPLOAD: "rotate_inverted",
     STAGE_UPDATE_ROOT: "pencil_inverted",
     STAGE_SYNC: "rotate_inverted",
+    DOWNLOAD_CONTENT: "cloud_download_inverted",
 }
