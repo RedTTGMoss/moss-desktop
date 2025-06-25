@@ -24,7 +24,8 @@
             "prepare_operations": "Preparante operaciojn",
             "upload": "Alŝutado",
             "update_root": "Ĝisdatigante radikan abonanton",
-            "sync": "Sinkronigado"
+            "sync": "Sinkronigado",
+            "download_content": "Downloading"
         }
     },
     "menu": {
