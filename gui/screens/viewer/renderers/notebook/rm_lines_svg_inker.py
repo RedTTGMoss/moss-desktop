@@ -66,7 +66,7 @@ class rM_Lines_ExpandedNotebook(ExpandedNotebook):
         # else:
         # TODO: Instead of rendering each page render the SVG once and then slice it
         #  or use something else to render SVGs
-        if self.lock:
+        if self.use_lock:
             with self.use_lock:
                 return pe.Sprite(BytesIO(encoded_svg_content), (final_width, final_height))
         else:
