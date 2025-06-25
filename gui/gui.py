@@ -270,6 +270,7 @@ class GUI(pe.GameContext):
 
     extension_manager: 'ExtensionManager'
     loader: 'Loader'
+    api: 'API'
 
     def __init__(self):
         global _defaults_module, Defaults

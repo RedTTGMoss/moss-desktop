@@ -244,6 +244,11 @@ class Loader(pe.ChildContext, LogoMixin):
 
         self.loading_complete_marker = time.time()
 
+        if self.config.download_everything:
+            for document in self.api.documents.values():
+                if not document.available and not document.downloading:
+                    document.ensure_download_and_callback(document.unload_files)
+
     def load_image(self, key, file, multiplier: float = 1):
         self.icons[key] = pe.Image(file)
         self.icons[key].resize(tuple(self.ratios.pixel(v * multiplier) for v in self.icons[key].size))

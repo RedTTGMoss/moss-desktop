@@ -183,8 +183,9 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
     # Start downloading the document if it's not available and not downloading
     # If the config specifies to download everything, download everything
     # In this case it will only download it when it shows up on the screen
-    if gui.config.download_everything and not document.available and not document.downloading:
-        document.ensure_download_and_callback(lambda: PreviewHandler.clear_for(document.uuid))
+    # TODO: Remove this deprecated code
+    # if gui.config.download_everything and not document.available and not document.downloading:
+    #     document.ensure_download_and_callback(lambda: PreviewHandler.clear_for(document.uuid))
 
     # Draw black outline if selected
     if selected:
