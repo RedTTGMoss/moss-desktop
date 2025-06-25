@@ -24,7 +24,8 @@
             "prepare_operations": "Vorgänge vorbereiten",
             "upload": "Hochladen",
             "update_root": "Root aktualisieren",
-            "sync": "Synchronisiere"
+            "sync": "Synchronisiere",
+            "download_content": "Downloading"
         }
     },
     "menu": {
