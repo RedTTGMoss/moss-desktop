@@ -25,7 +25,7 @@
             "upload": "Alŝutado",
             "update_root": "Ĝisdatigante radikan abonanton",
             "sync": "Sinkronigado",
-            "download_content": "Downloading"
+            "download_content": "Elŝuti"
         }
     },
     "menu": {
@@ -135,8 +135,8 @@
                 },
                 "warning": "Kelkaj el ĉi tiuj postulas rekomencon por ekvalidi!",
                 "toggle_events": {
-                    "label": "Enable debug event log",
-                    "footnote": "Show event details for each event that is received on the event hook"
+                    "label": "Ebligi sencimigan okazaĵprotokolon",
+                    "footnote": "Montri okazaĵajn detalojn por ĉiu evento ricevita sur la okazaĵa hoko"
                 }
             },
             "debug_exports": {
