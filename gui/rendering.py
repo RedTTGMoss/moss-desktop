@@ -458,6 +458,11 @@ def draw_bottom_loading_bar(
     if total > 0:
         loading_bar_rect.width = int(loading_bar_rect.width * smooth_t)
 
+        if loading_bar_rect.width < loading_bar_rect.height / 2:
+            loading_bar_rect.width = 0
+        elif loading_bar_rect.width < loading_bar_rect.height:
+            loading_bar_rect.width = loading_bar_rect.height
+
     pe.draw.rect(Defaults.BACKGROUND, loading_bar_rect, 0, edge_rounding=gui.ratios.bottom_loading_bar_rounding)
 
     # Make and show text of current / total
