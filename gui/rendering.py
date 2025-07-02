@@ -420,11 +420,11 @@ def get_bottom_bar_rect(gui: 'GUI'):
     return pe.Rect(0, gui.height - gui.ratios.bottom_bar_height, gui.width, gui.ratios.bottom_bar_height)
 
 
-def draw_bottom_bar(gui: 'GUI'):
+def draw_bottom_bar(gui: 'GUI', rect=None):
     # The entire lower bar
     pe.draw.rect(
         Defaults.SELECTED,
-        get_bottom_bar_rect(gui)
+        rect or get_bottom_bar_rect(gui)
     )
 
 
@@ -435,8 +435,9 @@ def draw_bottom_loading_bar(
         finish: bool = False, stage: int = STAGE_SYNC,
         is_bytes: bool = False,
 ):
-    draw_bottom_bar(gui)
     bottom_bar_rect = get_bottom_bar_rect(gui)
+    draw_bottom_bar(gui, bottom_bar_rect)
+
     loading_bar_rect = pe.Rect(0, 0, gui.ratios.bottom_loading_bar_width, gui.ratios.bottom_loading_bar_height)
     loading_bar_rect.midright = bottom_bar_rect.midright
     loading_bar_rect.x -= gui.ratios.bottom_loading_bar_padding
