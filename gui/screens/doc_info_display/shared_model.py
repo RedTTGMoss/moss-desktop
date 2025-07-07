@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
+from pprint import pformat
 
 from rm_api import Document, DocumentCollection, DocumentSyncProgress
 
@@ -19,7 +20,7 @@ class DocInfoState:
     def __init__(self, document: Union[Document, DocumentCollection], manager: 'DocInfoDisplay'):
         self.gui = manager.gui
         self.document = document
-        self.current_state = self.get_state()
+        self.render_info: Optional[RenderInfo] = None
         self.manager = manager
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
@@ -41,6 +42,7 @@ class DocInfoState:
             name=f'doc_info_area_<{document.uuid}>',
         )
         self.frame: Optional[pe.Surface] = None
+        self.current_state = self.get_state()
 
     @property
     def rect(self):
@@ -49,7 +51,6 @@ class DocInfoState:
     @rect.setter
     def rect(self, value: pe.Rect):
         self._rect = value
-        self.button.area = value  # Update the button area to match the rect
 
     @property
     def is_document(self):
@@ -68,6 +69,7 @@ class DocInfoState:
             'uuid': self.document.uuid,
             'name': self.document.metadata.visible_name,
             'last_modified': self.document.metadata.last_modified,
+            'hovered': self.button.hovered,
         }
 
     def _get_document_state(self):
@@ -137,34 +139,35 @@ class DocInfoDisplay(ABC):
         self.update(state, area, state.button.hovered)
         self.render(state, area, offset_x, offset_y)
 
-    def update(self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False):
+    def update(self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False) -> bool:
         if not area:
             area = pe.Rect(*self.viewer.AREA)
         if state.needs_refresh() or state.scale != self.viewer.scale or force_update:
+            state.current_state = state.get_state()
             state.render_info = self.get_render_info(state)
             state.scale = self.viewer.scale
         elif not force_update:
-            return
+            return False
         if state.is_document:
             state.frame = self.render_document(state, area)
         else:
             state.frame = self.render_collection(state, area)
         if state.frame is not None:
             state.rect.size = state.frame.size  # Update the area of the button to match the rendered size
+        return True
 
     def render(self, state: DocInfoState, area: pe.Rect, offset_x: int, offset_y: int):
         """
         Renders the item frame if available.
         """
-        state.rect.left = offset_x
-        state.rect.top = offset_y
+        rect = state.rect.move(offset_x, offset_y)
         if not state.frame:
-            pe.draw.rect(Defaults.BACKGROUND_ERROR, state.rect, 0,
+            pe.draw.rect(Defaults.BACKGROUND_ERROR, rect, 0,
                          edge_rounding=self.gui.ratios.error_edge_rounding)
         else:
-            pe.display.blit(state.frame, state.rect.topleft)  # Clip the frame to an area
+            pe.display.blit(state.frame, rect.topleft)  # Clip the frame to an area
         pe.settings.game_context.buttons.append(state.button)
-        state.button.area = state.rect.clip(pe.Rect(0, 0, *area.size))
+        state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
         pe.button.check_hover(state.button)
 
     @abstractmethod

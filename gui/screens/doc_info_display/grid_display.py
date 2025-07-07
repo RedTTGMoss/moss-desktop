@@ -3,14 +3,27 @@ import time
 import pygameextra as pe
 
 from .shared_model import DocInfoDisplay, DocInfoState
+from ...defaults import Defaults
 
 
 class GridDocInfoDisplay(DocInfoDisplay):
     def render_collection(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
-        surface = pe.Surface((self.viewer.document_width, self.viewer.document_height))
+        icon: pe.Sprite = self.gui.icons[(state.render_info.icon or 'folder') + ('_inverted' if state.render_info.selected else '')]
+        rect = pe.Rect(
+            0, 0, self.viewer.document_width, icon.height
+        )
+        rect.inflate_ip(state.gui.ratios.main_menu_folder_margin_x, state.gui.ratios.main_menu_folder_margin_y)
+        state.rect = rect
+        surface = pe.Surface(state.rect.size)
+
+        icon_position = (
+            state.gui.ratios.main_menu_folder_margin_x // 2,
+            state.gui.ratios.main_menu_folder_margin_y // 2
+        )
         with surface:
-            pe.fill.transparency(pe.colors.lightaqua, 50)
-            pe.draw.rect(pe.colors.red, (0, 0, 10, 10))
+            icon.display(icon_position)
+            if state.button.hovered:
+                pe.draw.rect(Defaults.OUTLINE_COLOR, (0, 0, *surface.size), self.gui.ratios.outline)
         return surface
 
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
@@ -18,10 +31,5 @@ class GridDocInfoDisplay(DocInfoDisplay):
         with surface:
             with pe.mouse.Offset(state.button.area.topleft, reverse=True):
                 pe.fill.transparency(pe.colors.lightaqua, 50)
-                if state.gui.config.debug:
-                    # Draw a line across the surface to indicate that the rendering is active
-                    pe.draw.line(pe.colors.red, (0, 0), (surface.width, surface.height), 2)
-                    pe.draw.line(pe.colors.red, (surface.width, 0), (0, surface.height), 2)
-                    pe.draw.rect(pe.colors.green, ((time.time() * surface.width) % surface.width - 5, 0, 2, surface.height))
 
         return surface
