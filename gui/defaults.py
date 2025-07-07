@@ -137,6 +137,7 @@ class Defaults(metaclass=DefaultsMeta):
     BUTTON_DISABLED_COLOR = (0, 0, 0, 100)
     BUTTON_DISABLED_LIGHT_COLOR = (*BACKGROUND, 150)
     BUTTON_ACTIVE_COLOR = (0, 0, 0, 25)
+    BACKGROUND_ERROR = (255, 150, 150, 230)
 
     # General colors
     RED = (255, 50, 50)

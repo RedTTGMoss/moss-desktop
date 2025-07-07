@@ -23,6 +23,8 @@ class Ratios:
         self.bottom_loading_bar_rounding = int(5 * scale)
         self.bottom_loading_bar_width = int(100 * scale)
 
+        self.error_edge_rounding = int(10 * scale)  # Edge rounding for error frames
+
         # DEBUG
         self.small_debug_text_size = int(10 * scale)
         self.debug_text_size = int(15 * scale)
