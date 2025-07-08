@@ -62,7 +62,7 @@ class Ratios:
         self.main_menu_folder_margin_x = int(12 * scale)
         self.main_menu_folder_margin_y = int(20 * scale)
         self.main_menu_document_padding = int(15 * scale)
-        self.main_menu_document_rounding = 0.1 * scale  # 10% of the width
+        self.main_menu_document_rounding = 20 * scale
         self.main_menu_folder_distance = int(184 * scale)
         self.main_menu_folder_height_distance = int(41 * scale)
         self.main_menu_folder_height_last_distance = int(38 * scale)

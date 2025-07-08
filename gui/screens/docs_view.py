@@ -162,7 +162,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
             y = 0
 
         # Documents
-        y += (self.document_height + self.gui.ratios.main_menu_document_height_distance) * documents_rows
+        y += (self.full_document_height + self.gui.ratios.main_menu_document_height_distance) * documents_rows
 
         if len(self.documents) > 0:
             y -= self.gui.ratios.main_menu_document_title_height_margin * 2
@@ -220,14 +220,13 @@ class DocumentTreeViewer(ScrollableView, ABC):
         x = self.x_padding_documents
 
         # Rendering the documents
-        full_document_height = self.document_height + self.gui.ratios.main_menu_document_height_distance
         for i, document in enumerate(self.gui.main_menu.get_sorted_documents(self.documents.values())):
-            if y + full_document_height > 0:
+            if y + self.full_document_height > 0:
                 # Render the document
                 rect = pe.Rect(
                     x, y,
                     self.document_width,
-                    self.document_height
+                    self.full_document_height
                 )
                 if document.uuid in self.gui.main_menu.document_sync_operations:
                     document_sync_operation = self.gui.main_menu.document_sync_operations[document.uuid]
@@ -248,7 +247,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
             x += self.document_width + self.gui.ratios.main_menu_document_padding
             if x + self.document_width > self.width and i + 1 < len(self.documents):
                 x = self.x_padding_documents
-                y += full_document_height
+                y += self.full_document_height
             if y > self.height:
                 break
 
@@ -267,6 +266,10 @@ class DocumentTreeViewer(ScrollableView, ABC):
     @property
     def document_width(self):
         return self.gui.ratios.main_menu_document_width * self.scale
+
+    @property
+    def full_document_height(self):
+        return self.document_height + self.gui.ratios.main_menu_document_height_distance
 
     @property
     def document_height(self):

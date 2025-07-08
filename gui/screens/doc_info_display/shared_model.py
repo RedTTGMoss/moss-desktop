@@ -5,7 +5,7 @@ from pprint import pformat
 from rm_api import Document, DocumentCollection, DocumentSyncProgress
 
 import pygameextra as pe
-from typing import TYPE_CHECKING, Union, Optional, Type
+from typing import TYPE_CHECKING, Union, Optional, Type, Any
 
 from gui.defaults import Defaults
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class DocInfoState:
     """Represents an item in it's current static state."""
 
-    def __init__(self, document: Union[Document, DocumentCollection], manager: 'DocInfoDisplay'):
+    def __init__(self, document: Any, manager: 'DocInfoDisplay'):
         self.gui = manager.gui
         self.document = document
         self.render_info: Optional[RenderInfo] = None
@@ -54,40 +54,16 @@ class DocInfoState:
 
     @property
     def is_document(self):
-        return isinstance(self.document, Document)
+        return self.manager.info_class.is_document(self.document)
 
     def needs_refresh(self):
         return not self.frame or self.current_state != self.get_state()
 
     def get_state(self):
         if self.is_document:
-            state = self._get_document_state()
+            return self.manager.info_class.get_document_state_info(self)
         else:
-            state = self._get_collection_state()
-        return {
-            **state,
-            'uuid': self.document.uuid,
-            'name': self.document.metadata.visible_name,
-            'last_modified': self.document.metadata.last_modified,
-            'hovered': self.button.hovered,
-        }
-
-    def _get_document_state(self):
-        state = {
-            'provision': self.document.provision,
-            'content_hash': self.document.file_uuid_map[f'{self.document.uuid}.content'].hash,
-            'metadata_hash': self.document.file_uuid_map[f'{self.document.uuid}.metadata'].hash,
-        }
-
-        if self.document.downloading:
-            state['download_done'] = self.document.download_done
-
-        return state
-
-    def _get_collection_state(self):
-        return {
-            'has_items': self.document.has_items
-        }
+            return self.manager.info_class.get_collection_state_info(self)
 
 
 @dataclass
@@ -104,7 +80,7 @@ class RenderInfo:
     selected: bool = False
 
 
-class DocRenderInfoManager(ABC):
+class DocInfoManager(ABC):
     """Abstract base class for managing render information for documents and collections."""
 
     @classmethod
@@ -117,15 +93,30 @@ class DocRenderInfoManager(ABC):
     def get_collection_render_info(cls, state: DocInfoState) -> RenderInfo:
         ...
 
+    @classmethod
+    @abstractmethod
+    def get_document_state_info(cls, state: DocInfoState) -> dict:
+        ...
+
+    @classmethod
+    @abstractmethod
+    def get_collection_state_info(cls, state: DocInfoState) -> dict:
+        ...
+
+    @classmethod
+    @abstractmethod
+    def is_document(cls, item: Any) -> bool:
+        ...
+
 
 class DocInfoDisplay(ABC):
     """Represents the handler for rendering the static item information into a visual frame."""
     __cache = {}
 
-    def __init__(self, gui: 'GUI', render_info_manager_class: Type[DocRenderInfoManager],
+    def __init__(self, gui: 'GUI', info_class: Type[DocInfoManager],
                  doc_tree_view: 'DocumentTreeViewer'):
         self.gui = gui
-        self.render_info_manager_class = render_info_manager_class
+        self.info_class = info_class
         self.viewer = doc_tree_view
 
     def handle(self, item: Union[Document, DocumentCollection], area: pe.Rect, offset_x: int, offset_y: int):
@@ -180,6 +171,6 @@ class DocInfoDisplay(ABC):
 
     def get_render_info(self, state: DocInfoState) -> RenderInfo:
         if state.is_document:
-            return self.render_info_manager_class.get_document_render_info(state)
+            return self.info_class.get_document_render_info(state)
         else:
-            return self.render_info_manager_class.get_collection_render_info(state)
+            return self.info_class.get_collection_render_info(state)
