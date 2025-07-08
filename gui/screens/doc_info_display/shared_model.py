@@ -5,7 +5,7 @@ from pprint import pformat
 from rm_api import Document, DocumentCollection, DocumentSyncProgress
 
 import pygameextra as pe
-from typing import TYPE_CHECKING, Union, Optional, Type, Any
+from typing import TYPE_CHECKING, Union, Optional, Type, Any, Tuple
 
 from gui.defaults import Defaults
 
@@ -24,6 +24,7 @@ class DocInfoState:
         self.manager = manager
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
+        self.preview_size: Optional[Tuple[int, int]] = None
         self.button = pe.Button(
             self.rect,
             None, None,

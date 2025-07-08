@@ -30,6 +30,7 @@ class GridDocInfoDisplay(DocInfoDisplay):
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
         surface = pe.Surface((self.viewer.document_width, self.viewer.full_document_height))
         preview_rect = (0, 0, self.viewer.document_width, self.viewer.document_height)
+        state.preview_size = preview_rect[2:]
         edge_rounding = int(state.gui.ratios.main_menu_document_rounding * self.viewer.scale)
         preview_masked = pe.Surface((self.viewer.document_width, self.viewer.document_height))
 
@@ -50,9 +51,14 @@ class GridDocInfoDisplay(DocInfoDisplay):
                     preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
 
                 with preview_masked:
-                    pe.draw.rect(  # Draw the rounded outline around the preview
+                    pe.draw.rect(  # Draw the notebook spine
                         Defaults.DOCUMENT_GRAY,
-                        preview_rect, state.gui.ratios.pixel(2),
+                        (0, 0, pe.display.get_width() * 0.07, pe.display.get_height())
+                    )
+
+                    pe.draw.rect(  # Draw the rounded outline around the preview
+                        Defaults.SELECTED if state.button.hovered else Defaults.DOCUMENT_GRAY,
+                        preview_rect, state.gui.ratios.outline if state.button.hovered else state.gui.ratios.line,
                         edge_rounding_topright=edge_rounding,
                         edge_rounding_bottomright=edge_rounding
                     )

@@ -218,7 +218,7 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
         sub_text.display()
 
     # Render the notebook icon if there is no preview
-    preview = PreviewHandler.get_preview(document, rect.size) if gui.loader.files_to_load is None else None
+    preview = None
     if not preview:
         notebook_large: pe.Image = gui.icons['notebook_large'].copy()
         notebook_large.resize(tuple(v * scale for v in notebook_large.size))

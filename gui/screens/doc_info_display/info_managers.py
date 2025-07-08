@@ -45,7 +45,7 @@ class rMDocInfoManager(DocInfoManager):
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
             title='', subtitle='',
-            preview=PreviewHandler.get_preview(state.document, state.rect.size if state.rect else Defaults.PREVIEW_SIZE),
+            preview=PreviewHandler.get_preview(state.document, state.preview_size if state.preview_size else Defaults.PREVIEW_SIZE),
         )
 
     @classmethod

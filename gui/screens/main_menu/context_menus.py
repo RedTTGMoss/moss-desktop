@@ -149,6 +149,11 @@ class DebugContextMenu(ContextMenu):
             "action": "hot_reload"
         },
         {
+            "text": "menu.debug.clear_preview",
+            "icon": "trashcan_delete",
+            "action": "clear_preview"
+        },
+        {
             "text": "menu.debug.copy_uuid",
             "icon": "copy",
             "action": "copy_uuid"
@@ -304,6 +309,9 @@ class DebugContextMenu(ContextMenu):
 
     def export_statistics(self):
         self.parent_context.extension_manager.export_statistical_data()
+
+    def clear_preview(self):
+        PreviewHandler.CACHED_PREVIEW.clear()
 
 
 class CustomExtensionsMenu(ContextMenu):
