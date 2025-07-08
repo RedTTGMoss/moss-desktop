@@ -64,6 +64,4 @@ class GridDocInfoDisplay(DocInfoDisplay):
                     )
                 pe.display.blit(preview_masked)
 
-
-
         return surface

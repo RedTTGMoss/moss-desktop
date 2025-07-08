@@ -326,6 +326,9 @@ class GUI(pe.GameContext):
         self._import_screen: Union[ImportScreen, None] = None
         self.main_menu: Union['MainMenu', None] = None
         from gui.screens.integrity_checker import IntegrityChecker
+        from gui.preview_handler import PreviewHandler
+
+        PreviewHandler.gui = self  # Set the GUI instance in the PreviewHandler
 
         if self.api.token or self.api.offline_mode:
             from gui.screens.loader import Loader

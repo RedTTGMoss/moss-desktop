@@ -169,10 +169,15 @@ class LIB_rM_Lines_Preview:
         self._sprite: pe.Sprite = None
         threading.Thread(target=self.load, args=(renderer, frame_x, frame_y, lock), daemon=True).start()
 
-    def get_preview(self, size) -> Optional[pe.Sprite]:
+    @property
+    def loaded(self) -> bool:
+        return self._sprite is not None
+
+    def get_preview(self, size=None) -> Optional[pe.Sprite]:
         if not self._sprite:
             return None
-        self._sprite.resize = size
+        if size is not None:
+            self._sprite.resize = size
         return self._sprite
 
     def load(self, renderer: 'Renderer', frame_x: int, frame_y: int, lock: threading.Lock):

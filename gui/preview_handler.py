@@ -1,21 +1,36 @@
 import os.path
 import threading
+import time
 from traceback import print_exc
-from typing import Dict, Tuple, List, Optional
+from typing import Dict, Tuple, List, Optional, TYPE_CHECKING
 
 import pygameextra as pe
 from rm_api import Document
 from rm_api.models import Page
 from rm_api.storage.common import FileHandle
-from rm_api.storage.v3 import get_file_contents, check_file_exists, CacheMiss
+from rm_api.storage.v3 import check_file_exists, CacheMiss
 
 from gui.defaults import Defaults
+from gui.screens.viewer.renderers.notebook.lib_rm_lines_renderer import LIB_rM_Lines_Preview, \
+    Notebook_LIB_rM_Lines_Renderer
 from gui.screens.viewer.renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
+
+PREVIEW_TIMEOUT = 1  # second to wait for LIB rm lines to load the preview
 
 try:
     import pymupdf
 except ImportError:
     pymupdf = None
+
+if TYPE_CHECKING:
+    from gui import GUI
+
+
+class PreviewDocumentRenderer:
+    def __init__(self, document: Document, gui: 'GUI'):
+        self.document = document
+        self.parent_context = gui
+        self.loading = 0
 
 
 class PreviewHandler:
@@ -25,6 +40,7 @@ class PreviewHandler:
     PREVIEW_LOAD_TASKS: List[str] = []
     PYGAME_THREAD_LOCK = threading.Lock()
     TASK_LOCK = threading.Lock()
+    gui: 'GUI'  # Type hint for GUI instance, to be set externally
 
     @classmethod
     def get_preview(cls, document: Document, size: Tuple[int, int]) -> Optional[pe.Sprite]:
@@ -139,16 +155,21 @@ class PreviewHandler:
         else:
             file_hash = file.hash
         if file_hash and check_file_exists(document.api, file_hash):
-            rm_bytes = get_file_contents(document.api, file_hash, binary=True)
-            if not rm_bytes:
-                raise Exception('Page content unavailable to construct preview')
-            notebook = Notebook_rM_Lines_Renderer.generate_expanded_notebook_from_rm(
-                document, rm_bytes,
-                use_lock=cls.PYGAME_THREAD_LOCK,
-            )
-            if notebook is None:
-                raise Exception('Failed to create expanded notebook to render preview')
-            image = notebook.get_frame_from_initial(0, 0, *Defaults.PREVIEW_SIZE)
+            document_renderer = PreviewDocumentRenderer(document, cls.gui)
+            renderer = Notebook_LIB_rM_Lines_Renderer(document_renderer)
+            renderer._load(page_id)
+
+            renderer.expanded_notebook.get_frame_from_initial(0, 0)
+            preview = renderer.expanded_notebook.get_preview(0, 0)
+
+            start_time = time.time()
+            while not preview.loaded:
+                if time.time() - start_time > PREVIEW_TIMEOUT:
+                    image = None
+                    break
+                time.sleep(0.05)  # avoid busy waiting
+            else:
+                image = preview.get_preview()
         else:
             image = None
 
