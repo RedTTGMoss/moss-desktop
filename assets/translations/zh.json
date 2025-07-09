@@ -1,9 +1,4 @@
 {
-    "common": {
-        "items": "{count} 个项目",
-        "pages": "{count} 页",
-        "read": "已读 {percent}%"
-    },
     "installer": {
         "cancel": "取消",
         "install": "安装",
@@ -36,7 +31,8 @@
             "global": "全局调试菜单",
             "hot_reload": "热重载",
             "import_dir": "从目录导入",
-            "test_doc": "测试文档视图"
+            "test_doc": "测试文档视图",
+            "clear_preview": "Clear preview data"
         },
         "settings": {
             "back": "返回"
@@ -265,5 +261,12 @@
             "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
         },
         "confirm": "安装"
+    },
+    "doc_display": {
+        "sub": {
+            "page_count": "{page_count} pages",
+            "page_of": "Page {page} of {total}",
+            "pages_read": "{read_percent}% read"
+        }
     }
 }
