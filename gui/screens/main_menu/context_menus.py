@@ -311,6 +311,8 @@ class DebugContextMenu(ContextMenu):
         self.parent_context.extension_manager.export_statistical_data()
 
     def clear_preview(self):
+        for file in os.listdir(Defaults.THUMB_FILE_PATH):
+            os.remove(os.path.join(Defaults.THUMB_FILE_PATH, file))
         PreviewHandler.CACHED_PREVIEW.clear()
 
 
