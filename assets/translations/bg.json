@@ -1,9 +1,4 @@
 {
-    "common": {
-        "items": "{count} елемента",
-        "pages": "{count} страници",
-        "read": "Прочетено {percent}%"
-    },
     "installer": {
         "cancel": "Откажи",
         "install": "Инсталирай",
@@ -36,7 +31,8 @@
             "global": "Глобален панел за дебъг",
             "hot_reload": "Горещо презареждане",
             "import_dir": "Внос на документ от директория",
-            "test_doc": "Тест на панела за документи"
+            "test_doc": "Тест на панела за документи",
+            "clear_preview": "Clear preview data"
         },
         "settings": {
             "back": "Назад"
@@ -265,5 +261,12 @@
             "description": "{app_name} намери zip файл в директорията с разширенията.\nМоля, уверете се, че имате доверие на това разширение, преди да го инсталирате!\n\nИскате ли да инсталирате и активирате {extension_name}?"
         },
         "confirm": "Инсталирай"
+    },
+    "doc_display": {
+        "sub": {
+            "page_count": "{page_count} страници",
+            "page_of": "Страница {page} от {total}",
+            "pages_read": "{read_percent}% прочетено"
+        }
     }
 }
