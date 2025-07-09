@@ -1,9 +1,4 @@
 {
-    "common": {
-        "items": "{count} Elemente",
-        "pages": "{count} Seiten",
-        "read": "{percent} % gelesen"
-    },
     "installer": {
         "cancel": "Abbrechen",
         "install": "Installieren",
@@ -36,7 +31,8 @@
             "global": "Globales Debug-Menü",
             "hot_reload": "Hot Reload",
             "import_dir": "Aus Ordner importieren",
-            "test_doc": "Testdokumentansicht"
+            "test_doc": "Testdokumentansicht",
+            "clear_preview": "Clear preview data"
         },
         "settings": {
             "back": "Zurück"
@@ -265,5 +261,12 @@
             "description": "{app_name} hat eine ZIP-Datei im Erweiterungsverzeichnis gefunden.\nBitte stellen Sie sicher, dass Sie dieser Erweiterung vertrauen, bevor Sie sie installieren!\n\nMöchten Sie {extension_name}installieren und aktivieren?"
         },
         "confirm": "Installieren"
+    },
+    "doc_display": {
+        "sub": {
+            "page_count": "{page_count} pages",
+            "page_of": "Page {page} of {total}",
+            "pages_read": "{read_percent}% read"
+        }
     }
 }
