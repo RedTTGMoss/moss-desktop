@@ -1,9 +1,4 @@
 {
-    "common": {
-        "items": "{count} items",
-        "pages": "{count} pages",
-        "read": "Read {percent}%"
-    },
     "installer": {
         "cancel": "Cancel",
         "install": "Install",
@@ -36,7 +31,8 @@
             "global": "Global Debug Menu",
             "hot_reload": "Hot Reload",
             "import_dir": "Import from Directory",
-            "test_doc": "Test Document View"
+            "test_doc": "Test Document View",
+            "clear_preview": "Clear preview data"
         },
         "settings": {
             "back": "Back"
@@ -265,5 +261,12 @@
             "description": "{app_name} has found a zip file in the extensions directory.\nPlease make sure you trust this extension before installing it!\n\nWould you like to install and enable {extension_name}?"
         },
         "confirm": "Install"
+    },
+    "doc_display": {
+        "sub": {
+            "page_count": "{page_count} pages",
+            "page_of": "Page {page} of {total}",
+            "pages_read": "{read_percent}% read"
+        }
     }
 }
