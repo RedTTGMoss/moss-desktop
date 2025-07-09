@@ -1,9 +1,4 @@
 {
-    "common": {
-        "items": "{count} eroj",
-        "pages": "{count} paĝoj",
-        "read": "Legu {percent}%"
-    },
     "installer": {
         "cancel": "Nuligi",
         "install": "Instali",
@@ -36,7 +31,8 @@
             "global": "Tutmonda Sencimiga Menuo",
             "hot_reload": "Varma Reŝargo",
             "import_dir": "Importi el la dosierujo",
-            "test_doc": "Testa Dokumenta Vido"
+            "test_doc": "Testa Dokumenta Vido",
+            "clear_preview": "Clear preview data"
         },
         "settings": {
             "back": "Reen"
@@ -265,5 +261,12 @@
             "description": "{app_name} trovis zip-dosieron en la dosierujo de kromprogramoj.\nBonvolu certigi, ke vi fidas ĉi tiun kromprogramon antaŭ ol instali ĝin!\n\nĈu vi ŝatus instali kaj ebligi {extension_name}?"
         },
         "confirm": "Instali"
+    },
+    "doc_display": {
+        "sub": {
+            "page_count": "{page_count} pages",
+            "page_of": "Page {page} of {total}",
+            "pages_read": "{read_percent}% read"
+        }
     }
 }
