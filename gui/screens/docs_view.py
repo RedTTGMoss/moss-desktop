@@ -192,11 +192,10 @@ class DocumentTreeViewer(ScrollableView, ABC):
             # TODO: remove the debugging code
             if self.gui.ctrl_hold:
                 render_collection(self.gui, document_collection, self.texts,
-                                  self.gui.main_menu.set_parent, x, y, document_collection_width,
+                                  self.open_document_collection, x, y, document_collection_width,
                                   self.select_document_collection,
                                   document_collection.uuid in self.selected_document_collections)
-            else:
-                self.manager.handle(document_collection, area, x, y)
+            self.manager.handle(document_collection, area, x, y)
 
             if self.mode == 'grid':
                 x += self.document_width + self.gui.ratios.main_menu_document_padding
@@ -241,8 +240,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
                 if self.gui.ctrl_hold:
                     render_document(self.gui, rect, self.texts, document, document_sync_operation,
                                     self.scale, self.select_document, document.uuid in self.selected_documents)
-                else:
-                    self.manager.handle(document, area, x, y)
+                self.manager.handle(document, area, x, y)
 
             x += self.document_width + self.gui.ratios.main_menu_document_padding
             if x + self.document_width > self.width and i + 1 < len(self.documents):
@@ -262,6 +260,9 @@ class DocumentTreeViewer(ScrollableView, ABC):
             self.selected_document_collections.remove(document_collection_uuid)
         else:
             self.selected_document_collections.add(document_collection_uuid)
+
+    def open_document_collection(self, document_collection_uuid: str):
+        self.gui.main_menu.set_parent(document_collection_uuid)
 
     @property
     def document_width(self):

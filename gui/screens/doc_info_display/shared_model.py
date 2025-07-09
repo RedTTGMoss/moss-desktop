@@ -37,8 +37,14 @@ class DocInfoState:
                     }
                 ),
                 hover=None,
-                l_click=None,
-                r_click=None
+                l_click=pe.button.ButtonAction(
+                    action=self.manager.info_class.handle_item_open,
+                    args=self
+                ),
+                r_click=pe.button.ButtonAction(
+                    action=self.manager.info_class.handle_item_context,
+                    args=self
+                )
             ),
             name=f'doc_info_area_<{document.uuid}>',
         )
@@ -109,6 +115,16 @@ class DocInfoManager(ABC):
     def is_document(cls, item: Any) -> bool:
         ...
 
+    @classmethod
+    @abstractmethod
+    def handle_item_open(cls, state: DocInfoState):
+        ...
+
+    @classmethod
+    @abstractmethod
+    def handle_item_context(cls, state: DocInfoState):
+        ...
+
 
 class DocInfoDisplay(ABC):
     """Represents the handler for rendering the static item information into a visual frame."""
@@ -175,3 +191,40 @@ class DocInfoDisplay(ABC):
             return self.info_class.get_document_render_info(state)
         else:
             return self.info_class.get_collection_render_info(state)
+
+    def render_document_preview(self, state: DocInfoState, size: Tuple[int, int]) -> Optional[pe.Sprite]:
+        edge_rounding = int(state.gui.ratios.main_menu_document_rounding * self.viewer.scale)
+        preview_masked = pe.Surface(size)
+        preview_rect = (0, 0, *size)
+
+        with preview_masked:
+            pe.fill.full(Defaults.DOCUMENT_BACKGROUND)
+
+        if state.render_info.preview:
+            mask = pe.Surface((self.viewer.document_width, self.viewer.document_height))
+            with mask:
+                pe.draw.rect(  # Draw a filled rounded area for a preview mask
+                    pe.colors.white,
+                    preview_rect,
+                    edge_rounding_topright=edge_rounding,
+                    edge_rounding_bottomright=edge_rounding
+                )
+
+            # Blit and cut out the preview to the masked area
+            preview_masked.surface.blit(state.render_info.preview.get_finished_surface().surface, (0, 0))
+            preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
+
+        with preview_masked:
+            pe.draw.rect(  # Draw the notebook spine
+                Defaults.DOCUMENT_GRAY,
+                (0, 0, size[0] * 0.07, size[1])
+            )
+
+            pe.draw.rect(  # Draw the rounded outline around the preview
+                Defaults.SELECTED if state.button.hovered else Defaults.DOCUMENT_GRAY,
+                preview_rect, state.gui.ratios.outline if state.button.hovered else state.gui.ratios.line,
+                edge_rounding_topright=edge_rounding,
+                edge_rounding_bottomright=edge_rounding
+            )
+
+        return preview_masked

@@ -58,3 +58,14 @@ class rMDocInfoManager(DocInfoManager):
     @classmethod
     def is_document(cls, item: Any) -> bool:
         return isinstance(item, Document)
+
+    @classmethod
+    def handle_item_open(cls, state: DocInfoState):
+        if state.is_document:
+            pass
+        else:
+            state.manager.viewer.open_document_collection(state.document.uuid)
+
+    @classmethod
+    def handle_item_context(cls, state: DocInfoState):
+        pass
