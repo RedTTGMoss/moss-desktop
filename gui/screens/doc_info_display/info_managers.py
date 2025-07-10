@@ -16,7 +16,8 @@ class rMDocInfoManager(DocInfoManager):
         return {
             **cls.get_general_state_info(state),
             'item_count': document.get_item_count(state.gui.api),
-            'tags': document.tags
+            'tags': document.tags,
+            'selected': state.document.uuid in state.manager.viewer.selected_document_collections
         }
 
     @classmethod
@@ -30,6 +31,7 @@ class rMDocInfoManager(DocInfoManager):
             'files_available': document.files_available,
             'tags': document.content.tags,
             't_size': f'{humanize.naturalsize(document.content.size_in_bytes, binary=True)}',
+            'selected': state.document.uuid in state.manager.viewer.selected_documents
         }
 
         if document.content.file_type == 'notebook':
@@ -70,8 +72,8 @@ class rMDocInfoManager(DocInfoManager):
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
             state=state,
-            preview=PreviewHandler.get_preview(state.document,
-                                               state.preview_size if state.preview_size else Defaults.PREVIEW_SIZE),
+            preview=PreviewHandler.get_preview(state.document),
+            selected=state.current_state['selected'],
         )
 
     @classmethod
@@ -79,6 +81,7 @@ class rMDocInfoManager(DocInfoManager):
         return RenderInfo(
             state=state,
             icon='folder' if state.document.has_items else 'folder_empty',
+            selected=state.current_state['selected'],
         )
 
     @classmethod
@@ -94,4 +97,7 @@ class rMDocInfoManager(DocInfoManager):
 
     @classmethod
     def handle_item_context(cls, state: DocInfoState):
-        pass
+        if state.is_document:
+            state.manager.viewer.select_document(state.document.uuid)
+        else:
+            state.manager.viewer.select_document_collection(state.document.uuid)

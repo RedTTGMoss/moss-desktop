@@ -26,7 +26,6 @@ class DocInfoState:
         self.manager = manager
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
-        self.preview_size: Optional[Tuple[int, int]] = None
         self.trim_text_sizes = {}
         self.texts = {}
         self.button = pe.Button(
@@ -267,7 +266,7 @@ class DocInfoDisplay(ABC):
         else:
             return self.info_class.get_collection_render_info(state)
 
-    def render_document_preview(self, state: DocInfoState, size: Tuple[int, int]) -> Optional[pe.Sprite]:
+    def render_document_preview(self, state: DocInfoState, size: Tuple[int, int]) -> Tuple[Optional[pe.Sprite], int]:
         edge_rounding = int(state.gui.ratios.main_menu_document_rounding * self.viewer.scale)
         preview_masked = pe.Surface(size)
         preview_rect = (0, 0, *size)
@@ -307,7 +306,7 @@ class DocInfoDisplay(ABC):
                 edge_rounding_bottomright=edge_rounding
             )
 
-        return preview_masked
+        return preview_masked, edge_rounding
 
     def get_state(self, state_uuid) -> Optional[DocInfoState]:
         return self.__cache.get(state_uuid, None)

@@ -46,6 +46,8 @@ class GridDocInfoDisplay(DocInfoDisplay):
             text.rect.y += icon.height // 1.5
 
         with surface:
+            if state.render_info.selected:
+                pe.fill.full(Defaults.SELECTED)
             icon.display(icon_position)
             if text:  # Display the text if it exists and handle the icons too
                 text.display()
@@ -72,21 +74,29 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
         surface = pe.Surface((self.viewer.document_width, self.viewer.full_document_height))
-        state.preview_size = preview_size = (self.viewer.document_width, self.viewer.document_height)
-        preview = self.render_document_preview(state, preview_size)  # Get the preview for the document
-        text = state.render_info.t_title  # Get the title text for the document
+        preview_rect = pe.Rect(0, 0, self.viewer.document_width, self.viewer.document_height)
+
+        if state.render_info.selected:
+            preview_rect.inflate_ip(-20, -20)
+
+        preview, edge_rounding = self.render_document_preview(state, preview_rect.size)  # Get the preview for the document
+        invert_key = '_inverted' if state.render_info.selected else ''
+        text = getattr(state.render_info, f't_title{invert_key}')  # Get the title text for the document
 
         if text:
-            text.rect.top = state.preview_size[1]
+            text.rect.top = self.viewer.document_height
             text.rect.left = 0
 
         state.set_trim_text_size('t_title', surface.width)
 
         with surface:
-            if state.button.hovered:
-                pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, (0, 0, *surface.size))
+            if state.render_info.selected:
+                pe.fill.full(Defaults.SELECTED)
+            elif state.button.hovered:
+                pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, (0, 0, *surface.size), edge_rounding=edge_rounding,
+                             edge_rounding_bottomleft=0)
 
-            pe.display.blit(preview)
+            pe.display.blit(preview, preview_rect.topleft)
 
             if text:
                 text.display()

@@ -175,12 +175,6 @@ class DocumentTreeViewer(ScrollableView, ABC):
             self.document_width if self.mode == 'grid' else self.width - self.gui.ratios.main_menu_x_padding * 2
         for i, document_collection in enumerate(
                 self.gui.main_menu.get_sorted_document_collections(self.document_collections.values())):
-            # TODO: remove the debugging code
-            if self.gui.ctrl_hold:
-                render_collection(self.gui, document_collection, self.texts,
-                                  self.open_document_collection, x, y, document_collection_width,
-                                  self.select_document_collection,
-                                  document_collection.uuid in self.selected_document_collections)
             self.manager.handle(document_collection, area, x, y)
 
             if self.mode == 'grid':
@@ -222,10 +216,6 @@ class DocumentTreeViewer(ScrollableView, ABC):
                     document_sync_operation = document.download_progress
                 else:
                     document_sync_operation = None
-                # TODO: remove the debugging code
-                if self.gui.ctrl_hold:
-                    render_document(self.gui, rect, self.texts, document, document_sync_operation,
-                                    self.scale, self.select_document, document.uuid in self.selected_documents)
                 self.manager.handle(document, area, x, y)
 
             x += self.document_width + self.gui.ratios.main_menu_document_padding
