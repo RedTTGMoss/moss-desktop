@@ -1,5 +1,5 @@
 import time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import pygameextra as pe
 
@@ -11,37 +11,41 @@ class FullTextPopup(pe.ChildContext):
     LAYER = pe.AFTER_POST_LAYER
     EXISTING = {}
 
+    rect: pe.Rect
+
     def __init__(self, parent: 'GUI', text: pe.Text, referral_text: pe.Text = None):
         self.text = text
-        self.offset = pe.display.display_reference.pos
-
-        # Set the position of the text
-        if referral_text is not None:
-            self.text.rect.center = referral_text.rect.center
-        else:
-            self.text.rect.midbottom = pe.mouse.pos()
+        self.offset = pe.display.display_reference.pos or (0, 0)
+        self.referral_text = referral_text
 
         self.used_at = time.time()
         super().__init__(parent)
-        self.align_in_screen()
 
     def align_in_screen(self):
+        # Copy original text rect to the popup rect
+        self.rect = self.text.rect.copy()
+
+        # Set the position of the text
+        if self.referral_text is not None:
+            self.rect.center = self.referral_text.rect.center
+        else:
+            self.rect.midbottom = pe.mouse.pos()
+
         # Make sure the text is inside the screen
         screen_rect = pe.Rect(0, 0, *self.size)
         screen_rect.scale_by_ip(.98, .98)
-        if self.offset:
-            self.text.rect.x += self.offset[0]
-            self.text.rect.y += self.offset[1]
-            self.offset = None
-        self.text.rect.clamp_ip(screen_rect)
+        self.rect.x += self.offset[0]
+        self.rect.y += self.offset[1]
+        self.rect.clamp_ip(screen_rect)
 
     def pre_loop(self):
-        outline_rect = self.text.rect.inflate(self.ratios.pixel(10), self.ratios.pixel(10))
+        self.align_in_screen()
+        outline_rect = self.rect.inflate(self.ratios.pixel(10), self.ratios.pixel(10))
         pe.draw.rect(pe.colors.white, outline_rect, 0)
         pe.draw.rect(pe.colors.black, outline_rect, self.ratios.pixel(2))
 
     def loop(self):
-        self.text.display()
+        pe.display.blit(self.text.obj, self.rect.topleft)
 
     def post_loop(self):
         self.used_at = time.time()
@@ -57,3 +61,7 @@ class FullTextPopup(pe.ChildContext):
         else:
             del cls.EXISTING[id(text)]
             return cls.create(parent, text, referral_text)
+
+    @classmethod
+    def fetch(cls, text: pe.Text) -> Optional['FullTextPopup']:
+        return cls.EXISTING.get(id(text), None)

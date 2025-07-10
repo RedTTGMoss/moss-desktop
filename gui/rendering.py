@@ -27,8 +27,8 @@ def render_full_collection_title(gui: 'GUI', texts, collection_uuid: str, rect):
         FullTextPopup.create(gui, text_full, text)()
 
 
-def render_full_text(gui: 'GUI', text: pe.Text):
-    FullTextPopup.create(gui, text, text)()
+def render_full_text(gui: 'GUI', text: pe.Text, referral_text: Optional[pe.Text] = None):
+    FullTextPopup.create(gui, text, referral_text or text)()
 
 
 def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[str, pe.Text], callback, x, y, width,

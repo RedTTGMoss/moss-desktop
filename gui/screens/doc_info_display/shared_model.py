@@ -8,6 +8,8 @@ import pygameextra as pe
 from typing import TYPE_CHECKING, Union, Optional, Type, Any, Tuple, Dict
 
 from gui.defaults import Defaults
+from gui.pp_helpers import FullTextPopup
+from gui.rendering import render_full_text
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -235,6 +237,18 @@ class DocInfoDisplay(ABC):
                          edge_rounding=self.gui.ratios.error_edge_rounding)
         else:
             pe.display.blit(state.frame, rect.topleft)  # Clip the frame to an area
+            # Check if the title is long
+            if state.button.hovered:
+                if state.is_document:
+                    title = state.render_info.t_title
+                    full = state.render_info.t_title_full
+                else:
+                    title = state.render_info.t_title_folder
+                    full = state.render_info.t_title_folder_full
+                if title and full:
+                    full.rect.topleft = title.rect.topleft
+                    full.rect.move_ip(offset_x, offset_y)
+                    render_full_text(state.gui, full)
         pe.settings.game_context.buttons.append(state.button)
         state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
         pe.button.check_hover(state.button)

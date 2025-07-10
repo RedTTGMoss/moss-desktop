@@ -5,6 +5,7 @@ import pygameextra as pe
 
 from .shared_model import DocInfoDisplay, DocInfoState
 from ...defaults import Defaults
+from ...rendering import render_full_text
 
 
 class GridDocInfoDisplay(DocInfoDisplay):
@@ -73,6 +74,13 @@ class GridDocInfoDisplay(DocInfoDisplay):
         surface = pe.Surface((self.viewer.document_width, self.viewer.full_document_height))
         state.preview_size = preview_size = (self.viewer.document_width, self.viewer.document_height)
         preview = self.render_document_preview(state, preview_size)  # Get the preview for the document
+        text = state.render_info.t_title  # Get the title text for the document
+
+        if text:
+            text.rect.top = state.preview_size[1]
+            text.rect.left = 0
+
+        state.set_trim_text_size('t_title', surface.width)
 
         with surface:
             if state.button.hovered:
@@ -80,10 +88,12 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
             pe.display.blit(preview)
 
+            if text:
+                text.display()
+
             # Debug updates to this surface
             # w = (time.time() * 100) % surface.width
             # pe.draw.line(pe.colors.red, (w, 0), (w, surface.height), 2)
 
             # with pe.mouse.Offset(state.button.area.topleft, reverse=True):
-
         return surface

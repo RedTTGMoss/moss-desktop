@@ -251,7 +251,7 @@ class MainMenu(pe.ChildContext):
                     parent = document_collections[parent].parent
                 except KeyError:
                     parent = None
-        self.doc_view.handle_texts()
+        self.doc_view.need_to_handle_texts = True
 
     def pre_loop(self):
         if 'screenshot' in self.icons:
