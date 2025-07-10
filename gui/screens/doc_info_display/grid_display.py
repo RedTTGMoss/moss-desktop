@@ -77,15 +77,25 @@ class GridDocInfoDisplay(DocInfoDisplay):
         preview_rect = pe.Rect(0, 0, self.viewer.document_width, self.viewer.document_height)
 
         if state.render_info.selected:
-            preview_rect.inflate_ip(-20, -20)
+            preview_rect.inflate_ip(tuple(-0.1 * x for x in preview_rect.size))
 
         preview, edge_rounding = self.render_document_preview(state, preview_rect.size)  # Get the preview for the document
         invert_key = '_inverted' if state.render_info.selected else ''
         text = getattr(state.render_info, f't_title{invert_key}')  # Get the title text for the document
+        sub_text = getattr(state.render_info, f't_description{invert_key}')  # Get the description text for the document
+
+        bottom = self.viewer.document_height
 
         if text:
-            text.rect.top = self.viewer.document_height
+            text.rect.top = self.viewer.document_height + state.gui.ratios.main_menu_document_title_height_margin
             text.rect.left = 0
+
+            if sub_text:
+                sub_text.rect.top = text.rect.bottom + state.gui.ratios.main_menu_document_title_padding
+                sub_text.rect.left = 0
+                bottom = sub_text.rect.bottom
+            else:
+                bottom = text.rect.bottom
 
         state.set_trim_text_size('t_title', surface.width)
 
@@ -93,13 +103,15 @@ class GridDocInfoDisplay(DocInfoDisplay):
             if state.render_info.selected:
                 pe.fill.full(Defaults.SELECTED)
             elif state.button.hovered:
-                pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, (0, 0, *surface.size), edge_rounding=edge_rounding,
+                pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, (0, 0, surface.width, bottom), edge_rounding=edge_rounding,
                              edge_rounding_bottomleft=0)
 
             pe.display.blit(preview, preview_rect.topleft)
 
             if text:
                 text.display()
+            if sub_text:
+                sub_text.display()
 
             # Debug updates to this surface
             # w = (time.time() * 100) % surface.width

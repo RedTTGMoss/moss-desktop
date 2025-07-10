@@ -76,14 +76,14 @@ class DocumentTreeViewer(ScrollableView, ABC):
                 trimmed_text = value
 
             if trimmed_text != value:
-                self.texts[key] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR)
+                self.texts[key] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR_T)
                 self.texts[f'{key}_inverted'] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR_H)
                 self.texts[f'{key}_full'] = pe.Text(
                     dynamic_text(value, *font, state.gui.width * 0.5, True),
                     *font, colors=Defaults.TEXT_COLOR
                 )
             else:
-                self.texts[key] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR)
+                self.texts[key] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_T)
                 self.texts[f'{key}_inverted'] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_H)
 
 
