@@ -43,8 +43,7 @@ class PreviewHandler:
     gui: 'GUI'  # Type hint for GUI instance, to be set externally
 
     @classmethod
-    def get_preview(cls, document: Document, size: Tuple[int, int]) -> Optional[pe.Sprite]:
-        size = tuple(min(given, max) for given, max in zip(size, Defaults.PREVIEW_SIZE))
+    def get_preview(cls, document: Document, size: Tuple[int, int] = None) -> Optional[pe.Sprite]:
         try:
             sprite = cls._get_preview(document)
         except:
@@ -52,7 +51,9 @@ class PreviewHandler:
             sprite = None
         if sprite is None:
             return None
-        sprite.resize = size
+        if size is not None:
+            size = tuple(min(given, max) for given, max in zip(size, Defaults.PREVIEW_SIZE))
+            sprite.resize = size
         return sprite
 
     @classmethod

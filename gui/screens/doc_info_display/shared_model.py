@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class DocInfoState:
-    """Represents an item in it's current static state."""
+    """Represents an item in its current static state."""
 
     def __init__(self, document: Any, manager: 'DocInfoDisplay'):
         self.gui = manager.gui
@@ -25,6 +25,8 @@ class DocInfoState:
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
         self.preview_size: Optional[Tuple[int, int]] = None
+        self.small_text_sizes = {}
+        self.texts = {}
         self.button = pe.Button(
             self.rect,
             None, None,
@@ -79,8 +81,6 @@ class RenderInfo:
     Represents generic information about the item to be rendered.
     This is shared between different items.
     """
-    title: str
-    subtitle: str
     preview: Optional[pe.Sprite] = None
     icon: Optional[str] = None
     progress: Optional[DocumentSyncProgress] = None
@@ -109,6 +109,24 @@ class DocInfoManager(ABC):
     @abstractmethod
     def get_collection_state_info(cls, state: DocInfoState) -> dict:
         ...
+
+    @classmethod
+    def get_required_state_info(cls, state: DocInfoState) -> dict:
+        """
+        Returns the required state information that is always present.
+        This can be overridden to add more fields.
+        """
+        return {
+            'hovered': state.button.hovered,
+            'rect_size': state.rect.size,
+            'pinned': False,
+            'tags': [],
+            't_title': 'Title',  # The title of the document or collection
+            't_description': 'Description',  # The subtext aka page count, read progress or item count
+            # If the tags are too many this text is shown to indicate extra tags that are not displayed
+            't_tags_extra': '+0',
+            't_filesize': '0 Bytes',  # The size of the document
+        }
 
     @classmethod
     @abstractmethod
@@ -211,14 +229,19 @@ class DocInfoDisplay(ABC):
                 )
 
             # Blit and cut out the preview to the masked area
-            preview_masked.surface.blit(state.render_info.preview.get_finished_surface().surface, (0, 0))
+            with preview_masked:
+                state.render_info.preview.resize = size
+                state.render_info.preview.display()
             preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
 
         with preview_masked:
             pe.draw.rect(  # Draw the notebook spine
                 Defaults.DOCUMENT_GRAY,
-                (0, 0, size[0] * 0.07, size[1])
+                (0, 0, spine_width := size[0] * 0.07, size[1])
             )
+
+            if state.button.hovered:
+                pe.draw.line(Defaults.SELECTED, (spine_width, 0), (spine_width, size[1]), state.gui.ratios.outline)
 
             pe.draw.rect(  # Draw the rounded outline around the preview
                 Defaults.SELECTED if state.button.hovered else Defaults.DOCUMENT_GRAY,

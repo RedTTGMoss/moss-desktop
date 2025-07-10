@@ -36,75 +36,16 @@ class DocumentTreeViewer(ScrollableView, ABC):
 
         # Preparing the document collection texts
         font_details = (Defaults.FOLDER_TITLE_FONT, self.gui.ratios.document_tree_view_folder_title_size)
-        item_counts = set()
-        for uuid, document_collection in document_collections.items():
-            item_counts.add(document_collection.get_item_count(self.gui.api))
-            if self.texts.get(uuid) is None or self.texts[
-                uuid + '_full'
-            ].text != document_collection.metadata.visible_name:
-                width_reduction = self.gui.ratios.main_menu_document_padding
-                if document_collection.metadata.pinned:
-                    width_reduction += self.gui.icons['star'].width + self.gui.ratios.main_menu_folder_padding
-                if document_collection.tags and self.mode == 'grid':
-                    width_reduction += self.gui.icons['tag'].width + self.gui.ratios.main_menu_folder_padding
-                shortened_text = dynamic_text(document_collection.metadata.visible_name, *font_details,
-                                              (self.document_width if self.mode == 'grid' else self.width)
-                                              - width_reduction
-                                              )
-                self.texts[uuid] = pe.Text(shortened_text, *font_details, (0, 0), Defaults.TEXT_COLOR)
-                self.texts[uuid + '_inverted'] = pe.Text(shortened_text, *font_details, (0, 0),
-                                                         Defaults.TEXT_COLOR_H)
-                self.texts[uuid + '_full'] = pe.Text(document_collection.metadata.visible_name,
-                                                     *font_details, (0, 0), Defaults.TEXT_COLOR)
+        # TODO: Collections title texts
 
         # Preparing the document texts
         font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_document_title_size)
-        page_counts = set()
-        page_of_counts = set()
-        pages_read = set()
-        for uuid, document in documents.items():
-            if document.content.file_type == 'notebook':
-                page_counts.add(document.get_page_count())
-            elif document.content.file_type == 'pdf':
-                page_of_counts.add((document.metadata.last_opened_page + 1, document.get_page_count()))
-            elif document.content.file_type == 'epub':
-                pages_read.add(document.get_read())
-            if self.texts.get(uuid) is None or self.texts[uuid + '_full'].text != document.metadata.visible_name:
-                shortened_text = dynamic_text(document.metadata.visible_name, *font_details,
-                                              self.document_width if self.mode == 'grid' else self.width)
-                self.texts[uuid] = pe.Text(shortened_text, *font_details, (0, 0),
-                                           Defaults.DOCUMENT_TITLE_COLOR)
-                self.texts[uuid + '_inverted'] = pe.Text(shortened_text, *font_details
-                                                         , (0, 0),
-                                                         Defaults.DOCUMENT_TITLE_COLOR_INVERTED)
-                self.texts[uuid + '_full'] = pe.Text(document.metadata.visible_name, *font_details, (0, 0),
-                                                     Defaults.DOCUMENT_TITLE_COLOR)
+        # TODO: Title texts
 
         # Handle small texts
         font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
-        for item_count in item_counts:
-            self.texts[f'item_count_{item_count}'] = pe.Text(f'{item_count} items', *font_details,
-                                                             (0, 0), Defaults.TEXT_COLOR)
-            self.texts[f'item_count_{item_count}_inverted'] = pe.Text(f'{item_count} items', *font_details,
-                                                                      (0, 0), Defaults.TEXT_COLOR_H)
 
-        for page_count in page_counts:
-            self.texts[f'page_count_{page_count}'] = pe.Text(f'{page_count} pages', *font_details,
-                                                             (0, 0), Defaults.TEXT_COLOR)
-            self.texts[f'page_count_{page_count}_inverted'] = pe.Text(f'{page_count} pages', *font_details,
-                                                                      (0, 0), Defaults.TEXT_COLOR_H)
-
-        for page_of, pages in page_of_counts:
-            self.texts[f'page_of_{page_of}_{pages}'] = pe.Text(f'Page {page_of} of {pages}', *font_details,
-                                                               (0, 0), Defaults.TEXT_COLOR)
-            self.texts[f'page_of_{page_of}_{pages}_inverted'] = pe.Text(f'Page {page_of} of {pages}', *font_details,
-                                                                        (0, 0), Defaults.TEXT_COLOR_H)
-
-        for page_read in pages_read:
-            self.texts[f'page_read_{page_read}'] = pe.Text(f'{page_read}% read', *font_details,
-                                                           (0, 0), Defaults.TEXT_COLOR)
-            self.texts[f'page_read_{page_read}_inverted'] = pe.Text(f'{page_read}% read', *font_details,
-                                                                    (0, 0), Defaults.TEXT_COLOR_H)
+        # TODO: Small texts
 
     @property
     @abstractmethod
