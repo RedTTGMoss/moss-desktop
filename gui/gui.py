@@ -7,7 +7,7 @@ import time
 from numbers import Number
 from os import makedirs
 from pprint import pformat
-from typing import TypedDict, Union, TYPE_CHECKING
+from typing import TypedDict, Union, TYPE_CHECKING, Dict
 
 import appdirs
 import colorama
@@ -318,7 +318,7 @@ class GUI(pe.GameContext):
             pass
         self.screens = []
         self.ratios = Ratios(self.config.scale)
-        self.icons = {}
+        self.icons: Dict[str, pe.Sprite] = {}
         self.data = {}
         self.shift_hold = False
         self.ctrl_hold = False

@@ -5,7 +5,7 @@ from pprint import pformat
 from rm_api import Document, DocumentCollection, DocumentSyncProgress
 
 import pygameextra as pe
-from typing import TYPE_CHECKING, Union, Optional, Type, Any, Tuple
+from typing import TYPE_CHECKING, Union, Optional, Type, Any, Tuple, Dict
 
 from gui.defaults import Defaults
 
@@ -18,14 +18,14 @@ class DocInfoState:
     """Represents an item in its current static state."""
 
     def __init__(self, document: Any, manager: 'DocInfoDisplay'):
-        self.gui = manager.gui
+        self.gui: 'GUI' = manager.gui
         self.document = document
         self.render_info: Optional[RenderInfo] = None
         self.manager = manager
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
         self.preview_size: Optional[Tuple[int, int]] = None
-        self.small_text_sizes = {}
+        self.trim_text_sizes = {}
         self.texts = {}
         self.button = pe.Button(
             self.rect,
@@ -51,7 +51,37 @@ class DocInfoState:
             name=f'doc_info_area_<{document.uuid}>',
         )
         self.frame: Optional[pe.Surface] = None
-        self.current_state = self.get_state()
+        self._current_state = None
+
+    def set_trim_text_size(self, key: str, size: int):
+        if self.trim_text_sizes.get(key, 0) == size:
+            return
+        self.trim_text_sizes[key] = size
+        if self.render_info and (text := getattr(self.render_info, key, None)) is not None:  # Find the text object
+            if text.rect.width > size:  # Check if the text is larger the trim size
+                self.manager.viewer.need_to_handle_texts = True  # Mark that we need to handle trimming the text
+            if text.text != self.current_state.get(key, text.text):
+                self.manager.viewer.need_to_handle_texts = True  # Mark that we need to handle untrimming the text
+
+
+    @property
+    def current_state(self):
+        if not self._current_state:
+            self.current_state = self.get_state()
+        return self._current_state
+
+    @current_state.setter
+    def current_state(self, value: dict):
+        # Update texts if applicable
+        self._current_state = value
+        for key, value in [(key, value) for key, value in value.items() if key.startswith('t_')]:
+            identifiable_key = f'{self.document.uuid}|{key}'
+            current_text = self.manager.viewer.text_information.get(identifiable_key)
+            if current_text is not None and current_text == value:
+                continue
+            self.manager.viewer.text_information[identifiable_key] = value
+            self.manager.viewer.need_to_handle_texts = True
+
 
     @property
     def rect(self):
@@ -74,6 +104,9 @@ class DocInfoState:
         else:
             return self.manager.info_class.get_collection_state_info(self)
 
+    def dirty(self):
+        self.current_state['dirty'] = True
+
 
 @dataclass
 class RenderInfo:
@@ -81,10 +114,16 @@ class RenderInfo:
     Represents generic information about the item to be rendered.
     This is shared between different items.
     """
+    state: DocInfoState
     preview: Optional[pe.Sprite] = None
     icon: Optional[str] = None
     progress: Optional[DocumentSyncProgress] = None
     selected: bool = False
+
+    def __getattr__(self, item):
+        if item.startswith('t_'):
+            return self.state.manager.viewer.texts.get(f'{self.state.document.uuid}|{item}')
+        return super().__getattr__(item)
 
 
 class DocInfoManager(ABC):
@@ -121,7 +160,11 @@ class DocInfoManager(ABC):
             'rect_size': state.rect.size,
             'pinned': False,
             'tags': [],
-            't_title': 'Title',  # The title of the document or collection
+
+            # ONE OF THESE IS REQUIRED, NOT BOTH TITLES
+            't_title': 'Title',  # The title of the document
+            't_title_folder': 'Title Folder',  # The title of the collection
+
             't_description': 'Description',  # The subtext aka page count, read progress or item count
             # If the tags are too many this text is shown to indicate extra tags that are not displayed
             't_tags_extra': '+0',
@@ -146,11 +189,11 @@ class DocInfoManager(ABC):
 
 class DocInfoDisplay(ABC):
     """Represents the handler for rendering the static item information into a visual frame."""
-    __cache = {}
+    __cache: Dict[str, DocInfoState] = {}
 
     def __init__(self, gui: 'GUI', info_class: Type[DocInfoManager],
                  doc_tree_view: 'DocumentTreeViewer'):
-        self.gui = gui
+        self.gui: 'GUI' = gui
         self.info_class = info_class
         self.viewer = doc_tree_view
 
@@ -251,3 +294,6 @@ class DocInfoDisplay(ABC):
             )
 
         return preview_masked
+
+    def get_state(self, state_uuid) -> Optional[DocInfoState]:
+        return self.__cache.get(state_uuid, None)

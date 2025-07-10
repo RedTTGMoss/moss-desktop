@@ -85,10 +85,9 @@ class Ratios:
         self.document_sync_progress_outline = int(3 * scale)
 
         # Document Tree View
-        self.document_tree_view_document_title_size = int(14 * scale)
-        self.document_tree_view_folder_title_size = int(14 * scale)
-        self.document_tree_view_list_text_height = int(60 * scale)
+        self.document_tree_view_title_size = int(14 * scale)
         self.document_tree_view_small_info_size = int(12 * scale)
+        self.document_tree_view_list_text_height = int(60 * scale)
 
         # Document Viewer
         self.document_viewer_top_draggable_height = int(48 * scale)  # Accurate to device

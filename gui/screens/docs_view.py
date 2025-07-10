@@ -15,37 +15,71 @@ from gui.screens.scrollable_view import ScrollableView
 
 if TYPE_CHECKING:
     from gui import GUI
+    from gui.screens.doc_info_display.shared_model import DocInfoState
 
 
 class DocumentTreeViewer(ScrollableView, ABC):
     def __init__(self, gui: 'GUI', area):
         self.AREA = area
         self.texts: Dict[str, pe.Text] = {}
+        self._text_information: Dict[str, str] = {}
         self.selected_documents = set()
         self.selected_document_collections = set()
         self.x_padding_collections = 0
         self.x_padding_documents = 0
         self.last_width = None
+        self.need_to_handle_texts = False
         self._scale = self.gui.config.doc_view_scale
         self.manager = GridDocInfoDisplay(gui, rMDocInfoManager, self)
         super().__init__(gui)
 
-    def handle_texts(self):
-        document_collections: Dict[str, DocumentCollection] = dict(self.document_collections)
-        documents: Dict[str, Document] = dict(self.documents)
+    @property
+    def text_information(self) -> Dict[str, str]:
+        return self._text_information
+
+    @text_information.setter
+    def text_information(self, value: Dict[str, str]):
+        self._text_information = value
+        self.need_to_handle_texts = True
+
+    def handle_texts(self, expected_uuid: str = None):
+        # document_collections: Dict[str, DocumentCollection] = dict(self.document_collections)
+        # documents: Dict[str, Document] = dict(self.documents)
 
         # Preparing the document collection texts
-        font_details = (Defaults.FOLDER_TITLE_FONT, self.gui.ratios.document_tree_view_folder_title_size)
-        # TODO: Collections title texts
+        folder_font_details = (Defaults.FOLDER_TITLE_FONT, self.gui.ratios.document_tree_view_title_size)
+        document_font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_title_size)
+        small_font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
 
-        # Preparing the document texts
-        font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_document_title_size)
-        # TODO: Title texts
+        font_map = {  # Mapping text keys to their respective font details
+            't_title': document_font_details,
+            't_title_folder': folder_font_details,
+            't_description': small_font_details,
+            't_tags_extra': small_font_details,  # TODO: Maybe implement another font for this?
+            't_filesize': small_font_details,
+        }
 
-        # Handle small texts
-        font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
+        self.texts.clear()  # Clear existing texts to avoid build-up
 
-        # TODO: Small texts
+        for key, value in self.text_information.items():
+            state_uuid, text_key = key.split('|')  # Get the text key to determine the font
+            if expected_uuid and state_uuid != expected_uuid:
+                continue
+            font = font_map.get(text_key, document_font_details)
+            state: 'DocInfoState' = self.manager.get_state(state_uuid)
+            state.dirty()
+            size_constraint = state.trim_text_sizes.get(text_key, None)
+
+            if size_constraint:
+                trimmed_text = dynamic_text(value, *font, size_constraint)
+                self.texts[key] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR)
+                self.texts[f'{key}_inverted'] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR_H)
+                self.texts[f'{key}_full'] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR)
+            else:
+                self.texts[key] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR)
+                self.texts[f'{key}_inverted'] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_H)
+
+
 
     @property
     @abstractmethod
@@ -109,6 +143,10 @@ class DocumentTreeViewer(ScrollableView, ABC):
             y -= self.gui.ratios.main_menu_document_title_height_margin * 2
 
         self.bottom = y + self.gui.ratios.bottom_bar_height
+
+        if self.need_to_handle_texts:
+            self.handle_texts()
+            self.need_to_handle_texts = False
 
         super().pre_loop()
 
@@ -229,7 +267,6 @@ class DocumentTreeViewer(ScrollableView, ABC):
             else:
                 self.scale -= 0.1
             self.scale = max(0.5, min(2.08, self.scale))
-            self.texts.clear()
             self.handle_texts()
 
     @property

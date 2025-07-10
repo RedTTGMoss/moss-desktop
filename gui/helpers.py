@@ -54,6 +54,9 @@ def dotted_dynamic_text(name: str, font: pe.pygame.Font, width: int):
         left -= 1
         right += 1
 
+        if left < 0 or right >= len(name):
+            return '.'
+
     return name[:left] + '...' + name[right:]
 
 

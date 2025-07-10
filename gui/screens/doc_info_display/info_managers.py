@@ -15,7 +15,8 @@ class rMDocInfoManager(DocInfoManager):
         document: DocumentCollection = state.document
         return {
             **cls.get_general_state_info(state),
-            'item_count': document.get_item_count(state.gui.api)
+            'item_count': document.get_item_count(state.gui.api),
+            'tags': document.tags
         }
 
     @classmethod
@@ -47,18 +48,28 @@ class rMDocInfoManager(DocInfoManager):
     @classmethod
     def get_general_state_info(cls, state: DocInfoState) -> dict:
         document: Union[Document, DocumentCollection] = state.document
-        return {
+        result = {
             **cls.get_required_state_info(state),
             'uuid': document.uuid,
-            't_title': document.metadata.visible_name,
             'last_modified': document.metadata.last_modified,
             'preview_cache': PreviewHandler.CACHED_PREVIEW.get(document.uuid),
             'pinned': document.metadata.pinned
         }
 
+        # Optimize title text based on state type
+        if state.is_document:
+            result['t_title'] = document.metadata.visible_name
+            del result['t_title_folder']
+        else:
+            result['t_title_folder'] = document.metadata.visible_name
+            del result['t_title']
+        return result
+
+
     @classmethod
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
+            state=state,
             preview=PreviewHandler.get_preview(state.document,
                                                state.preview_size if state.preview_size else Defaults.PREVIEW_SIZE),
         )
@@ -66,6 +77,7 @@ class rMDocInfoManager(DocInfoManager):
     @classmethod
     def get_collection_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
+            state=state,
             icon='folder' if state.document.has_items else 'folder_empty',
         )
 
