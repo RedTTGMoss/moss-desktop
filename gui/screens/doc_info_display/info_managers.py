@@ -16,8 +16,9 @@ class rMDocInfoManager(DocInfoManager):
         return {
             **cls.get_general_state_info(state),
             'item_count': document.get_item_count(state.gui.api),
+            'selected': state.document.uuid in state.manager.viewer.selected_document_collections,
             'tags': document.tags,
-            'selected': state.document.uuid in state.manager.viewer.selected_document_collections
+            **{f't_tag_{tag.name}': tag.name for tag in document.tags}
         }
 
     @classmethod
@@ -30,6 +31,7 @@ class rMDocInfoManager(DocInfoManager):
             'metadata_hash': document.file_uuid_map[f'{document.uuid}.metadata'].hash,
             'files_available': document.files_available,
             'tags': document.content.tags,
+            **{f't_tag_{tag.name}': tag.name for tag in document.content.tags},
             't_size': f'{humanize.naturalsize(document.content.size_in_bytes, binary=True)}',
             'selected': state.document.uuid in state.manager.viewer.selected_documents
         }
@@ -66,7 +68,6 @@ class rMDocInfoManager(DocInfoManager):
             result['t_title_folder'] = document.metadata.visible_name
             del result['t_title']
         return result
-
 
     @classmethod
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:

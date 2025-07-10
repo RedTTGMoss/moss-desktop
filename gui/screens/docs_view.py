@@ -57,6 +57,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
             't_description': small_font_details,
             't_tags_extra': small_font_details,  # TODO: Maybe implement another font for this?
             't_filesize': small_font_details,
+            't_tag': small_font_details
         }
 
         self.texts.clear()  # Clear existing texts to avoid build-up
@@ -65,7 +66,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
             state_uuid, text_key = key.split('|')  # Get the text key to determine the font
             if expected_uuid and state_uuid != expected_uuid:
                 continue
-            font = font_map.get(text_key, document_font_details)
+            font = font_map.get('t_tag' if 't_tag_' in text_key else text_key, small_font_details)
             state: 'DocInfoState' = self.manager.get_state(state_uuid)
             state.dirty()
             size_constraint = state.trim_text_sizes.get(text_key, None)
@@ -85,8 +86,6 @@ class DocumentTreeViewer(ScrollableView, ABC):
             else:
                 self.texts[key] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_T)
                 self.texts[f'{key}_inverted'] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_H)
-
-
 
     @property
     @abstractmethod
