@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Any, Union
 
 import humanize
@@ -7,6 +8,7 @@ from .shared_model import DocInfoManager, DocInfoState, RenderInfo
 from ...defaults import Defaults
 from ...i10n import t
 from ...preview_handler import PreviewHandler
+from ...rendering import open_document
 
 
 class rMDocInfoManager(DocInfoManager):
@@ -92,7 +94,13 @@ class rMDocInfoManager(DocInfoManager):
     @classmethod
     def handle_item_open(cls, state: DocInfoState):
         if state.is_document:
-            pass
+            state.document.ensure_download_and_callback(
+                partial(
+                    PreviewHandler.clear_for,
+                    state.document.uuid,
+                    partial(open_document, state.gui, state.document.uuid)
+                )
+            )
         else:
             state.manager.viewer.open_document_collection(state.document.uuid)
 
