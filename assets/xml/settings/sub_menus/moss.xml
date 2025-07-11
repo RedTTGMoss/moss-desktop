@@ -36,4 +36,7 @@
 
     <toggle key="maintain_aspect_size">settings.moss.ui.toggle_maintain_aspect.label</toggle>
     <subtext>settings.moss.ui.toggle_maintain_aspect.footnote</subtext>
+
+    <toggle key="doc_view_more_tags">settings.moss.ui.doc_view_more_tags.label</toggle>
+    <subtext>settings.moss.ui.doc_view_more_tags.footnote</subtext>
 </view>

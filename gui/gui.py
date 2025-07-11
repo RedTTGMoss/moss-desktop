@@ -86,6 +86,7 @@ class ConfigDict(TypedDict):
     last_prompt_directory: Union[None, str]
     scale: Number
     doc_view_scale: Number
+    doc_view_more_tags: bool
     main_menu_view_mode: MAIN_MENU_MODES
     main_menu_menu_location: MAIN_MENU_LOCATIONS
     format_raw_exports: bool
@@ -125,6 +126,7 @@ DEFAULT_CONFIG: ConfigDict = {
     'last_prompt_directory': None,
     'scale': .9,
     'doc_view_scale': 1,
+    'doc_view_more_tags': False,
     'main_menu_view_mode': 'grid',
     'main_menu_menu_location': 'my_files',
     'format_raw_exports': True,

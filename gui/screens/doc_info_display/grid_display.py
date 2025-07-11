@@ -114,22 +114,27 @@ class GridDocInfoDisplay(DocInfoDisplay):
             # Handle drawing the tag texts on top of the preview area
             y = preview_rect.bottom - self.gui.ratios.main_menu_document_padding
             available_width = preview_rect.width - self.gui.ratios.main_menu_document_padding * 2
+            tags_end = preview_rect.top if self.gui.config.doc_view_more_tags else preview_rect.centery
             for i, tag in enumerate(tag_names := [tag.name for tag in state.current_state['tags']], start=1):
                 tag_text = getattr(state.render_info, f't_tag_{tag}')
 
                 if not tag_text:
                     continue
+
+                # Align the tag and display it
                 tag_text.rect.x = preview_rect.left + self.gui.ratios.main_menu_document_padding
                 tag_text.rect.bottom = y
-                y -= tag_text.rect.height + self.gui.ratios.main_menu_document_padding
-
                 self.display_tag(tag_text)
 
-                if y < preview_rect.centery:
-                    state.extra_tags_count = len(state.current_state['tags']) - i
+                # Adjust the y position for the next tag
+                y -= tag_text.rect.height + self.gui.ratios.main_menu_document_padding
+
+                # Ensure the next tag can fit in the designated space safely
+                if y-tag_text.rect.height-self.gui.ratios.main_menu_document_padding <= tags_end:
+                    state.extra_tags_count = len(state.current_state['tags']) - i  # Remaining tags if any
                     break
             else:
-                state.extra_tags_count = 0
+                state.extra_tags_count = 0  # No extra tags, reset the count
             if state.extra_tags_count > 0:
                 available_width /= 2
                 extra_tags_text = getattr(state.render_info, 't_extra_tags')
