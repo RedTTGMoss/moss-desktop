@@ -174,7 +174,7 @@ class DebugContextMenu(ContextMenu):
             with surface:
                 for i, color in enumerate(self.PREVIEW_COLORS):
                     pe.draw.rect(color, (i * 10, 0, 10, surface.height))
-            PreviewHandler.CACHED_PREVIEW[self.DEBUG_PREVIEW] = (self.DEBUG_PREVIEW_PAGE_INDEX, pe.Image(surface))
+            PreviewHandler.CACHED_PREVIEW[self.DEBUG_PREVIEW] = (self.DEBUG_PREVIEW_PAGE_INDEX, pe.Sprite(surface))
 
         for document in list(self.api.documents.values()):
             if document.parent == self.DEBUG_FOLDER:
