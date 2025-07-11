@@ -205,6 +205,10 @@
                 "toggle_maintain_aspect": {
                     "footnote": "Dadurch werden die im Dokumentbetrachter geladenen Dokumente in der Originalfenstergröße gehalten. Wenn Sie diese Option deaktivieren, wird die Seitengröße stattdessen an die aktuelle Fenstergröße angepasst, falls Sie die Fenstergröße ändern.",
                     "label": "Seitenverhältnis beibehalten"
+                },
+                "doc_view_more_tags": {
+                    "label": "Show more tags",
+                    "footnote": "Show more tags in grid view, instead of truncating"
                 }
             }
         }
@@ -221,7 +225,8 @@
             "retry_pdf_renderer": "PDF konnte nicht gerendert werden. Überprüfen Sie Ihre Konfiguration",
             "unknown_pdf_renderer": "PDF konnte nicht gerendert werden. Stellen Sie sicher, dass Sie einen kompatiblen PDF-Renderer haben.",
             "unknown_format": "Unbekanntes Format. Dokument konnte nicht gerendert werden.",
-            "failed_to_build_tree": "Der Baum konnte nicht erstellt werden. (Versuchen Sie es mit einer anderen Seite oder einem anderen Dokument.)"
+            "failed_to_build_tree": "Der Baum konnte nicht erstellt werden. (Versuchen Sie es mit einer anderen Seite oder einem anderen Dokument.)",
+            "failed_to_make_renderer": "Failed to make renderer"
         }
     },
     "popups": {

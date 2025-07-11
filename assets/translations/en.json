@@ -205,6 +205,10 @@
                 "toggle_maintain_aspect": {
                     "footnote": "This will keep documents loaded in the document viewer sized to the original window size. If you disable this, the page size will instead try to scale to whatever window size you have instead, if you resized the window.",
                     "label": "Maintain aspect size"
+                },
+                "doc_view_more_tags": {
+                    "label": "Show more tags",
+                    "footnote": "Show more tags in grid view, instead of truncating"
                 }
             }
         }
@@ -221,7 +225,8 @@
             "retry_pdf_renderer": "Could not render PDF. Check your configuration.",
             "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
             "unknown_format": "Unknown format. Could not render document.",
-            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
+            "failed_to_build_tree": "Failed to build tree. (Try another page or document)",
+            "failed_to_make_renderer": "Failed to make renderer"
         }
     },
     "popups": {
