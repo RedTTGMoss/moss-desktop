@@ -55,7 +55,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
             't_title': document_font_details,
             't_title_folder': folder_font_details,
             't_description': small_font_details,
-            't_tags_extra': small_font_details,  # TODO: Maybe implement another font for this?
+            't_extra_tags': small_font_details,  # TODO: Maybe implement another font for this?
             't_filesize': small_font_details,
             't_tag': small_font_details
         }

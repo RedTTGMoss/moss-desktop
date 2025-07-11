@@ -132,9 +132,15 @@ class GridDocInfoDisplay(DocInfoDisplay):
                 state.extra_tags_count = 0
             if state.extra_tags_count > 0:
                 available_width /= 2
+                extra_tags_text = getattr(state.render_info, 't_extra_tags')
+                if extra_tags_text:
+                    extra_tags_text.rect.bottomright = preview_rect.bottomright
+                    extra_tags_text.rect.move_ip(-self.gui.ratios.main_menu_document_padding,
+                                                 -self.gui.ratios.main_menu_document_padding)
+                    self.display_tag(extra_tags_text)
+                    state.set_trim_text_size('t_extra_tags', available_width)
             for tag in tag_names:
                 state.set_trim_text_size(f't_tag_{tag}', available_width)
-
 
             if text:
                 text.display()

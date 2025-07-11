@@ -169,7 +169,7 @@ class DocInfoManager(ABC):
 
             't_description': 'Description',  # The subtext aka page count, read progress or item count
             # If the tags are too many this text is shown to indicate extra tags that are not displayed
-            't_tags_extra': f'+{state.extra_tags_count}',
+            't_extra_tags': f'+{state.extra_tags_count}',
             't_filesize': '0 Bytes',  # The size of the document
         }
 
@@ -204,7 +204,7 @@ class DocInfoDisplay(ABC):
         Handles the item state and frame rendering.
         """
         state = self.__cache.get(item.uuid)
-        if not state:
+        if not state:  # If the state is not cached, create a new one
             state = DocInfoState(item, self)
             self.__cache[item.uuid] = state
         self.update(state, area, state.button.hovered)
@@ -249,9 +249,14 @@ class DocInfoDisplay(ABC):
                     full.rect.topleft = title.rect.topleft
                     full.rect.move_ip(offset_x, offset_y)
                     render_full_text(state.gui, full)
-        pe.settings.game_context.buttons.append(state.button)
-        state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
+
+        # Properly handle button contexting so everything works as expected
+        self.gui.buttons_with_names[state.button.name] = state.button  # Register the button
+        self.gui.buttons.append(state.button)  # Add the button to the buttons list
         pe.button.check_hover(state.button)
+
+        # Clip the button area to the area of the viewer
+        state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
 
     @abstractmethod
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
