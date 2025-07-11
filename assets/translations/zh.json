@@ -205,6 +205,10 @@
                 "toggle_maintain_aspect": {
                     "footnote": "这将保持文档查看器中加载的文档大小与原始窗口大小一致。 如果禁用此选项，页面大小将尝试根据你调整后的窗口大小进行缩放。",
                     "label": "保持宽高比"
+                },
+                "doc_view_more_tags": {
+                    "label": "Show more tags",
+                    "footnote": "Show more tags in grid view, instead of truncating"
                 }
             }
         }
@@ -221,7 +225,8 @@
             "retry_pdf_renderer": "Could not render PDF. Check your configuration.",
             "unknown_pdf_renderer": "Could not render PDF. Make sure you have a compatible PDF renderer.",
             "unknown_format": "Unknown format. Could not render document.",
-            "failed_to_build_tree": "Failed to build tree. (Try another page or document)"
+            "failed_to_build_tree": "Failed to build tree. (Try another page or document)",
+            "failed_to_make_renderer": "Failed to make renderer"
         }
     },
     "popups": {
