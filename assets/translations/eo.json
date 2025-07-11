@@ -205,6 +205,10 @@
                 "toggle_maintain_aspect": {
                     "footnote": "Tio konservos la dokumentojn ŝargitajn en la dokumentospektilo laŭ la originala fenestrograndeco. Se vi malŝaltas tion, la paĝograndeco anstataŭe provos skali al kia ajn fenestrograndeco, kiun vi havas, se vi ŝanĝis la grandecon de la fenestro.",
                     "label": "Konservi aspektograndecon"
+                },
+                "doc_view_more_tags": {
+                    "label": "Show more tags",
+                    "footnote": "Show more tags in grid view, instead of truncating"
                 }
             }
         }
@@ -221,7 +225,8 @@
             "retry_pdf_renderer": "Ne eblis bildigi PDF-on. Kontrolu vian agordon.",
             "unknown_pdf_renderer": "Ne eblis bildigi PDF-on. Certigu, ke vi havas kongruan PDF-bildigilon.",
             "unknown_format": "Nekonata formato. Ne eblis bildigi la dokumenton.",
-            "failed_to_build_tree": "Malsukcesis konstrui arbon. (Provu alian paĝon aŭ dokumenton)"
+            "failed_to_build_tree": "Malsukcesis konstrui arbon. (Provu alian paĝon aŭ dokumenton)",
+            "failed_to_make_renderer": "Failed to make renderer"
         }
     },
     "popups": {
