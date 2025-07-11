@@ -9,7 +9,7 @@ import pygameextra as pe
 import pyperclip
 from pathvalidate import sanitize_filename
 from rm_api import make_hash
-from rm_api.models import Document, DocumentCollection, Content, Metadata
+from rm_api.models import Document, DocumentCollection, Content, Metadata, Tag
 from rm_api.notifications.models import DocumentSyncProgress
 from rm_api.storage.common import FileHandle
 
@@ -192,15 +192,20 @@ class DebugContextMenu(ContextMenu):
         self.apply(problematic_notebook := Document.new_notebook(self.api, "Problematic notebook", self.DEBUG_FOLDER))
         self.apply(syncing_notebook := Document.new_notebook(self.api, "Syncing notebook", self.DEBUG_FOLDER))
 
+        test_tag = Tag({
+            'name': 'Test Tag',
+            'timestamp': '1:0'
+        })
+
         # Document collections
-        folder_with_tag.tags.append('Test tag')
+        folder_with_tag.tags.append(test_tag)
 
         folder_with_star.metadata.pinned = True
 
         # Notebooks
         DocumentViewer.PROBLEMATIC_DOCUMENTS.add(problematic_notebook.uuid)
 
-        notebook_with_tag.content.tags.append('Test tag')
+        notebook_with_tag.content.tags.append(test_tag)
         notebook_with_star.metadata.pinned = True
 
         progress = DocumentSyncProgress(syncing_notebook.uuid)

@@ -225,6 +225,13 @@ class MainMenu(pe.ChildContext):
             if self.item_filter(item, document_collections)
         }
 
+        if self.navigation_parent == 'debug' and len(self.document_collections) == 0 and len(self.documents) == 0:
+            debug_context_menu = self.side_bar.debug_context_menu((0, 0))
+            debug_context_menu.test_doc_view()
+            debug_context_menu.close()
+            self.get_items()
+            return
+
         # Preparing the path queue and the path texts
         self.path_queue.queue.clear()
         if self.navigation_parent is not None:
