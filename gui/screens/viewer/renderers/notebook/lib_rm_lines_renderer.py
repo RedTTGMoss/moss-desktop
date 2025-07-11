@@ -233,6 +233,7 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
     renderer: Optional[Renderer]
 
     FAILED_TO_BUILD_TREE_ERROR = 'viewer.errors.failed_to_build_tree'
+    FAILED_TO_MAKE_RENDERER_ERROR = 'viewer.errors.failed_to_make_renderer'
 
     def __init__(self, document_renderer: 'DocumentRenderer'):
         super().__init__(document_renderer)
@@ -260,6 +261,12 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
             return
         if self.tree:
             self.renderer = Renderer(self.tree)
+            if not self.renderer.uuid:
+                self.tree = None
+                self.renderer = None
+                self.unloadable_pages.add(page_uuid)
+                self.error = self.FAILED_TO_MAKE_RENDERER_ERROR
+                return
             self.expanded_notebook = LIB_rM_Lines_ExpandedNotebook(self.renderer)
         self.document_renderer.loading -= 1
 
