@@ -160,17 +160,20 @@ class PreviewHandler:
             renderer = Notebook_LIB_rM_Lines_Renderer(document_renderer)
             renderer._load(page_id)
 
-            renderer.expanded_notebook.get_frame_from_initial(0, 0)
-            preview = renderer.expanded_notebook.get_preview(0, 0)
+            if hasattr(renderer, 'expanded_notebook'):
+                renderer.expanded_notebook.get_frame_from_initial(0, 0)
+                preview = renderer.expanded_notebook.get_preview(0, 0)
 
-            start_time = time.time()
-            while not preview.loaded:
-                if time.time() - start_time > PREVIEW_TIMEOUT:
-                    image = None
-                    break
-                time.sleep(0.05)  # avoid busy waiting
+                start_time = time.time()
+                while not preview.loaded:
+                    if time.time() - start_time > PREVIEW_TIMEOUT:
+                        image = None
+                        break
+                    time.sleep(0.05)  # avoid busy waiting
+                else:
+                    image = preview.get_preview()
             else:
-                image = preview.get_preview()
+                image = None
         else:
             image = None
 
