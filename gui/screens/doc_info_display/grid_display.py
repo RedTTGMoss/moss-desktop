@@ -15,27 +15,27 @@ class GridDocInfoDisplay(DocInfoDisplay):
         rect = pe.Rect(
             0, 0, self.viewer.document_width, icon.height
         )
-        rect.inflate_ip(state.gui.ratios.main_menu_folder_margin_x, state.gui.ratios.main_menu_folder_margin_y)
+        rect.inflate_ip(self.gui.ratios.main_menu_folder_margin_x, self.gui.ratios.main_menu_folder_margin_y)
         state.rect = rect
         surface = pe.Surface(state.rect.size)
         invert_key = '_inverted' if state.render_info.selected else ''
 
         text: Optional[pe.Text] = getattr(state.render_info, f't_title_folder{invert_key}')
-        star_icon = state.gui.icons['star' + invert_key]
-        tag_icon = state.gui.icons['tag' + invert_key]
+        star_icon = self.gui.icons['star' + invert_key]
+        tag_icon = self.gui.icons['tag' + invert_key]
 
         icon_position = (  # Calculate the offset where the folder icon will be displayed
-            state.gui.ratios.main_menu_folder_margin_x // 2,
-            state.gui.ratios.main_menu_folder_margin_y // 2
+            self.gui.ratios.main_menu_folder_margin_x // 2,
+            self.gui.ratios.main_menu_folder_margin_y // 2
         )
-        text_left_margin = icon.width + state.gui.ratios.main_menu_folder_padding  # Margin between icon and text
+        text_left_margin = icon.width + self.gui.ratios.main_menu_folder_padding  # Margin between icon and text
 
         # Calculate the available width for the text, accounting for icons and margins
         available_width = surface.width - (
-                icon_position[0] + text_left_margin + state.gui.ratios.main_menu_folder_padding  # Base margin
-                + (star_icon.width + state.gui.ratios.main_menu_folder_padding
+                icon_position[0] + text_left_margin + self.gui.ratios.main_menu_folder_padding  # Base margin
+                + (star_icon.width + self.gui.ratios.main_menu_folder_padding
                    if state.current_state['pinned'] else 0)  # If pinned, add star icon width + margin
-                + (tag_icon.width + state.gui.ratios.main_menu_folder_padding
+                + (tag_icon.width + self.gui.ratios.main_menu_folder_padding
                    if state.current_state['tags'] else 0)  # If tags, add tag icon width + margin
         )
         state.set_trim_text_size('t_title_folder', available_width)
@@ -54,12 +54,12 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
                 # Position the icons if applicable
                 icon_rect = pe.Rect(*text.rect.topright, *star_icon.size)
-                icon_rect.x += state.gui.ratios.main_menu_folder_padding
+                icon_rect.x += self.gui.ratios.main_menu_folder_padding
                 icon_rect.centery = surface.height // 2  # Center vertically
 
                 if state.current_state['pinned']:
                     star_icon.display(icon_rect.topleft)
-                    icon_rect.x += star_icon.width + state.gui.ratios.main_menu_folder_padding
+                    icon_rect.x += star_icon.width + self.gui.ratios.main_menu_folder_padding
 
                 if state.current_state['tags']:
                     tag_icon.display(icon_rect.topleft)
@@ -79,25 +79,28 @@ class GridDocInfoDisplay(DocInfoDisplay):
         if state.render_info.selected:
             preview_rect.inflate_ip(tuple(-0.1 * x for x in preview_rect.size))
 
-        preview, edge_rounding = self.render_document_preview(state, preview_rect.size)  # Get the preview for the document
+        preview, edge_rounding = self.render_document_preview(state,
+                                                              preview_rect.size)  # Get the preview for the document
         invert_key = '_inverted' if state.render_info.selected else ''
         text = getattr(state.render_info, f't_title{invert_key}')  # Get the title text for the document
         sub_text = getattr(state.render_info, f't_description{invert_key}')  # Get the description text for the document
+        star_icon = self.gui.icons['star' + invert_key]
 
         bottom = self.viewer.document_height
 
         if text:
-            text.rect.top = self.viewer.document_height + state.gui.ratios.main_menu_document_title_height_margin
+            text.rect.top = self.viewer.document_height + self.gui.ratios.main_menu_document_title_height_margin
             text.rect.left = 0
 
             if sub_text:
-                sub_text.rect.top = text.rect.bottom + state.gui.ratios.main_menu_document_title_padding
+                sub_text.rect.top = text.rect.bottom + self.gui.ratios.main_menu_document_title_padding
                 sub_text.rect.left = 0
                 bottom = sub_text.rect.bottom
             else:
                 bottom = text.rect.bottom
 
-        state.set_trim_text_size('t_title', surface.width)
+        state.set_trim_text_size('t_title', surface.width - (
+            star_icon.width + self.gui.ratios.main_menu_document_padding if state.current_state['pinned'] else 0))
 
         with surface:
             if state.render_info.selected:
@@ -108,8 +111,37 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
             pe.display.blit(preview, preview_rect.topleft)
 
+            # Handle drawing the tag texts on top of the preview area
+            y = preview_rect.bottom - self.gui.ratios.main_menu_document_padding
+            available_width = preview_rect.width - self.gui.ratios.main_menu_document_padding * 2
+            for i, tag in enumerate(tag_names := [tag.name for tag in state.current_state['tags']], start=1):
+                tag_text = getattr(state.render_info, f't_tag_{tag}')
+
+                if not tag_text:
+                    continue
+                tag_text.rect.x = preview_rect.left + self.gui.ratios.main_menu_document_padding
+                tag_text.rect.bottom = y
+                y -= tag_text.rect.height + self.gui.ratios.main_menu_document_padding
+
+                self.display_tag(tag_text)
+
+                if y < preview_rect.centery:
+                    state.extra_tags_count = len(state.current_state['tags']) - i
+                    break
+            else:
+                state.extra_tags_count = 0
+            if state.extra_tags_count > 0:
+                available_width /= 2
+            for tag in tag_names:
+                state.set_trim_text_size(f't_tag_{tag}', available_width)
+
+
             if text:
                 text.display()
+                icon_rect = pe.Rect(0, 0, *star_icon.size)
+                icon_rect.centery = text.rect.centery
+                icon_rect.left = text.rect.right + self.gui.ratios.main_menu_document_padding
+                star_icon.display(icon_rect.topleft)
             if sub_text:
                 sub_text.display()
 

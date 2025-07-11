@@ -27,6 +27,7 @@ class DocInfoState:
         self.scale = 0
         self._rect = pe.Rect(0, 0, 10, 10)
         self.trim_text_sizes = {}
+        self.extra_tags_count = 0
         self.texts = {}
         self.button = pe.Button(
             self.rect,
@@ -168,7 +169,7 @@ class DocInfoManager(ABC):
 
             't_description': 'Description',  # The subtext aka page count, read progress or item count
             # If the tags are too many this text is shown to indicate extra tags that are not displayed
-            't_tags_extra': '+0',
+            't_tags_extra': f'+{state.extra_tags_count}',
             't_filesize': '0 Bytes',  # The size of the document
         }
 
@@ -307,6 +308,17 @@ class DocInfoDisplay(ABC):
             )
 
         return preview_masked, edge_rounding
+
+    def display_tag(self, tag_text):
+        # Make rects that surround the tag text
+        expanded_rect = self.gui.ratios.pad_button_rect(tag_text.rect, self.gui.ratios.main_menu_tag_padding)
+        outline_rect = expanded_rect.inflate(self.gui.ratios.outline, self.gui.ratios.outline)
+
+        # Draw the background and outline for the tag
+        pe.draw.rect(Defaults.SELECTED, outline_rect, 0, edge_rounding=outline_rect.height)
+        pe.draw.rect(Defaults.BACKGROUND, expanded_rect, 0, edge_rounding=expanded_rect.height)
+
+        tag_text.display()  # Display the tag text
 
     def get_state(self, state_uuid) -> Optional[DocInfoState]:
         return self.__cache.get(state_uuid, None)
