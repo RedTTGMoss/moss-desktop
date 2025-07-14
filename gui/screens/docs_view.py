@@ -155,7 +155,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
         y += (document_size[1] + self.manager.document_margin) * document_rows
 
         if len(self.document_collections) > 0:  # Add the separation distance
-            y += self.gui.ratios.main_menu_separation_distance
+            y += self.manager.separation_distance
 
         # Add the padding of the bottom bar for better scroll experience
         self.bottom = y + self.gui.ratios.bottom_bar_height
@@ -198,7 +198,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
         # Resetting the x and y for the documents
         x = self.x_padding_documents
         if len(self.document_collections) > 0:
-            y += collection_size[1] + self.gui.ratios.main_menu_separation_distance
+            y += collection_size[1] + self.manager.separation_distance
         else:
             y = top
 

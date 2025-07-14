@@ -176,3 +176,6 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
     def _collection_margin(self) -> int:
         return self.gui.ratios.main_menu_folder_margin
+
+    def _separation_distance(self) -> int:
+        return self.gui.ratios.main_menu_separation_distance

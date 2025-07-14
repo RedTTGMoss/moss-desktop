@@ -344,6 +344,10 @@ class DocInfoDisplay(ABC):
     def collection_margin(self):
         return self._collection_margin()
 
+    @property
+    def separation_distance(self):
+        return self._separation_distance()
+
     @abstractmethod
     def _document_rect(self) -> pe.Rect:
         ...
@@ -358,4 +362,8 @@ class DocInfoDisplay(ABC):
 
     @abstractmethod
     def _collection_margin(self) -> int:
+        ...
+
+    @abstractmethod
+    def _separation_distance(self) -> int:
         ...
