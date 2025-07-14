@@ -26,6 +26,20 @@ class rMDocInfoManager(DocInfoManager):
     @classmethod
     def get_document_state_info(cls, state: DocInfoState) -> dict:
         document: Document = state.document
+
+        # Check and fetch the sync operation if it exists
+        if document.uuid in state.gui.main_menu.document_sync_operations:
+            sync_operation = state.gui.main_menu.document_sync_operations[document.uuid]
+            if sync_operation.finished:
+                del state.gui.main_menu.document_sync_operations[document.uuid]
+                sync_operation = None
+            else:
+                sync_operation = sync_operation
+        elif document.downloading:
+            sync_operation = document.download_progress
+        else:
+            sync_operation = None
+
         result = {
             **cls.get_general_state_info(state),
             'provision': document.provision,
@@ -35,8 +49,14 @@ class rMDocInfoManager(DocInfoManager):
             'tags': document.content.tags,
             **{f't_tag_{tag.name}': tag.name for tag in document.content.tags},
             't_size': f'{humanize.naturalsize(document.content.size_in_bytes, binary=True)}',
-            'selected': state.document.uuid in state.manager.viewer.selected_documents
+            'selected': state.document.uuid in state.manager.viewer.selected_documents,
         }
+
+        if sync_operation:  # Register the sync operation on the state
+            result['done'] = sync_operation.done
+            result['total'] = sync_operation.total
+
+            result['sync_operation'] = sync_operation
 
         if document.content.file_type == 'notebook':
             result['t_description'] = t('doc_display.sub.page_count', page_count=document.get_page_count())
@@ -77,6 +97,7 @@ class rMDocInfoManager(DocInfoManager):
             state=state,
             preview=PreviewHandler.get_preview(state.document),
             selected=state.current_state['selected'],
+            progress=state.current_state.get('sync_operation'),
         )
 
     @classmethod

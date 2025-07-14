@@ -27,6 +27,8 @@ class DocumentTreeViewer(ScrollableView, ABC):
         self.selected_document_collections = set()
         self.x_padding_collections = 0
         self.x_padding_documents = 0
+        self.collection_columns_fittable = 1
+        self.document_columns_fittable = 1
         self.last_width = None
         self.need_to_handle_texts = False
         self._scale = self.gui.config.doc_view_scale
@@ -103,53 +105,62 @@ class DocumentTreeViewer(ScrollableView, ABC):
         return 'list'
 
     def pre_loop(self):
-        area_of_widths = self.width / (
-                self.document_width + self.gui.ratios.main_menu_document_padding
-        ) - self.gui.ratios.main_menu_document_padding / self.width
-        area_of_widths = max(1, int(area_of_widths))
+        # Get the sizes from the manager
+        collection_size = self.manager.collection_rect.size
+        document_size = self.manager.document_rect.size
 
-        width = area_of_widths * self.document_width
-        width += self.gui.ratios.main_menu_document_padding * (area_of_widths - 1)
+        # Figure out the columns, if we should add padding or not
+        self.collection_columns_fittable = max(
+            1,
+            int(self.width /  # Divide the width by the size of one collection
+                (collection_size[0] + self.manager.collection_margin))
+        )
+        self.document_columns_fittable = max(
+            1,
+            int(self.width /  # Do the same for document columns
+                (document_size[0] + self.manager.document_margin))
+        )
 
-        padding = (self.width - width) / 2
-
-        collections_rows = 1
-        documents_rows = 1
-
-        if len(self.document_collections) == 0:
-            collections_rows = 0
-        if len(self.document_collections) < area_of_widths:
+        # Calculate x padding for collections based on length
+        # noinspection DuplicatedCode
+        if len(self.document_collections) < self.collection_columns_fittable:
             self.x_padding_collections = self.gui.ratios.main_menu_x_padding
         else:
-            self.x_padding_collections = padding
-            if self.mode == 'grid' or self.mode == 'folder':
-                collections_rows = ceil(len(self.document_collections) / area_of_widths)
-            else:
-                collections_rows = len(self.document_collections)
+            width = self.collection_columns_fittable * collection_size[0] + \
+                    self.gui.ratios.main_menu_folder_margin * (self.collection_columns_fittable - 1)
+            self.x_padding_collections = (self.width - width) / 2
 
-        if len(self.documents) == 0:
-            documents_rows = 0
-        if len(self.documents) < area_of_widths:
+        # Calculate x padding for documents based on length
+        # noinspection DuplicatedCode
+        if len(self.documents) < self.document_columns_fittable:
             self.x_padding_documents = self.gui.ratios.main_menu_x_padding
         else:
-            self.x_padding_documents = padding
-            documents_rows = ceil(len(self.documents) / area_of_widths)
+            width = self.document_columns_fittable * document_size[0] + \
+                    self.gui.ratios.main_menu_document_margin * (self.document_columns_fittable - 1)
+            self.x_padding_documents = (self.width - width) / 2
 
+        # Finally calculate row count for final height determination of the scrollable view
         if len(self.document_collections) > 0:
-            # Collections
-            y = self.gui.ratios.main_menu_top_padding / 2
-            y += self.gui.ratios.main_menu_folder_height_distance * collections_rows
+            collection_rows = ceil(len(self.document_collections) / self.collection_columns_fittable)
         else:
-            y = 0
-
-        # Documents
-        y += (self.full_document_height + self.gui.ratios.main_menu_document_height_distance) * documents_rows
+            collection_rows = 0
 
         if len(self.documents) > 0:
-            y -= self.gui.ratios.main_menu_document_title_height_margin * 2
+            document_rows = ceil(len(self.documents) / self.document_columns_fittable)
+        else:
+            document_rows = 0
 
+        # Calculate the height of the scrollable view
+        y = (collection_size[1] + self.manager.collection_margin) * collection_rows
+        y += (document_size[1] + self.manager.document_margin) * document_rows
+
+        if len(self.document_collections) > 0:  # Add the separation distance
+            y += self.gui.ratios.main_menu_separation_distance
+
+        # Add the padding of the bottom bar for better scroll experience
         self.bottom = y + self.gui.ratios.bottom_bar_height
 
+        # As a final pre_loop, handle texts if flagged for handling
         if self.need_to_handle_texts:
             self.handle_texts()
             self.need_to_handle_texts = False
@@ -159,70 +170,51 @@ class DocumentTreeViewer(ScrollableView, ABC):
     def loop(self):
         top = self.top
         area = pe.Rect(*self.AREA)
-        if self.mode == 'grid':
-            collections_x = self.x_padding_collections
-        else:
-            collections_x = self.gui.ratios.main_menu_x_padding
 
-        x = collections_x
+        # Get the sizes from the manager
+        collection_size = self.manager.collection_rect.size
+        document_size = self.manager.document_rect.size
+
+        x = self.x_padding_collections
 
         y = self.gui.ratios.main_menu_top_padding / 2
         y += top
 
         # Rendering the folders
-        document_collection_width = \
-            self.document_width if self.mode == 'grid' else self.width - self.gui.ratios.main_menu_x_padding * 2
         for i, document_collection in enumerate(
                 self.gui.main_menu.get_sorted_document_collections(self.document_collections.values())):
-            self.manager.handle(document_collection, area, x, y)
+            self.manager.handle(document_collection, area, x, y)  # Render the collection
 
-            if self.mode == 'grid':
-                x += self.document_width + self.gui.ratios.main_menu_document_padding
-                if x + self.document_width > self.width and i + 1 < len(self.document_collections):
-                    x = collections_x
-                    y += self.gui.ratios.main_menu_folder_height_distance
+            if (
+                    i % self.collection_columns_fittable == self.collection_columns_fittable - 1 and
+                    i < len(self.document_collections) - 1):  # Also skip this operation for the last collection
+                # If we reached the end of the row, reset x and increase y
+                x = self.x_padding_collections
+                y += collection_size[1] + self.manager.collection_margin
             else:
-                y += self.gui.ratios.main_menu_folder_height_distance
-                if (self.mode == 'list' and len(self.documents) > 0) or i < len(self.document_collections) - 1:
-                    line_y = y - self.gui.ratios.main_menu_folder_margin_y / 2
-                    pe.draw.line(Defaults.LINE_GRAY,
-                                 (collections_x, line_y), (self.width - collections_x, line_y),
-                                 self.gui.ratios.line)
+                # Otherwise, just increase x
+                x += collection_size[0] + self.manager.collection_margin
 
         # Resetting the x and y for the documents
+        x = self.x_padding_documents
         if len(self.document_collections) > 0:
-            y += self.gui.ratios.main_menu_folder_height_last_distance
+            y += collection_size[1] + self.gui.ratios.main_menu_separation_distance
         else:
             y = top
 
-        x = self.x_padding_documents
-
         # Rendering the documents
         for i, document in enumerate(self.gui.main_menu.get_sorted_documents(self.documents.values())):
-            if y + self.full_document_height > 0:
-                # Render the document
-                rect = pe.Rect(
-                    x, y,
-                    self.document_width,
-                    self.full_document_height
-                )
-                if document.uuid in self.gui.main_menu.document_sync_operations:
-                    document_sync_operation = self.gui.main_menu.document_sync_operations[document.uuid]
-                    if document_sync_operation.finished:
-                        del self.gui.main_menu.document_sync_operations[document.uuid]
-                        document_sync_operation = None
-                elif document.downloading:
-                    document_sync_operation = document.download_progress
-                else:
-                    document_sync_operation = None
-                self.manager.handle(document, area, x, y)
+            self.manager.handle(document, area, x, y)  # Render the document
 
-            x += self.document_width + self.gui.ratios.main_menu_document_padding
-            if x + self.document_width > self.width and i + 1 < len(self.documents):
+            if (
+                    i % self.document_columns_fittable == self.document_columns_fittable - 1 and
+                    i < len(self.documents) - 1):  # Also skip this operation for the last document
+                # If we reached the end of the row, reset x and increase y
                 x = self.x_padding_documents
-                y += self.full_document_height
-            if y > self.height:
-                break
+                y += document_size[1] + self.manager.document_margin
+            else:
+                # Otherwise, just increase x
+                x += document_size[0] + self.manager.document_margin
 
     def select_document(self, document_uuid: str):
         if document_uuid in self.selected_documents:

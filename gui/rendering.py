@@ -44,17 +44,17 @@ def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[
     except KeyError:
         return
     text.rect.midleft = (x, y)
-    text.rect.x += icon.width + gui.ratios.main_menu_folder_padding
+    text.rect.x += icon.width + gui.ratios.main_menu_folder_margin
     text.rect.y += icon.height // 1.5
 
-    extra_x = text.rect.right + gui.ratios.main_menu_folder_padding
+    extra_x = text.rect.right + gui.ratios.main_menu_folder_margin
     star_icon = gui.icons['star' + invert_icon_key]
     tag_icon = gui.icons['tag' + invert_icon_key]
 
     rect = pe.rect.Rect(
         x, y,
         width -
-        gui.ratios.main_menu_folder_padding,
+        gui.ratios.main_menu_folder_margin,
         icon.height
     )
     rect.inflate_ip(gui.ratios.main_menu_folder_margin_x, gui.ratios.main_menu_folder_margin_y)
@@ -67,10 +67,10 @@ def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[
     # Draw the star icon
     if collection.metadata.pinned:
         star_icon.display((extra_x, text.rect.centery - star_icon.width // 2))
-        extra_x += star_icon.width + gui.ratios.main_menu_folder_padding
+        extra_x += star_icon.width + gui.ratios.main_menu_folder_margin
     if collection.tags:
         tag_icon.display((extra_x, text.rect.centery - tag_icon.width // 2))
-        extra_x += tag_icon.width + gui.ratios.main_menu_folder_padding
+        extra_x += tag_icon.width + gui.ratios.main_menu_folder_margin
 
     render_button_using_text(
         gui, text,

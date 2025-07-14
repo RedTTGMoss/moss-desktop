@@ -65,7 +65,6 @@ class DocInfoState:
             if text.text != self.current_state.get(key, text.text):
                 self.manager.viewer.need_to_handle_texts = True  # Mark that we need to handle untrimming the text
 
-
     @property
     def current_state(self):
         if not self._current_state:
@@ -83,7 +82,6 @@ class DocInfoState:
                 continue
             self.manager.viewer.text_information[identifiable_key] = value
             self.manager.viewer.need_to_handle_texts = True
-
 
     @property
     def rect(self):
@@ -199,7 +197,8 @@ class DocInfoDisplay(ABC):
         self.info_class = info_class
         self.viewer = doc_tree_view
 
-    def handle(self, item: Union[Document, DocumentCollection], area: pe.Rect, offset_x: int, offset_y: int):
+    def handle(self, item: Union[Document, DocumentCollection], area: pe.Rect, offset_x: Optional[int] = None,
+               offset_y: Optional[int] = None):
         """
         Handles the item state and frame rendering.
         """
@@ -208,7 +207,8 @@ class DocInfoDisplay(ABC):
             state = DocInfoState(item, self)
             self.__cache[item.uuid] = state
         self.update(state, area, state.button.hovered)
-        self.render(state, area, offset_x, offset_y)
+        if offset_x and offset_y:
+            self.render(state, area, offset_x, offset_y)
 
     def update(self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False) -> bool:
         if not area:
@@ -231,7 +231,8 @@ class DocInfoDisplay(ABC):
         """
         Renders the item frame if available.
         """
-        rect = state.rect.move(offset_x, offset_y)
+        rect = state.rect.copy()
+        rect.topleft = (offset_x, offset_y)
         if not state.frame:
             pe.draw.rect(Defaults.BACKGROUND_ERROR, rect, 0,
                          edge_rounding=self.gui.ratios.error_edge_rounding)
@@ -327,3 +328,34 @@ class DocInfoDisplay(ABC):
 
     def get_state(self, state_uuid) -> Optional[DocInfoState]:
         return self.__cache.get(state_uuid, None)
+
+    @property
+    def document_rect(self):
+        return self._document_rect()
+
+    @property
+    def collection_rect(self):
+        return self._collection_rect()
+    @property
+    def document_margin(self):
+        return self._document_margin()
+
+    @property
+    def collection_margin(self):
+        return self._collection_margin()
+
+    @abstractmethod
+    def _document_rect(self) -> pe.Rect:
+        ...
+
+    @abstractmethod
+    def _collection_rect(self) -> pe.Rect:
+        ...
+
+    @abstractmethod
+    def _document_margin(self) -> int:
+        ...
+
+    @abstractmethod
+    def _collection_margin(self) -> int:
+        ...

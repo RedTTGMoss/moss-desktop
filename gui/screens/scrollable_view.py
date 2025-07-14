@@ -31,7 +31,7 @@ class ScrollableView(pe.Context, ABC):
     @property
     def top(self):
         correct_top = min(0, max(self.active_top,
-                                 (-self.bottom + self.height) - self.gui.ratios.main_menu_document_padding))
+                                 (-self.bottom + self.height) - self.gui.ratios.main_menu_document_margin))
         self.active_top = int(
             (1 - self.T * self.gui.delta_time) * self.active_top + self.T * self.gui.delta_time * correct_top)
         if self.active_top - 5 < self._top < self.active_top + 5:
