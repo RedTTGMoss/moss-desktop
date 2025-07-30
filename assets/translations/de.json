@@ -32,7 +32,7 @@
             "hot_reload": "Hot Reload",
             "import_dir": "Aus Ordner importieren",
             "test_doc": "Testdokumentansicht",
-            "clear_preview": "Clear preview data"
+            "clear_preview": "Vorschaudaten löschen"
         },
         "settings": {
             "back": "Zurück"
@@ -207,8 +207,8 @@
                     "label": "Seitenverhältnis beibehalten"
                 },
                 "doc_view_more_tags": {
-                    "label": "Show more tags",
-                    "footnote": "Show more tags in grid view, instead of truncating"
+                    "label": "Weitere Tags anzeigen",
+                    "footnote": "Mehr Tags in der Rasteransicht anzeigen, anstatt sie abzuschneiden"
                 }
             }
         }
@@ -226,7 +226,7 @@
             "unknown_pdf_renderer": "PDF konnte nicht gerendert werden. Stellen Sie sicher, dass Sie einen kompatiblen PDF-Renderer haben.",
             "unknown_format": "Unbekanntes Format. Dokument konnte nicht gerendert werden.",
             "failed_to_build_tree": "Der Baum konnte nicht erstellt werden. (Versuchen Sie es mit einer anderen Seite oder einem anderen Dokument.)",
-            "failed_to_make_renderer": "Failed to make renderer"
+            "failed_to_make_renderer": "Renderer konnte nicht erstellt werden"
         }
     },
     "popups": {
@@ -269,9 +269,9 @@
     },
     "doc_display": {
         "sub": {
-            "page_count": "{page_count} pages",
-            "page_of": "Page {page} of {total}",
-            "pages_read": "{read_percent}% read"
+            "page_count": "{page_count} Seiten",
+            "page_of": "Seite {page} von {total}",
+            "pages_read": "{read_percent} % gelesen"
         }
     }
 }
