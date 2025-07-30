@@ -32,7 +32,7 @@
             "hot_reload": "Varma Reŝargo",
             "import_dir": "Importi el la dosierujo",
             "test_doc": "Testa Dokumenta Vido",
-            "clear_preview": "Clear preview data"
+            "clear_preview": "Forigi antaŭrigardajn datumojn"
         },
         "settings": {
             "back": "Reen"
@@ -207,8 +207,8 @@
                     "label": "Konservi aspektograndecon"
                 },
                 "doc_view_more_tags": {
-                    "label": "Show more tags",
-                    "footnote": "Show more tags in grid view, instead of truncating"
+                    "label": "Montri pliajn etikedojn",
+                    "footnote": "Montri pli da etikedoj en krada vido, anstataŭ stumpigi"
                 }
             }
         }
@@ -226,7 +226,7 @@
             "unknown_pdf_renderer": "Ne eblis bildigi PDF-on. Certigu, ke vi havas kongruan PDF-bildigilon.",
             "unknown_format": "Nekonata formato. Ne eblis bildigi la dokumenton.",
             "failed_to_build_tree": "Malsukcesis konstrui arbon. (Provu alian paĝon aŭ dokumenton)",
-            "failed_to_make_renderer": "Failed to make renderer"
+            "failed_to_make_renderer": "Malsukcesis krei bildilon"
         }
     },
     "popups": {
@@ -269,9 +269,9 @@
     },
     "doc_display": {
         "sub": {
-            "page_count": "{page_count} pages",
-            "page_of": "Page {page} of {total}",
-            "pages_read": "{read_percent}% read"
+            "page_count": "{page_count} paĝoj",
+            "page_of": "Paĝo {page} el {total}",
+            "pages_read": "{read_percent}% legita"
         }
     }
 }
