@@ -1,14 +1,11 @@
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
-from pprint import pformat
-
-from rm_api import Document, DocumentCollection, DocumentSyncProgress
-
-import pygameextra as pe
 from typing import TYPE_CHECKING, Union, Optional, Type, Any, Tuple, Dict
 
+import pygameextra as pe
+from rm_api import Document, DocumentCollection, DocumentSyncProgress
+
 from gui.defaults import Defaults
-from gui.pp_helpers import FullTextPopup
 from gui.rendering import render_full_text
 
 if TYPE_CHECKING:
