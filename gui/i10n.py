@@ -76,8 +76,10 @@ def _t(key: str, default: Optional[str] = None) -> str:
     return I10nManager.instance.t(key, default)
 
 
-def t(key: str, default: Optional[str] = None, **kwargs):
+def t(key: Optional[str], default: Optional[str] = None, **kwargs) -> Optional[str]:
     """Helper function to translate a key with optional formatting parameters"""
+    if key is None:
+        return None
     return (
         _t(key, default)
         .format(**kwargs, **{

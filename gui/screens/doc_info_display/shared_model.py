@@ -204,7 +204,7 @@ class DocInfoDisplay(ABC):
             state = DocInfoState(item, self)
             self.__cache[item.uuid] = state
         self.update(state, area, state.button.hovered)
-        if offset_x and offset_y:
+        if offset_x is not None and offset_y is not None:
             self.render(state, area, offset_x, offset_y)
 
     def update(self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False) -> bool:
@@ -333,6 +333,7 @@ class DocInfoDisplay(ABC):
     @property
     def collection_rect(self):
         return self._collection_rect()
+
     @property
     def document_margin(self):
         return self._document_margin()
