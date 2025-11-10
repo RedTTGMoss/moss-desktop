@@ -1,12 +1,9 @@
-import time
-from functools import lru_cache
-from typing import Optional, Tuple
+from typing import Optional
 
 import pygameextra as pe
 
 from .shared_model import DocInfoDisplay, DocInfoState
 from ...defaults import Defaults
-from ...rendering import render_full_text
 
 
 class GridDocInfoDisplay(DocInfoDisplay):
@@ -127,7 +124,7 @@ class GridDocInfoDisplay(DocInfoDisplay):
                 y -= tag_text.rect.height + self.gui.ratios.main_menu_document_margin
 
                 # Ensure the next tag can fit in the designated space safely
-                if y-tag_text.rect.height-self.gui.ratios.main_menu_document_margin <= tags_end:
+                if y - tag_text.rect.height - self.gui.ratios.main_menu_document_margin <= tags_end:
                     state.extra_tags_count = len(state.current_state['tags']) - i  # Remaining tags if any
                     break
             else:
@@ -146,10 +143,11 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
             if text:
                 text.display()
-                icon_rect = pe.Rect(0, 0, *star_icon.size)
-                icon_rect.centery = text.rect.centery
-                icon_rect.left = text.rect.right + self.gui.ratios.main_menu_document_margin
-                star_icon.display(icon_rect.topleft)
+                if state.document.metadata.pinned:
+                    icon_rect = pe.Rect(0, 0, *star_icon.size)
+                    icon_rect.centery = text.rect.centery
+                    icon_rect.left = text.rect.right + self.gui.ratios.main_menu_document_margin
+                    star_icon.display(icon_rect.topleft)
             if sub_text:
                 sub_text.display()
 

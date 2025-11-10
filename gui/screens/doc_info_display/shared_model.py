@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class DocInfoState:
     """Represents an item in its current static state."""
 
-    def __init__(self, document: Any, manager: 'DocInfoDisplay'):
+    def __init__(self, document: Union[Document, DocumentCollection], manager: 'DocInfoDisplay'):
         self.gui: 'GUI' = manager.gui
         self.document = document
         self.render_info: Optional[RenderInfo] = None
