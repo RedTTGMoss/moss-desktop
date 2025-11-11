@@ -5,12 +5,11 @@ from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
 from colorama import Fore
-
-from gui.defaults import Defaults
-from gui.pp_helpers import DraggablePuller, FullTextPopup
 from rm_api import models
 from rm_api.defaults import RM_SCREEN_SIZE, RM_SCREEN_CENTER
 
+from gui.defaults import Defaults
+from gui.pp_helpers import DraggablePuller, FullTextPopup
 from .renderers.notebook.lib_rm_lines_renderer import Notebook_LIB_rM_Lines_Renderer
 from .renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
 from .renderers.pdf.pymupdf import PDF_PyMuPDF_Viewer
@@ -288,6 +287,7 @@ class DocumentRenderer(pe.ChildContext):
         if not self.began_loading:
             self.load()
             self.began_loading = True
+        pe.fill.full(Defaults.DOCUMENT_BACKGROUND)
         if self.config.debug:
             pe.fill.transparency(pe.colors.black, 25)
         # Draw the loading icon
