@@ -159,8 +159,6 @@ class SettingsSidebarChain(ScrollableView):
         self.append(SettingsContextMenu(settings, self.settings.MENUS))
         #     add other menus here if needed (extensions)
 
-
-
     def get_surface(self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)):
         context_menu.check_hover = self.in_focus
         surface = pe.Surface(context_menu.rect.size)

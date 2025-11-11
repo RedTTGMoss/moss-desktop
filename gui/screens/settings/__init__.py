@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
 
-from gui import APP_NAME
 from .settings_menu import SettingsSidebarChain, BackButton, parse_menu_xml
 from .settings_view import SettingsView
 from ...defaults import Defaults
@@ -12,6 +11,7 @@ if TYPE_CHECKING:
     from gui import GUI
     from gui.aspect_ratio import Ratios
     from rm_api import API
+    from gui.extensions.extension_manager import ExtensionManager
 
 
 class Settings(pe.ChildContext):
@@ -27,12 +27,16 @@ class Settings(pe.ChildContext):
 
     # definitions from GUI
     api: 'API'
+    extension_manager: 'ExtensionManager'
     parent_context: 'GUI'
     icons: Dict[str, pe.Image]
     ratios: 'Ratios'
 
     def __init__(self, parent: 'GUI'):
         super().__init__(parent)
+
+        self.MENUS = [*self.MENUS, *list(self.extension_manager.extension_menus.values())]
+
         self.sidebar = SettingsSidebarChain(self)
         self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get(f'xml_settings/default'))[0], self)
 
@@ -77,9 +81,16 @@ class Settings(pe.ChildContext):
     def close(self):
         self.close_screen()
 
-    def get(self, value):
+    def get(self, value, file=None):
+        if file:
+            return self.extension_manager.configs[file].get(value)
         return self.config.get(value)
 
-    def set(self, key, value, value_type):
+    def set(self, key, value, file, value_type):
+        if file:
+            self.extension_manager.configs[file][key] = value
+            if file not in self.extension_manager.dirty_configs:
+                self.extension_manager.dirty_configs.append(file)
+            return
         self.config[key] = value
         self.parent_context.dirty_config = True

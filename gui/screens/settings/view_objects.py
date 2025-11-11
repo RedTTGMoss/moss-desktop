@@ -42,18 +42,22 @@ class ViewObject(ABC):
     def key(self) -> str:
         return self.element.get('key')
 
+    @property
+    def file(self) -> str:
+        return self.element.get('file')
+
     # Access to the value of the current setting if applicable
     @property
     def value(self):
         if not (key := self.key):
             raise ValueError("The element must have a key to get the value")
-        return self.settings_view.interactor.get(key)
+        return self.settings_view.interactor.get(key, self.file)
 
     @value.setter
     def value(self, value):
         if not (key := self.key):
             raise ValueError("The element must have a key to set the value")
-        self.settings_view.interactor.set(key, value, self.VALUE_TYPE_KEY)
+        self.settings_view.interactor.set(key, value, self.file, self.VALUE_TYPE_KEY)
 
     # Quick getters
     @property

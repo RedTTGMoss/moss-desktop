@@ -4,6 +4,7 @@ import time
 from functools import lru_cache, partial
 from io import StringIO
 from json import JSONDecodeError
+from pathlib import Path
 from threading import Lock
 from traceback import print_exc
 from typing import TYPE_CHECKING, Dict, List, Optional, Any, Union
@@ -18,6 +19,7 @@ from rm_api import FileSyncProgress, DocumentSyncProgress
 from gui.defaults import Defaults
 from .host_functions import init_host_functions, make_task_id
 from .shared_types import TContextButton
+from ..i10n import t
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -45,6 +47,7 @@ class ExtensionManager:
     metadata_objects: dict
     content_objects: dict
     extension_buttons: List[TContextButton]
+    extension_menus: Dict[str, Dict]
 
     HOOK = 'em_extension_hook'
 
@@ -56,6 +59,7 @@ class ExtensionManager:
         self.call_statistics = {}
         self.loaded_extensions = []
         self.extension_buttons: List[TContextButton] = []
+        self.extension_menus = {}
         self.lock = Lock()
         self.extra_items = {}
         self.extensions_allowed_paths = {}
@@ -82,6 +86,7 @@ class ExtensionManager:
         self.gui.api.add_hook(self.HOOK, self.handle_hook)
 
     def reset(self):
+        self.save_configs()
         self.unregister()
         self.gui.api.remove_hook(self.HOOK)
         self.extension_load_log.close()
@@ -103,6 +108,8 @@ class ExtensionManager:
                 self.error(f"Extension {extension} failed to unregister")
                 print_exc()
             del extension
+            if self.extension_menus.get(extension_name):
+                del self.extension_menus[extension_name]
 
     def _reset(self):
         self.extensions_to_load.clear()
@@ -113,6 +120,7 @@ class ExtensionManager:
         self.extra_items.clear()
         self.extensions_allowed_paths.clear()
         self.extensions.clear()
+        self.extension_menus = {}
         self.extensions_accepting_hooks.clear()
         self.context_menus.clear()
         self.document_objects.clear()
@@ -187,7 +195,7 @@ class ExtensionManager:
     def load_wasm_source(self, source: bytes, extension_name: str):
         allowed_paths = {
             Defaults.TEMP_DIR: 'temp',
-            os.path.join(Defaults.EXTENSIONS_DIR, extension_name): 'extension',
+            (extension_dir := os.path.join(Defaults.EXTENSIONS_DIR, extension_name)): 'extension',
             Defaults.OPTIONS_DIR: 'options',
             Defaults.SYNC_FILE_PATH: 'sync',
             Defaults.THUMB_FILE_PATH: 'thumbnails',
@@ -225,6 +233,17 @@ class ExtensionManager:
             return
         if extension.function_exists('moss_event_hook'):
             self.extensions_accepting_hooks.append(extension_name)
+        if (settings_button_json_path := Path(extension_dir) / 'assets' / 'settings_button.json').exists():
+            try:
+                with open(settings_button_json_path, 'r') as f:
+                    button = json.load(f)
+                    if all((key in button for key in ('text', 'icon', 'action', 'data'))):
+                        button['text'] = t(button['text'])
+                        self.extension_menus[extension_name] = button
+                    else:
+                        self.warn(f"Extension {extension_name} settings button contains insufficient keys.")
+            except JSONDecodeError:
+                self.warn(f"Extension {extension_name} settings button could not be parsed.")
         self.log(f"Registered extension {extension_name}")
         self.loaded_extensions.append(extension_name)
         self.extensions_loaded += 1
@@ -391,7 +410,7 @@ class ExtensionManager:
     def save_configs(self):
         for config, config_path in map(
                 lambda extension_name: (
-                        self.configs[extension_name],
+                        self.configs.get(extension_name),
                         os.path.join(
                             Defaults.OPTIONS_DIR,
                             f'{extension_name}.json'
