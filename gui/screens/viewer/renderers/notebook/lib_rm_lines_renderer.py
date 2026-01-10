@@ -1,20 +1,18 @@
-import threading
 import math
+import threading
 from random import shuffle
+from typing import TYPE_CHECKING, Optional, List, Tuple, Dict
 
+import pygameextra as pe
 from pylibrm_lines import SceneTree, FailedToBuildTree
 from pylibrm_lines.renderer import Renderer
-import pygameextra as pe
 from rm_lines import DocumentSizeTracker
 
 from gui.defaults import Defaults
 from gui.screens.viewer.renderers.notebook.expanded_notebook import ExpandedNotebook
 from gui.screens.viewer.renderers.shared_model import AbstractRenderer
-from typing import TYPE_CHECKING, Optional, List, Tuple, Dict
 
 if TYPE_CHECKING:
-    from gui import GUI
-    from rm_api import Document
     from gui.screens.viewer.viewer import DocumentRenderer
 
 
@@ -267,6 +265,7 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
                 self.unloadable_pages.add(page_uuid)
                 self.error = self.FAILED_TO_MAKE_RENDERER_ERROR
                 return
+            self.renderer.template = self.document.content.c_pages.get_page_from_uuid(page_uuid).template.value
             self.expanded_notebook = LIB_rM_Lines_ExpandedNotebook(self.renderer)
         self.document_renderer.loading -= 1
 

@@ -97,6 +97,7 @@ class DocumentRenderer(pe.ChildContext):
         self.current_page_index = self.document.content.c_pages.get_index_from_uuid(self.last_opened_uuid) or 0
         self.renderer = None
         self.enable_drawing = False
+        self.page: Optional[Page] = None
         super().__init__(parent)
         if self.config.notebook_render_mode == 'rm_lines_svg_inker_OLD':
             self.notebook_renderer = Notebook_rM_Lines_Renderer(self)
@@ -307,15 +308,15 @@ class DocumentRenderer(pe.ChildContext):
                 self.loading_timer = time.time()
 
     def loop(self):
-        page = self.document.content.c_pages.pages[self.current_page_index]
-        self.last_opened_uuid = page.id
+        self.page = self.document.content.c_pages.pages[self.current_page_index]
+        self.last_opened_uuid = self.page.id
 
         if self.loading:
             return
 
         if self.renderer:
-            self.renderer.render(page.id)
-        self.notebook_renderer.render(page.id)
+            self.renderer.render(self.page.id)
+        self.notebook_renderer.render(self.page.id)
 
     def close(self):
         if self.renderer:
@@ -365,7 +366,7 @@ class DocumentRenderer(pe.ChildContext):
         return (
             f"Zoom: {self.base_zoom:.2f} * {self._zoom:.2f} | "
             f"Center: {self.center} | "
-            f"Page: {self.current_page_index} | "
+            f"Page: {self.current_page_index} Template: {self.page.template.value} | "
             f"RM Pos: {rm_position[0]:.2f}, {rm_position[1]:.2f}"
         )
 
