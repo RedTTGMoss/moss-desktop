@@ -32,7 +32,7 @@
             "hot_reload": "Горещо презареждане",
             "import_dir": "Внос на документ от директория",
             "test_doc": "Тест на панела за документи",
-            "clear_preview": "Clear preview data"
+            "clear_preview": "Изчистване на кориците във главното меню"
         },
         "settings": {
             "back": "Назад"
@@ -56,7 +56,11 @@
             "trash": "Кошче",
             "my_files": "Моите файлове",
             "delete": "Изтрий",
-            "tags": "Отбелезалки"
+            "tags": "Отбелезалки",
+            "export": "Експорт"
+        },
+        "export": {
+            "png": "Като PNG"
         },
         "prompts": {
             "trash": {
@@ -207,8 +211,8 @@
                     "label": "Запазване на съотношението"
                 },
                 "doc_view_more_tags": {
-                    "label": "Show more tags",
-                    "footnote": "Show more tags in grid view, instead of truncating"
+                    "label": "Показване на повече етикети",
+                    "footnote": "Показва повече етикети във главния изглед, вместо да отрязва за да спести място"
                 }
             }
         }
@@ -226,7 +230,7 @@
             "unknown_pdf_renderer": "PDF файлът не можа да се покаже. Уверете се, че имате съвместими настройки за PDF.",
             "unknown_format": "Неизвестен формат. Документът не можа да се покаже.",
             "failed_to_build_tree": "Неуспешно изграждане. (Опитайте с друга страница или документ)",
-            "failed_to_make_renderer": "Failed to make renderer"
+            "failed_to_make_renderer": "Появи се грешка при инициализацията на страницата"
         }
     },
     "popups": {
