@@ -56,7 +56,11 @@
             "trash": "Papierkorb",
             "my_files": "Meine Dateien",
             "delete": "Löschen",
-            "tags": "Schlagwörter"
+            "tags": "Schlagwörter",
+            "export": "Export"
+        },
+        "export": {
+            "png": "Export as PNG"
         },
         "prompts": {
             "trash": {

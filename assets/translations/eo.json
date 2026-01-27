@@ -56,7 +56,11 @@
             "trash": "Rubo",
             "my_files": "Miaj dosieroj",
             "delete": "Forigi",
-            "tags": "Etikedoj"
+            "tags": "Etikedoj",
+            "export": "Export"
+        },
+        "export": {
+            "png": "Export as PNG"
         },
         "prompts": {
             "trash": {
