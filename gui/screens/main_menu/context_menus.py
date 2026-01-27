@@ -12,6 +12,7 @@ from PIL import Image
 from pathvalidate import sanitize_filename
 from pylibrm_lines import SceneTree, Renderer
 from rm_api import make_hash
+from rm_api.helpers import threaded
 from rm_api.models import Document, DocumentCollection, Content, Metadata, Tag
 from rm_api.notifications.models import DocumentSyncProgress
 from rm_api.storage.common import FileHandle
