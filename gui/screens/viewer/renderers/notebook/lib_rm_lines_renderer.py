@@ -281,21 +281,29 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
     def handle_event(self, event):
         pass
 
-    def render(self, page_uuid: str):
+    def get_frames(self):
+        return self.expanded_notebook.get_frames(
+            -self.document_renderer.center_x, -self.document_renderer.center_y,
+            *self.size, self.document_renderer.zoom
+        )
+
+    def check_page_loaded(self, page_uuid: str) -> bool:
         if page_uuid not in self.unloadable_pages and (
                 self.tree and self.tree.page_uuid != page_uuid
         ) or self.current_page_uuid != page_uuid:
             self.check_and_load_page(page_uuid)
+            return False
+        return True
+
+    def render(self, page_uuid: str):
+        if not self.check_page_loaded(page_uuid):
             return
         if not self.tree:
             return
         if self.error:
             return
 
-        frames = self.expanded_notebook.get_frames(
-            -self.document_renderer.center_x, -self.document_renderer.center_y,
-            *self.size, self.document_renderer.zoom
-        )
+        frames = self.get_frames()
 
         expected_frame_sizes = self.get_expected_frame_sizes()
 

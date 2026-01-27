@@ -13,7 +13,7 @@ from gui.file_prompts import import_prompt
 from gui.i10n import t
 from gui.pp_helpers import ContextBar
 from gui.pp_helpers.popups import ConfirmPopup
-from gui.screens.main_menu.context_menus import DeleteContextMenu, ImportContextMenu
+from gui.screens.main_menu.context_menus import DeleteContextMenu, ImportContextMenu, ExportContextMenu
 from gui.screens.name_field_screen import NameFieldScreen
 
 if TYPE_CHECKING:
@@ -201,6 +201,12 @@ class TopBarSelectOne(MainMenuContextBar):
             "icon": "move",
             "action": "move"
         },
+        {
+            "text": "menu.common.export",
+            "icon": "export",
+            "action": "export",
+            "context_icon": "small_chevron_down",
+        }
     )
     ONLINE_ACTIONS = ('rename', 'favorite', 'duplicate', 'trash', 'move')
     DELETE_MESSAGE = "Are you sure you want to delete this item?"
@@ -231,6 +237,9 @@ class TopBarSelectOne(MainMenuContextBar):
 
     def move(self):
         self.main_menu.move_mode = True
+
+    def export(self):
+        self.handle_new_context_menu(self.export_context, self.get_button_index('export'))
 
     @threaded
     def duplicate(self, here: bool = False):
@@ -351,6 +360,9 @@ class TopBarSelectOne(MainMenuContextBar):
 
     def delete_context(self, ideal_position):
         return DeleteContextMenu(self.main_menu, ideal_position)
+
+    def export_context(self, ideal_position):
+        return ExportContextMenu(self.main_menu, ideal_position)
 
 
 class TopBarTrash(MainMenuContextBar):

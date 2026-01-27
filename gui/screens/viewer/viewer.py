@@ -308,8 +308,7 @@ class DocumentRenderer(pe.ChildContext):
                 self.loading_timer = time.time()
 
     def loop(self):
-        self.page = self.document.content.c_pages.pages[self.current_page_index]
-        self.last_opened_uuid = self.page.id
+        self.load_page()
 
         if self.loading:
             return
@@ -317,6 +316,10 @@ class DocumentRenderer(pe.ChildContext):
         if self.renderer:
             self.renderer.render(self.page.id)
         self.notebook_renderer.render(self.page.id)
+
+    def load_page(self):
+        self.page = self.document.content.c_pages.pages[self.current_page_index]
+        self.last_opened_uuid = self.page.id
 
     def close(self):
         if self.renderer:

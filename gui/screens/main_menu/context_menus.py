@@ -2,12 +2,15 @@ import hashlib
 import json
 import os
 import shutil
+import time
 from functools import lru_cache
 from typing import TYPE_CHECKING, List, Tuple, Optional
 
 import pygameextra as pe
 import pyperclip
+from PIL import Image
 from pathvalidate import sanitize_filename
+from pylibrm_lines import SceneTree, Renderer
 from rm_api import make_hash
 from rm_api.models import Document, DocumentCollection, Content, Metadata, Tag
 from rm_api.notifications.models import DocumentSyncProgress
@@ -18,7 +21,6 @@ from gui.defaults import Defaults
 from gui.extensions.host_functions import ACTION_APPEND
 from gui.extensions.shared_types import rect_from_pe_rect
 from gui.file_prompts import notebook_prompt, import_debug
-from gui.helpers import new_lined_dynamic_text
 from gui.pp_helpers import ContextMenu, DocumentDebugPopup
 from gui.pp_helpers.context_bar import FixedSizeContextBar
 from gui.pp_helpers.popups import ConfirmPopup
@@ -69,6 +71,48 @@ class DeleteContextMenu(ContextMenu):
     def delete_confirm(self):
         self.main_menu.bar.delete_confirm()
         self.close()
+
+
+class ExportContextMenu(ContextMenu):
+    BUTTONS = (
+        {
+            "text": "menu.export.png",
+            "icon": "picture",
+            "action": 'export_png'
+        },
+    )
+
+    @threaded
+    def export_png(self):
+        documents = self.main_menu.bar.documents
+        document_uuid = next(iter(documents))
+        document: Document = self.api.documents.get(document_uuid)
+        document.ensure_download()
+        # Wait for document to be available
+        while document.downloading:
+            time.sleep(1)
+        if not document.available:
+            # TODO: Add status updates
+            return
+        for i, page in enumerate(document.content.c_pages.pages):
+            tree = SceneTree.from_document(document, page.id)
+            if not tree:
+                continue
+
+            renderer = Renderer(tree)
+            if not renderer.uuid:
+                continue
+
+            renderer.template = page.template.value
+            export_path = os.path.join(Defaults.SYNC_EXPORTS_FILE_PATH,
+                                       f'{sanitize_filename(document.metadata.visible_name)}/page_{i}.png')
+            os.makedirs(os.path.dirname(export_path), exist_ok=True)
+            image: Image = renderer.to_image()
+
+            white_bg = Image.new("RGBA", image.size, (255, 255, 255, 255))
+            out = Image.alpha_composite(white_bg, image).convert("RGB")
+
+            out.save(export_path, "PNG")
 
 
 class DebugContextMenu(ContextMenu):

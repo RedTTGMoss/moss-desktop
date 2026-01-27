@@ -93,6 +93,13 @@ class ContextBar(pe.ChildContext, ABC):
 
         return buttons
 
+    @lru_cache()
+    def get_button_index(self, action: str) -> Optional[int]:
+        for i, button in enumerate(self.BUTTONS):
+            if button['action'] == action:
+                return i
+        return None
+
     def handle_action(self, action, data):
         self.quick_refresh()
         pe.button.Button.action_call({
@@ -275,6 +282,7 @@ class ContextBar(pe.ChildContext, ABC):
                 button_meta['context_menu_icon_rect'].move_ip(-x_offset, -y_offset)
                 button_text.rect.move_ip(-x_offset, -y_offset)
                 button_text_inverted.rect.move_ip(-x_offset, -y_offset)
+
 
 class FixedSizeContextBar(ContextBar, ABC):
     def handle_scales(self):
