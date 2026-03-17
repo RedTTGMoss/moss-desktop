@@ -229,6 +229,7 @@
             "retry_pdf_renderer": "Ne eblis bildigi PDF-on. Kontrolu vian agordon.",
             "unknown_pdf_renderer": "Ne eblis bildigi PDF-on. Certigu, ke vi havas kongruan PDF-bildigilon.",
             "unknown_format": "Nekonata formato. Ne eblis bildigi la dokumenton.",
+            "failed_to_find_page_file": "Failed to find page file.",
             "failed_to_build_tree": "Malsukcesis konstrui arbon. (Provu alian paĝon aŭ dokumenton)",
             "failed_to_make_renderer": "Malsukcesis krei bildilon"
         }
