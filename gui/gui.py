@@ -1,17 +1,20 @@
 import atexit
+import base64
 import json
 import logging
 import os
 import sys
 import time
+import uuid
 from numbers import Number
 from os import makedirs
 from pprint import pformat
-from typing import TypedDict, Union, TYPE_CHECKING, Dict
+from typing import TypedDict, Union, TYPE_CHECKING, Dict, List
 
 import appdirs
 import colorama
 import pygameextra as pe
+import zlib
 from box import Box
 from colorama import Fore, Style
 from rm_api.auth import FailedToRefreshToken
@@ -84,6 +87,7 @@ class ConfigDict(TypedDict):
     save_after_close: bool
     last_opened_folder: Union[None, str]
     last_prompt_directory: Union[None, str]
+    priority_uuids: Union[str, List[str]]
     scale: Number
     doc_view_scale: Number
     doc_view_more_tags: bool
@@ -112,6 +116,7 @@ DEFAULT_CONFIG: ConfigDict = {
     'maintain_aspect_size': True,
     'uri': 'https://webapp.cloud.remarkable.com/',
     'discovery_uri': 'https://service-manager-production-dot-remarkable-production.appspot.com/',
+    'priority_uuids': '',
     'author_id': None,
     'last_root': None,
     'last_guide': 'welcome',
@@ -155,6 +160,21 @@ DYNAMIC_CONFIG_KEYS = (
 )
 
 ConfigType = Box[ConfigDict]
+
+
+def encode_uuid_list(uuids: list[str]) -> str:
+    raw = b"".join(uuid.UUID(u).bytes for u in uuids)
+    compressed = zlib.compress(raw)
+    return base64.b64encode(compressed).decode()
+
+
+def decode_uuid_list(data: str) -> list[str]:
+    compressed = base64.b64decode(data)
+    raw = zlib.decompress(compressed)
+    return [
+        str(uuid.UUID(bytes=raw[i:i + 16]))
+        for i in range(0, len(raw), 16)
+    ]
 
 
 def merge_dictionaries(current: dict, default: dict, dynamic: bool = False) -> tuple[ConfigType, bool]:
@@ -252,9 +272,19 @@ def load_config() -> ConfigType:
         _box.notebook_render_mode = 'rm_lines_svg_inker_OLD'  # Fallback to the old mode
         changes = True
 
+    # Decode the priority UUIDs from the config if they are in string format (for backward compatibility)
+    if isinstance(_box.priority_uuids, str):
+        try:
+            _box.priority_uuids = decode_uuid_list(_box.priority_uuids)
+        except Exception as e:
+            _box.priority_uuids = []
+
     if changes:
         with open(file, "w") as f:
+            decoded_uuids = _box.priority_uuids
+            _box.priority_uuids = encode_uuid_list(_box.priority_uuids)  # Encode the priority UUIDs before saving
             json.dump(_box, f, indent=4)
+            _box.priority_uuids = decoded_uuids  # Restore the decoded UUIDs in the config
         if not exists:
             print("Config file created. You can edit it manually if you want.")
 
@@ -452,7 +482,14 @@ class GUI(pe.GameContext):
 
     def save_config(self):
         with open(Defaults.CONFIG_FILE_PATH, "w") as f:
-            json.dump(self.config, f, indent=4)
+            _save = self.config.copy()
+            # Encode the priority UUIDs before saving
+            try:
+                _save.priority_uuids = encode_uuid_list(
+                    self.config.priority_uuids) if self.config.priority_uuids else ''
+            except:
+                _save.priority_uuids = ''
+            json.dump(_save, f, indent=4)
         self.dirty_config = False
 
     def save_config_if_dirty(self):

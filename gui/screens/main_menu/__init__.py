@@ -225,6 +225,20 @@ class MainMenu(pe.ChildContext):
             if self.item_filter(item, document_collections)
         }
 
+        self.config.priority_uuids = [
+            uuid_
+            for collection in (self.document_collections, self.documents)
+            for uuid_ in collection
+        ]
+        parent = self.navigation_parent
+        while parent:
+            self.config.priority_uuids.append(parent)
+            try:
+                parent = document_collections[parent].parent
+            except KeyError:
+                break
+        self.parent_context.dirty_config = True
+
         if self.navigation_parent == 'debug' and len(self.document_collections) == 0 and len(self.documents) == 0:
             debug_context_menu = self.side_bar.debug_context_menu((0, 0))
             debug_context_menu.test_doc_view()

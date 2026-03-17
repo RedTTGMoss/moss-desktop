@@ -124,6 +124,7 @@ class Loader(pe.ChildContext, LogoMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     icons: Dict[str, pe.Image]
     api: 'API'
+    config: 'Config'
     i10n: 'I10nManager'
     extension_manager: 'ExtensionManager'
     logo: pe.Text
@@ -234,7 +235,7 @@ class Loader(pe.ChildContext, LogoMixin):
 
         self.loading_feedback = 0
         self.loading_complete_marker = 0
-        self.api.get_documents(progress)
+        self.api.get_documents(progress, self.config.priority_uuids)
         if self.config.last_root != self.api.last_root:
             self.config.last_root = self.api.last_root
             self.parent_context.dirty_config = True
