@@ -229,6 +229,7 @@
             "retry_pdf_renderer": "PDF konnte nicht gerendert werden. Überprüfen Sie Ihre Konfiguration",
             "unknown_pdf_renderer": "PDF konnte nicht gerendert werden. Stellen Sie sicher, dass Sie einen kompatiblen PDF-Renderer haben.",
             "unknown_format": "Unbekanntes Format. Dokument konnte nicht gerendert werden.",
+            "failed_to_find_page_file": "Failed to find page file.",
             "failed_to_build_tree": "Der Baum konnte nicht erstellt werden. (Versuchen Sie es mit einer anderen Seite oder einem anderen Dokument.)",
             "failed_to_make_renderer": "Renderer konnte nicht erstellt werden"
         }
