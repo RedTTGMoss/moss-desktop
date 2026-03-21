@@ -1,14 +1,12 @@
 from abc import abstractmethod, ABC
-from math import ceil
 from typing import TYPE_CHECKING, Dict
 
 import pygameextra as pe
-from rm_api import DocumentCollection, Document
+from math import ceil
 
 from gui.defaults import Defaults
 from gui.helpers import dynamic_text
 from gui.literals import MAIN_MENU_MODES
-from gui.rendering import render_document, render_collection
 from gui.screens.doc_info_display.grid_display import GridDocInfoDisplay
 from gui.screens.doc_info_display.info_managers import rMDocInfoManager
 from gui.screens.scrollable_view import ScrollableView

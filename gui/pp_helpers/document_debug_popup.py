@@ -9,6 +9,7 @@ import pygameextra as pe
 import pyperclip
 import rm_api.models as models
 from colorama import Fore, Style
+from rm_api import DownloadOperation
 from rm_api.storage.v3 import get_file_contents, get_file, make_files_request
 from rm_lines import rm_bytes_to_svg
 
@@ -111,11 +112,13 @@ class DocumentDebugPopup(ContextMenu):
             _, lines = get_file(self.api, self.api.get_root()['hash'], use_cache=False, raw=True)
             for line in lines:
                 file = models.File.from_line(line)
+                op = DownloadOperation(self.document)
                 if file.uuid == self.document.uuid:
                     f.write(line)
                     f.write('\n')
                     f.write(
-                        make_files_request(self.api, "GET", file.hash, use_cache=False, binary=True).decode()
+                        make_files_request(self.api, "GET", file.hash, use_cache=False, binary=True,
+                                           operation=op).decode()
                     )
 
     def clean_file_uuid(self, file):
