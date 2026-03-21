@@ -5,11 +5,10 @@ import threading
 import time
 
 import humanize
+from rm_api import API, FileSyncProgress, DEFAULT_REMARKABLE_URI, DEFAULT_REMARKABLE_DISCOVERY_URI, Document
 from slashr import SlashR
 
-from gui.i10n import t
 from gui.sync_stages import SYNC_STAGE_TEXTS
-from rm_api import API, FileSyncProgress
 
 DIR = 'root_export'
 
@@ -37,7 +36,7 @@ def keep_track(progress: FileSyncProgress):
     with SlashR() as sr:
         while not progress.finished:
             sr.print(
-                f"{t(SYNC_STAGE_TEXTS[progress.stage])} {progress.done} / {progress.total}")
+                f"{SYNC_STAGE_TEXTS[progress.stage]} {progress.done} / {progress.total}")
             time.sleep(0.1)
 
 
@@ -54,7 +53,14 @@ with open('../config.json', 'r') as f:
 
 api = API(uri=config['uri'], discovery_uri=config['discovery_uri'], token_file_path='../token',
           sync_file_path='../sync')
-api2 = API(token_file_path='../token2', log_file='2' + api.log_file, sync_file_path='../sync')
+
+upload_uri = config.get('upload_uri')
+if not upload_uri:
+    upload_uri = input("Enter the URI of the account you want to upload to: ")
+
+api2 = API(uri=upload_uri,
+           discovery_uri=DEFAULT_REMARKABLE_DISCOVERY_URI if upload_uri == DEFAULT_REMARKABLE_URI else upload_uri,
+           token_file_path='../token2', log_file='2' + api.log_file, sync_file_path='../sync')
 api.debug = True
 api2.debug = True
 
@@ -74,4 +80,16 @@ with SlashR() as sr:
             exit()
 
 print("Uploading...")
-api2.upload_many_documents(list(api.documents.values()) + list(api.document_collections.values()), unload=True)
+
+print(api.uri, "->", api2.uri)
+input("Confirm?")
+
+files = list(api.documents.values()) + list(api.document_collections.values())
+
+for file in files:
+    if isinstance(file, Document):
+        if file.content.size_in_bytes >= 1e+8:
+            print(f"Document {file.metadata.visible_name} is larger than 100mb, skipping upload")
+            files.remove(file)
+
+api2.upload_many_documents(files, unload=True)
