@@ -101,7 +101,7 @@ input("Confirm?")
 
 files = list(api.documents.values()) + list(api.document_collections.values())
 
-if input("Limit 100mb uploads for cloudflare? [Y,n]").lower()[0] != 'n':
+if input("Limit 100mb uploads for cloudflare? [Y,n] : ").lower()[0] != 'n':
     for file in files:
         if isinstance(file, Document):
             if file.content.size_in_bytes >= 1e+8:
