@@ -6,8 +6,7 @@ import pygameextra as pe
 from rm_api import Document, DocumentCollection, DocumentSyncProgress
 
 from gui.defaults import Defaults
-from gui.pp_helpers import DocumentDebugPopup
-from gui.rendering import render_full_text, open_document_debug_menu
+from gui.rendering import render_full_text
 
 if TYPE_CHECKING:
     from gui import GUI
@@ -256,33 +255,6 @@ class DocInfoDisplay(ABC):
 
         # Clip the button area to the area of the viewer
         state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
-
-        if self.gui.config.debug:
-            popup_exists = DocumentDebugPopup.EXISTING.get(id(state.document)) is not None
-            debug_text = self.gui.main_menu.texts['debug']
-
-            # Inflate a rect around the debug text
-            inflated_rect = debug_text.rect.inflate(self.gui.ratios.pixel(20), self.gui.ratios.pixel(20))
-            inflated_rect.topright = rect.topright
-            debug_text.rect.center = inflated_rect.center
-
-            if not popup_exists:
-                def draw_debug_background():
-                    # Draw the original_background
-                    pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, rect)
-                    # Draw a background for the debug button
-                    pe.draw.rect(Defaults.LINE_GRAY, inflated_rect)
-
-                pe.button.action(
-                    inflated_rect,
-                    hover_draw_action=draw_debug_background,
-                    name=state.document.uuid + '_debug',
-                    action=open_document_debug_menu,
-                    data=(self.gui, state.document, inflated_rect.topleft)
-                )
-                debug_text.display()
-            else:
-                open_document_debug_menu(self.gui, state.document, inflated_rect.topleft)
 
     @abstractmethod
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:

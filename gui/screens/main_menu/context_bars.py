@@ -11,13 +11,14 @@ from gui.cloud_action_helper import import_files_to_cloud
 from gui.defaults import Defaults
 from gui.file_prompts import import_prompt
 from gui.i10n import t
-from gui.pp_helpers import ContextBar
+from gui.pp_helpers import ContextBar, DocumentDebugPopup
 from gui.pp_helpers.popups import ConfirmPopup
 from gui.screens.main_menu.context_menus import DeleteContextMenu, ImportContextMenu, ExportContextMenu
 from gui.screens.name_field_screen import NameFieldScreen
 
 if TYPE_CHECKING:
     from rm_api import API
+    from gui import GUI
 
 
 class MainMenuContextBar(ContextBar):
@@ -200,8 +201,7 @@ class TopBarSelectOne(MainMenuContextBar):
             "text": "menu.common.move",
             "icon": "move",
             "action": "move"
-        },
-        {
+        }, {
             "text": "menu.common.export",
             "icon": "export",
             "action": "export",
@@ -213,6 +213,7 @@ class TopBarSelectOne(MainMenuContextBar):
     INVERT = True
     INCLUDE_MENU = False
     ALIGN = 'left'
+    parent_context: 'GUI'
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -282,6 +283,22 @@ class TopBarSelectOne(MainMenuContextBar):
     @property
     def both_as_items(self):
         return [self.get_item(uuid) for uuid in self.both]
+
+    def pre_loop(self):
+        super().pre_loop()
+        if self.parent_context.config.debug and len(self.document_collections) == 0 and len(self.documents) == 1:
+            if self.BUTTONS[-1].get("action") != "debug_menu":
+                self.BUTTONS += ({
+                                     "text": "Document Debug",
+                                     "icon": "puzzle",
+                                     "action": "debug_menu",
+                                     "context_icon": "small_chevron_down",
+                                 },)
+                self.handle_scales()
+        else:
+            if self.BUTTONS[-1].get("action") == "debug_menu":
+                self.BUTTONS = self.BUTTONS[:-1]
+                self.handle_scales()
 
     def post_loop(self):
         super().post_loop()
@@ -358,11 +375,17 @@ class TopBarSelectOne(MainMenuContextBar):
     def trash(self):
         self.move_to('trash')
 
+    def debug_menu(self):
+        self.handle_new_context_menu(self.debug_context, self.get_button_index('debug_menu'))
+
     def delete_context(self, ideal_position):
         return DeleteContextMenu(self.main_menu, ideal_position)
 
     def export_context(self, ideal_position):
         return ExportContextMenu(self.main_menu, ideal_position)
+
+    def debug_context(self, ideal_position):
+        return DocumentDebugPopup(self.main_menu, self.single_item, ideal_position)
 
 
 class TopBarTrash(MainMenuContextBar):

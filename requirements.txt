@@ -6,7 +6,7 @@ appdirs>=1.4.4
 lxml>=5.3.1
 crossfiledialog>=1.0.0
 pathvalidate>=3.2.3
-pygameextra==2.0.84
+pygameextra==2.0.86
 pymupdf==1.25.0
 extism==1.0.4
 slashr==1.0.0
