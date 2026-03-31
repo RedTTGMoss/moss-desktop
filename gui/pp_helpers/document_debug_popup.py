@@ -37,6 +37,11 @@ class DocumentDebugPopup(ContextMenu):
             "action": 'extract_json',
         },
         {
+            "text": "Test download",
+            "icon": "export",
+            "action": 'test_download',
+        },
+        {
             "text": "Render pages",
             "icon": "pencil",
             "action": 'render_pages'
@@ -161,6 +166,13 @@ class DocumentDebugPopup(ContextMenu):
                 f'{self.clean_filename(self.document.metadata.visible_name)}.json'
         ), 'w') as f:
             f.write(json.dumps(self.document.__dict__, indent=4, sort_keys=True))
+
+    def test_download(self):
+        self.document.ensure_download_and_callback(self.test_download_finished)
+
+    def test_download_finished(self):
+        print(f"{Fore.GREEN}Document '{self.document.metadata.visible_name}' downloaded successfully!{Fore.RESET}")
+        self.debug_info()
 
     def render_pages(self, important: bool = False):
         if important:
