@@ -1,10 +1,9 @@
 import json
 import os
 
-from slashr import SlashR
-
 from rm_api import API, get_file, get_file_contents, Metadata, update_root, put_file, File, make_hash, \
     DocumentSyncProgress
+from slashr import SlashR
 
 with open('../config.json', 'r') as f:
     config = json.load(f)
@@ -17,8 +16,9 @@ api.ignore_error_protection = True
 root = api.get_root()
 
 try:
-    get_file(api, root['hash'])
+    version, files = get_file(api, root['hash'], use_cache=False)
     print(f"Your current root file hash: {root['hash']}")
+    print(f"Version {version} with {len(files)} items")
     print("Your root file is fine, press enter if you still want to try and find a replacement from cache")
     input("> press enter")
 except:
@@ -90,7 +90,9 @@ contents = contents.encode()
 
 if input("also upload this root file? (shouldn't need to) [y/N]").lower().startswith('y'):
     file = File(make_hash(contents), f"root.docSchema", len(files), len(contents))
-    put_file(api, file, contents, DocumentSyncProgress(file.uuid))
+    p = DocumentSyncProgress(file.uuid)
+    put_file(api, file, contents, p)
+    print(f"Uploaded root file {p.done} / {p.total}")
 
 new_root = {
     "broadcast": True,
