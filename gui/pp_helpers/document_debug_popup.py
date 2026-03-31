@@ -32,11 +32,6 @@ class DocumentDebugPopup(ContextMenu):
             "action": 'extract_files'
         },
         {
-            "text": "Extract as json",
-            "icon": "export",
-            "action": 'extract_json',
-        },
-        {
             "text": "Test download",
             "icon": "export",
             "action": 'test_download',
@@ -158,14 +153,6 @@ class DocumentDebugPopup(ContextMenu):
                 if self.config.format_raw_exports and is_json:
                     data = json.dumps(json.loads(data), indent=4, sort_keys=True).encode()
                 f.write(data)
-
-    def extract_json(self):
-        self.clean_extract_location()
-        with open(os.path.join(
-                self.extract_location,
-                f'{self.clean_filename(self.document.metadata.visible_name)}.json'
-        ), 'w') as f:
-            f.write(json.dumps(self.document.__dict__, indent=4, sort_keys=True))
 
     def test_download(self):
         self.document.ensure_download_and_callback(self.test_download_finished)
