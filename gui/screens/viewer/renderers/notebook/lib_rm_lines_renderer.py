@@ -271,7 +271,11 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
         self.document_renderer.loading -= 1
 
     def load(self):
-        self.check_and_load_page(self.document.content.c_pages.last_opened.value)
+        page = self.document.content.c_pages.last_opened.value
+        if page:
+            self.check_and_load_page(page)
+        else:
+            self.check_and_load_page(self.document.content.c_pages.pages[0].id)
         self.document_renderer.loading -= 1  # check_and_load_page adds an extra loading
 
     def check_and_load_page(self, page_uuid: str):
