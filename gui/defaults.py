@@ -1,8 +1,6 @@
 import __main__
-import locale
 import os.path
 from pprint import pformat
-from typing import TYPE_CHECKING
 
 import pygameextra as pe
 from colorama import Fore
@@ -168,7 +166,6 @@ class Defaults(metaclass=DefaultsMeta):
         **RM_TYPES
     }
     EXPORT_TYPES = {  # Export
-        "Moss doc type": '*.mossdoc',
         "RM doc type": '*.rmdoc',
         "Render to PDF": '*.pdf'
     }

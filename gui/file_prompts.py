@@ -94,7 +94,7 @@ def import_debug(file_path, callback):
     callback(file_path)
 
 
-@open_file(t("prompts.import.notebook"), "RM lines", '.rm')
+@open_file(t("prompts.import.notebook"), "RM lines", '*.rm')
 def notebook_prompt(file_path, callback):
     callback(file_path)
 

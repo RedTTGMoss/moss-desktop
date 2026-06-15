@@ -49,14 +49,23 @@ def import_rmdoc_to_cloud(gui: 'GUI', file_path):
         temp_dir = os.path.join(os.path.dirname(file_path), 'temp_rmdoc')
         zip_ref.extractall(temp_dir)
 
+        def add_file(item_path, rel: str = None):
+            if os.path.isdir(item_path):
+                if rel is None:
+                    rel = os.path.basename(item_path)
+                else:
+                    rel = f'{rel}/{os.path.basename(item_path)}'
+                for sub_item in os.listdir(item_path):
+                    add_file(os.path.join(item_path, sub_item), rel)
+            elif rel is not None:
+                files[f'{rel}/{os.path.basename(item_path)}'] = item_path
+            else:
+                files[os.path.basename(item_path)] = item_path
+
         for item in os.listdir(temp_dir):
             item_path = os.path.join(temp_dir, item)
-            if os.path.isdir(item_path):
-                for sub_item in os.listdir(item_path):
-                    sub_item_path = os.path.join(item_path, sub_item)
-                    files[f"{item}/{sub_item}"] = sub_item_path
-            else:
-                files[item] = item_path
+            add_file(item_path)
+
         for _, file in files.items():
             if _.endswith('.metadata'):
                 file_uuid = _.rsplit('.', 1)[0]

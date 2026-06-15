@@ -12,5 +12,5 @@ extism==1.0.4
 slashr==1.0.0
 rm_api==1.2.5
 rm_lines==1.0.2
-pylibrm_lines==1.1.8
+pylibrm_lines==1.1.11
 humanize>=4.12.3

@@ -589,6 +589,7 @@ class DocumentViewer(pe.ChildContext):
         self.document_renderer.close()
         self.api.remove_hook(self.EVENT_HOOK_NAME.format(id(self)))
         if self.config.save_after_close:
+            self.document.provision = True
             self.document.content.c_pages.last_opened.value = self.document_renderer.last_opened_uuid
             self.document.metadata.last_opened_page = self.document_renderer.current_page_index
             self.document.metadata.last_opened = models.now_time()

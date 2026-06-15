@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 import time
+import zipfile
 from functools import lru_cache
 from typing import TYPE_CHECKING, List, Tuple, Optional
 
@@ -21,7 +22,7 @@ from gui.cloud_action_helper import import_notebook_pages_to_cloud
 from gui.defaults import Defaults
 from gui.extensions.host_functions import ACTION_APPEND
 from gui.extensions.shared_types import rect_from_pe_rect
-from gui.file_prompts import notebook_prompt, import_debug
+from gui.file_prompts import notebook_prompt, import_debug, export_prompt
 from gui.pp_helpers import ContextMenu, DocumentDebugPopup
 from gui.pp_helpers.context_bar import FixedSizeContextBar
 from gui.pp_helpers.popups import ConfirmPopup
@@ -30,6 +31,7 @@ from gui.screens.name_field_screen import NameFieldScreen
 from gui.screens.viewer import DocumentViewer
 
 if TYPE_CHECKING:
+    from rm_api import API
     from gui.extensions.extension_manager import ExtensionManager
 
 
@@ -77,11 +79,16 @@ class DeleteContextMenu(ContextMenu):
 class ExportContextMenu(ContextMenu):
     BUTTONS = (
         {
+            "text": "menu.export.rmdoc",
+            "icon": "notebook",
+            "action": 'export_rmdoc'
+        }, {
             "text": "menu.export.png",
             "icon": "picture",
             "action": 'export_png'
         },
     )
+    api: "API"
 
     @threaded
     def export_png(self):
@@ -103,7 +110,6 @@ class ExportContextMenu(ContextMenu):
             renderer = Renderer(tree)
             if not renderer.uuid:
                 continue
-
             renderer.template = page.template.value
             export_path = os.path.join(Defaults.SYNC_EXPORTS_FILE_PATH,
                                        f'{sanitize_filename(document.metadata.visible_name)}/page_{i}.png')
@@ -114,6 +120,27 @@ class ExportContextMenu(ContextMenu):
             out = Image.alpha_composite(white_bg, image).convert("RGB")
 
             out.save(export_path, "PNG")
+
+    def export_rmdoc(self):
+        documents = self.main_menu.bar.documents
+        document_uuid = next(iter(documents))
+        document: Document = self.api.documents.get(document_uuid)
+        export_prompt(document, self._export_rmdoc)
+
+    @threaded
+    def _export_rmdoc(self, file_path: str):
+        documents = self.main_menu.bar.documents
+        document_uuid = next(iter(documents))
+        document: Document = self.api.documents.get(document_uuid)
+        document.ensure_download()
+        # Wait for document to be available
+        while document.downloading:
+            time.sleep(1)
+        if not document.available:
+            return
+        with zipfile.ZipFile(file_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for file in document.files:
+                zf.write(os.path.join(self.api.sync_file_path, file.hash), arcname=file.uuid)
 
 
 class DebugContextMenu(ContextMenu):

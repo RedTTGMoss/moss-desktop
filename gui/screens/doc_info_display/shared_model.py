@@ -186,23 +186,23 @@ class DocInfoManager(ABC):
 
 class DocInfoDisplay(ABC):
     """Represents the handler for rendering the static item information into a visual frame."""
-    __cache: Dict[str, DocInfoState] = {}
 
     def __init__(self, gui: 'GUI', info_class: Type[DocInfoManager],
                  doc_tree_view: 'DocumentTreeViewer'):
         self.gui: 'GUI' = gui
         self.info_class = info_class
         self.viewer = doc_tree_view
+        self._cache: Dict[str, DocInfoState] = {}
 
     def handle(self, item: Union[Document, DocumentCollection], area: pe.Rect, offset_x: Optional[int] = None,
                offset_y: Optional[int] = None):
         """
         Handles the item state and frame rendering.
         """
-        state = self.__cache.get(item.uuid)
+        state = self._cache.get(item.uuid)
         if not state:  # If the state is not cached, create a new one
             state = DocInfoState(item, self)
-            self.__cache[item.uuid] = state
+            self._cache[item.uuid] = state
         self.update(state, area, state.button.hovered)
         if offset_x is not None and offset_y is not None:
             self.render(state, area, offset_x, offset_y)
@@ -272,27 +272,29 @@ class DocInfoDisplay(ABC):
 
     def render_document_preview(self, state: DocInfoState, size: Tuple[int, int]) -> Tuple[Optional[pe.Sprite], int]:
         edge_rounding = int(state.gui.ratios.main_menu_document_rounding * self.viewer.scale)
+        mask = pe.Surface(size)
         preview_masked = pe.Surface(size)
         preview_rect = (0, 0, *size)
 
         with preview_masked:
             pe.fill.full(Defaults.DOCUMENT_BACKGROUND)
 
-        if state.render_info.preview:
-            mask = pe.Surface((self.viewer.document_width, self.viewer.document_height))
-            with mask:
-                pe.draw.rect(  # Draw a filled rounded area for a preview mask
-                    pe.colors.white,
-                    preview_rect,
-                    edge_rounding_topright=edge_rounding,
-                    edge_rounding_bottomright=edge_rounding
-                )
+        with mask:
+            pe.draw.rect(  # Draw a filled rounded area for a preview mask
+                pe.colors.white,
+                preview_rect,
+                edge_rounding_topright=edge_rounding,
+                edge_rounding_bottomright=edge_rounding
+            )
 
+        if state.render_info.preview:
             # Blit and cut out the preview to the masked area
             with preview_masked:
                 state.render_info.preview.resize = size
                 state.render_info.preview.display()
-            preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
+
+        # Apply mask to the preview
+        preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
 
         with preview_masked:
             pe.draw.rect(  # Draw the notebook spine
@@ -324,7 +326,7 @@ class DocInfoDisplay(ABC):
         tag_text.display()  # Display the tag text
 
     def get_state(self, state_uuid) -> Optional[DocInfoState]:
-        return self.__cache.get(state_uuid, None)
+        return self._cache.get(state_uuid, None)
 
     @property
     def document_rect(self):

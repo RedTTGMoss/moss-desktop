@@ -5,7 +5,6 @@ import humanize
 from rm_api import Document, DocumentCollection
 
 from .shared_model import DocInfoManager, DocInfoState, RenderInfo
-from ...defaults import Defaults
 from ...i10n import t
 from ...preview_handler import PreviewHandler
 from ...rendering import open_document
@@ -95,7 +94,7 @@ class rMDocInfoManager(DocInfoManager):
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
             state=state,
-            preview=PreviewHandler.get_preview(state.document),
+            preview=PreviewHandler.get_preview(state.document) if not state.document.provision else None,
             selected=state.current_state['selected'],
             progress=state.current_state.get('sync_operation'),
         )

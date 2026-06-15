@@ -1,17 +1,18 @@
 import json
 import os
 import shutil
-from functools import lru_cache
-from traceback import print_exc
+import time
+from concurrent.futures import as_completed, ThreadPoolExecutor
+from functools import lru_cache, partial
 from typing import TYPE_CHECKING, Tuple
 
 import pygameextra as pe
 import pyperclip
 import rm_api.models as models
 from colorama import Fore, Style
+from pylibrm_lines import SceneTree, FailedToBuildTree
 from rm_api import DownloadOperation
 from rm_api.storage.v3 import get_file_contents, get_file, make_files_request
-from rm_lines import rm_bytes_to_svg
 
 from gui.defaults import Defaults
 from gui.pp_helpers.context_menu import ContextMenu
@@ -121,9 +122,6 @@ class DocumentDebugPopup(ContextMenu):
                                            operation=op).decode()
                     )
 
-    def clean_file_uuid(self, file):
-        return file.uuid.replace(f'{self.document.uuid}/', '')
-
     @staticmethod
     def clean_filename(filename):
         return "".join(c for c in filename if c.isalpha() or c.isdigit() or c == ' ').rstrip()
@@ -141,7 +139,8 @@ class DocumentDebugPopup(ContextMenu):
                     data = self.document.content_data[file.uuid]
                 else:
                     continue
-            file_path = os.path.join(self.extract_location, self.clean_file_uuid(file))
+            file_path = os.path.join(self.extract_location, file.uuid)
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
             is_json = file.uuid.rsplit('.')[-1] in ("content", "metadata")
 
@@ -154,6 +153,8 @@ class DocumentDebugPopup(ContextMenu):
                     data = json.dumps(json.loads(data), indent=4, sort_keys=True).encode()
                 f.write(data)
 
+        print(f"{Fore.GREEN}Extracted {len(self.document.files)} files to '{self.extract_location}'!{Fore.RESET}")
+
     def test_download(self):
         self.document.ensure_download_and_callback(self.test_download_finished)
 
@@ -162,32 +163,48 @@ class DocumentDebugPopup(ContextMenu):
         self.debug_info()
 
     def render_pages(self, important: bool = False):
+        self.document.ensure_download_and_callback(partial(self.render_pages_after_download, important))
+
+    def _render_page(self, location: str, i: int, page) -> bool:
+        file_path = os.path.join(location, f"{i:03} {page.index.value}.png")
+
+        try:
+            print(f"{Fore.CYAN}Rendering page {i}{Fore.RESET}")
+            tree = SceneTree.from_document(self.document, page.id)
+            try:
+                tree.renderer.to_image_file(file_path)
+            finally:
+                del tree
+            return True
+        except (FailedToBuildTree, FileNotFoundError):
+            return False
+
+    def render_pages_after_download(self, important: bool = False):
         if important:
             location = self.important_extract_location
         else:
             location = self.extract_location
         self.clean_extract_location(location)
-        i = 0
-        files = [file for file in self.document.files if file.uuid.endswith('.rm')]
-        try:
-            files.sort(key=lambda file: self.document.content.c_pages.get_index_from_uuid(
-                file.uuid.split('/')[-1].split('.')[0]))
-        except Exception as e:
-            print_exc()
-            pass
 
-        for file in files:
-            data: bytes = get_file_contents(self.api, file.hash, binary=True, use_cache=False)
-            file_path = os.path.join(location, f'{i:>03} {self.clean_file_uuid(file)}.svg')
+        start = time.time()
+        failed = 0
 
-            # Render and save
-            try:
-                svg: str = rm_bytes_to_svg(data, self.document)[0]
-                with open(file_path, 'w') as f:
-                    f.write(svg)
-            except Exception as e:
-                print_exc()
-            i += 1
+        pages = list(enumerate(self.document.content.c_pages.pages))
+
+        with ThreadPoolExecutor(max_workers=min(8, len(pages) or 1)) as executor:
+            futures = [
+                executor.submit(self._render_page, location, i, page)
+                for i, page in pages
+            ]
+
+            for future in as_completed(futures):
+                if not future.result():
+                    failed += 1
+
+        took = time.time() - start
+
+        print(
+            f"{Fore.GREEN}Rendered {len(self.document.content.c_pages.pages) - failed}/{len(self.document.content.c_pages.pages)} pages in {took:.2f} seconds!{Fore.RESET}")
 
     def render_important(self):
         self.render_pages(True)

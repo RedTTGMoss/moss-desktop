@@ -215,6 +215,8 @@ class DocumentTreeViewer(ScrollableView, ABC):
                 x += document_size[0] + self.manager.document_margin
 
     def select_document(self, document_uuid: str):
+        print(
+            f"Toggling selection for document {document_uuid} {self.manager.__class__.__name__} {self.__class__.__name__}")
         if document_uuid in self.selected_documents:
             self.selected_documents.remove(document_uuid)
         else:

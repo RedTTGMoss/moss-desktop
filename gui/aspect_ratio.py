@@ -62,6 +62,7 @@ class Ratios:
         self.main_menu_folder_inflate_x = int(12 * scale)
         self.main_menu_folder_inflate_y = int(20 * scale)
         self.main_menu_document_margin = int(15 * scale)
+        self.main_menu_document_corner_margin = int(5 * scale)
         self.main_menu_document_rounding = 20 * scale
         self.main_menu_folder_distance = int(184 * scale)
         self.main_menu_folder_height_distance = int(41 * scale)
@@ -81,7 +82,7 @@ class Ratios:
         self.main_menu_bar_size = self.main_menu_path_size
         self.main_menu_bar_padding = int(20 * scale)
         self.document_sync_progress_height = int(8 * scale)
-        self.document_sync_progress_margin = int(10 * scale)
+        self.document_sync_progress_margin = int(20 * scale)
         self.document_sync_progress_rounding = int(8 * scale)
         self.document_sync_progress_outline = int(3 * scale)
 

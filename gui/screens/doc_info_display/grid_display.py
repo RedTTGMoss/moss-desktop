@@ -73,12 +73,27 @@ class GridDocInfoDisplay(DocInfoDisplay):
         if state.render_info.selected:
             preview_rect.inflate_ip(tuple(-0.1 * x for x in preview_rect.size))
 
+        bar_rect = preview_rect.copy()
+        bar_rect.x += self.gui.ratios.document_sync_progress_margin
+        bar_rect.width -= self.gui.ratios.document_sync_progress_margin * 2
+        bar_rect.height = self.gui.ratios.document_sync_progress_height
+        bar_rect.bottom = preview_rect.bottom - self.gui.ratios.document_sync_progress_margin
+
         preview, edge_rounding = self.render_document_preview(state,
                                                               preview_rect.size)  # Get the preview for the document
+
         invert_key = '_inverted' if state.render_info.selected else ''
         text = getattr(state.render_info, f't_title{invert_key}')  # Get the title text for the document
         sub_text = getattr(state.render_info, f't_description{invert_key}')  # Get the description text for the document
         star_icon = self.gui.icons['star' + invert_key]
+        cloud_icon = self.gui.icons['cloud']
+        export_icon = self.gui.icons['export']
+        spinner_icon = self.gui.icons['rotate']
+
+        corner_icon_rect = pe.Rect(0, 0, *export_icon.size)
+        corner_icon_rect.topright = preview_rect.topright
+        corner_icon_rect.x -= self.gui.ratios.main_menu_document_margin
+        corner_icon_rect.y += self.gui.ratios.main_menu_document_margin
 
         bottom = self.viewer.document_height
 
@@ -140,6 +155,39 @@ class GridDocInfoDisplay(DocInfoDisplay):
                     state.set_trim_text_size('t_extra_tags', available_width)
             for tag in tag_names:
                 state.set_trim_text_size(f't_tag_{tag}', available_width)
+
+            # Fix corner icon colors
+            expanded_corner_rect = corner_icon_rect.inflate(self.gui.ratios.main_menu_document_corner_margin,
+                                                            self.gui.ratios.main_menu_document_corner_margin)
+
+            def draw_icon(icon):
+                pe.draw.rect(Defaults.BACKGROUND, expanded_corner_rect,
+                             edge_rounding=self.gui.ratios.main_menu_document_corner_margin)
+                icon.display(corner_icon_rect.topleft)
+
+            # Render progress bar for sync operation if it exists
+            if state.current_state.get('sync_operation'):
+                done, total = state.current_state['done'], state.current_state['total']
+                progress = done / total if total > 0 else 0
+                inflated_rect = bar_rect.inflate(self.gui.ratios.document_sync_progress_outline,
+                                                 self.gui.ratios.document_sync_progress_outline)
+                pe.draw.rect(Defaults.LINE_GRAY_LIGHT, inflated_rect,
+                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)
+                progress_rect = bar_rect.copy()
+                progress_rect.width *= progress
+                progress_rect.width = max(progress_rect.width,
+                                          progress_rect.height)  # Ensure the progress bar is always visible
+                pe.draw.rect(Defaults.SELECTED, progress_rect, 0,
+                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)
+                pe.draw.rect(Defaults.LINE_GRAY_LIGHT, inflated_rect,
+                             self.gui.ratios.document_sync_progress_outline,
+                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)  # Outline
+
+                draw_icon(spinner_icon)
+            elif state.document.provision:
+                draw_icon(export_icon)
+            elif not state.document.available:
+                draw_icon(cloud_icon)
 
             if text:
                 text.display()
