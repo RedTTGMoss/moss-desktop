@@ -11,9 +11,7 @@ from rm_api.storage.common import FileHandle
 from rm_api.storage.v3 import check_file_exists, CacheMiss
 
 from gui.defaults import Defaults
-from gui.screens.viewer.renderers.notebook.lib_rm_lines_renderer import LIB_rM_Lines_Preview, \
-    Notebook_LIB_rM_Lines_Renderer
-from gui.screens.viewer.renderers.notebook.rm_lines_svg_inker import Notebook_rM_Lines_Renderer
+from gui.screens.viewer.renderers.notebook.lib_rm_lines_renderer import Notebook_LIB_rM_Lines_Renderer
 
 PREVIEW_TIMEOUT = 1  # second to wait for LIB rm lines to load the preview
 
@@ -147,15 +145,18 @@ class PreviewHandler:
             document.unload_files()
 
         file_hash = None
+        file_name = None
         if not file:
             if pe.settings.config.download_last_opened_page_to_make_preview:
                 for file in document.files:
                     if file.uuid == file_uuid:
                         file_hash = file.hash
+                        file_name = file.rm_filename
                         break
         else:
             file_hash = file.hash
-        if file_hash and check_file_exists(document.api, file_hash):
+            file_name = file.rm_filename
+        if file_hash and check_file_exists(document.api, file_hash, file_name):
             document_renderer = PreviewDocumentRenderer(document, cls.gui)
             renderer = Notebook_LIB_rM_Lines_Renderer(document_renderer)
             renderer._load(page_id)
