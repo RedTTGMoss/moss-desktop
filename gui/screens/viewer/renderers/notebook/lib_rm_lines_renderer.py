@@ -1,8 +1,8 @@
+import math
 import threading
 from random import shuffle
 from typing import TYPE_CHECKING, Optional, List, Tuple, Dict
 
-import math
 import pygameextra as pe
 from pylibrm_lines import SceneTree, FailedToBuildTree
 from pylibrm_lines.renderer import Renderer
@@ -252,7 +252,6 @@ class Notebook_LIB_rM_Lines_Renderer(AbstractRenderer):
             self.error = None
         except FileNotFoundError:
             self.tree = None
-            self.error = self.FAILED_TO_FIND_PAGE_FILE_ERROR
         except FailedToBuildTree:
             self.tree = None
             self.unloadable_pages.add(page_uuid)
