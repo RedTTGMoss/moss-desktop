@@ -41,7 +41,7 @@ class DocumentDebugPopup(ContextMenu):
     ratios: "Ratios"
 
     def __init__(
-        self, parent: "GUI", document: "Document", position: Tuple[int, int] = (0, 0)
+            self, parent: "GUI", document: "Document", position: Tuple[int, int] = (0, 0)
     ):
         self.document = document
         super().__init__(parent.main_menu, (0, 0))
@@ -97,18 +97,17 @@ class DocumentDebugPopup(ContextMenu):
             shutil.rmtree(location, ignore_errors=True)
         os.makedirs(location, exist_ok=True)
         with open(
-            os.path.join(
-                location,
-                f"$ {self.clean_filename(self.document.metadata.visible_name)}",
-            ),
-            "w",
+                os.path.join(
+                    location,
+                    f"$ {self.clean_filename(self.document.metadata.visible_name)}",
+                ),
+                "w",
         ) as f:
             files = get_file(
                 self.api,
                 self.api.get_root()["hash"],
                 ROOT_DOC_SCHEMA,
                 use_cache=False,
-                raw=True,
             )
             for file in files.files:
                 op = DownloadOperation(self.document)
