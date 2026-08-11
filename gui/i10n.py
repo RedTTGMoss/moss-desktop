@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 def split_keys(keys):
     final = []
-    for key in keys.split('.'):
+    for key in keys.split("."):
         final.append(f'["{key}"]')
-    return ''.join(final)
+    return "".join(final)
 
 
 class I10nManager:
@@ -21,19 +21,25 @@ class I10nManager:
     _translations: Dict[str, Dict[str, Any]]
     _lang: str
 
-    def __init__(self, gui: 'GUI'):
+    def __init__(self, gui: "GUI"):
         self.__class__.instance = self  # Assign as singleton
         # Load the current language until loader handles the rest
         self._translations = {}
         self.load_translations(gui.config.language)
         self._lang = gui.config.language
         from .gui import APP_NAME
+
         self.APP_NAME = APP_NAME
 
     def load_translations(self, lang: str):
         """Load a translation file from the translations directory"""
         from gui.defaults import Defaults
-        with open(os.path.join(Defaults.TRANSLATIONS_DIR, f'{lang}.json'), 'r', encoding='utf-8') as f:
+
+        with open(
+            os.path.join(Defaults.TRANSLATIONS_DIR, f"{lang}.json"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             self._translations[lang] = Box(json.load(f))
 
     @property
@@ -45,7 +51,9 @@ class I10nManager:
     def language(self, lang: str):
         """Set the current language and load its translations"""
         if lang not in self._translations:
-            raise ValueError(f"Language '{lang}' not available. Available languages: {self.available_languages}")
+            raise ValueError(
+                f"Language '{lang}' not available. Available languages: {self.available_languages}"
+            )
         self._lang = lang
 
     @property
@@ -57,7 +65,7 @@ class I10nManager:
         """Get a value from a nested dictionary using a dot-separated key path"""
         box = self._translations[self._lang]
         try:
-            return eval(f'box{split_keys(key_path)}')
+            return eval(f"box{split_keys(key_path)}")
         except (KeyError, TypeError, AttributeError, SyntaxError):
             return None
 
@@ -80,9 +88,6 @@ def t(key: Optional[str], default: Optional[str] = None, **kwargs) -> Optional[s
     """Helper function to translate a key with optional formatting parameters"""
     if key is None:
         return None
-    return (
-        _t(key, default)
-        .format(**kwargs, **{
-            'app_name': I10nManager.instance.APP_NAME
-        })
+    return _t(key, default).format(
+        **kwargs, **{"app_name": I10nManager.instance.APP_NAME}
     )

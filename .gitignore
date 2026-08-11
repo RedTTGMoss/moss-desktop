@@ -158,6 +158,7 @@ cython_debug/
 .idea/
 .vscode/
 sync/
+sync.old/
 token
 config.json
 screenshots/
@@ -170,6 +171,7 @@ screenshot.png
 token-2
 thumbnails/
 /melora/melora-extensions/configs/
+/melora/sync
 /content/
 /coverage.html
 /root_export/

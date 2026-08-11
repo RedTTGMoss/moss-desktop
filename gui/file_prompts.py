@@ -3,9 +3,9 @@ import sys
 import threading
 from typing import TYPE_CHECKING, List, Union, Dict
 
-if sys.platform == 'linux':
+if sys.platform == "linux":
     from .filedialogs.linux import cfd
-elif sys.platform == 'win32':
+elif sys.platform == "win32":
     from .filedialogs.windows import cfd
 else:
     from .filedialogs.macos import cfd
@@ -23,13 +23,14 @@ tk_lock = False
 
 
 # noinspection PyTypeHints
-def get_config() -> 'ConfigDict':
-    pe.settings.game_context.config: 'ConfigDict'
+def get_config() -> "ConfigDict":
+    pe.settings.game_context.config: "ConfigDict"
     return pe.settings.game_context.config
 
 
-def get_types(types_text: str, filetypes: Union[Dict[str, Union[List[str], str]], List[str], str]) -> Dict[
-    str, List[str]]:
+def get_types(
+    types_text: str, filetypes: Union[Dict[str, Union[List[str], str]], List[str], str]
+) -> Dict[str, List[str]]:
     if isinstance(filetypes, dict):
         filetypes_list = []
         for types in filetypes.values():
@@ -41,7 +42,9 @@ def get_types(types_text: str, filetypes: Union[Dict[str, Union[List[str], str]]
         filetypes_list = [filetypes]
     else:
         filetypes_list = filetypes
-    return {f'{types_text} ({", ".join(filetype[1:] for filetype in filetypes_list)})': filetypes_list}
+    return {
+        f'{types_text} ({", ".join(filetype[1:] for filetype in filetypes_list)})': filetypes_list
+    }
 
 
 def open_file(title: str, types_text: str, filetypes):
@@ -49,9 +52,17 @@ def open_file(title: str, types_text: str, filetypes):
         def wrapper(*args, **kwargs):
             def prompt_file():
                 config = get_config()
-                initialdir = config.last_prompt_directory if config.last_prompt_directory and os.path.isdir(
-                    config.last_prompt_directory) else None
-                file_names = cfd.open_multiple(title, initialdir, get_types(types_text, filetypes))
+                initialdir = (
+                    config.last_prompt_directory
+                    if config.last_prompt_directory
+                    and os.path.isdir(config.last_prompt_directory)
+                    else None
+                )
+                file_names = cfd.open_multiple(
+                    title, initialdir, get_types(types_text, filetypes)
+                )
+                # from natsort import natsorted
+                # file_names = [os.path.join(initialdir, file) for file in natsorted(os.listdir(initialdir)) if file.startswith("Text styles")]
 
                 if not file_names:
                     return
@@ -71,7 +82,7 @@ def open_file(title: str, types_text: str, filetypes):
 
 def save_file(title: str, filetypes):
     def decorator(func):
-        def wrapper(document: 'Document', *args, **kwargs):
+        def wrapper(document: "Document", *args, **kwargs):
             def prompt_file():
                 file_name = cfd.save_file(title, document.metadata.visible_name)
 
@@ -94,12 +105,12 @@ def import_debug(file_path, callback):
     callback(file_path)
 
 
-@open_file(t("prompts.import.notebook"), "RM lines", '*.rm')
+@open_file(t("prompts.import.notebook"), "RM lines", "*.rm")
 def notebook_prompt(file_path, callback):
     callback(file_path)
 
 
 @save_file(t("prompts.export.pdf"), Defaults.EXPORT_TYPES)
-def export_prompt(file_path, document: 'Document', callback):
+def export_prompt(file_path, document: "Document", callback):
     # TODO: formats need work
     callback(file_path)

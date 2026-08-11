@@ -12,10 +12,10 @@ if TYPE_CHECKING:
 
 class ContextMenu(ContextBar, ABC):
     ENABLE_OUTLINE = True
-    CONTEXT_MENU_OPEN_DIRECTION = 'right'
+    CONTEXT_MENU_OPEN_DIRECTION = "right"
     CLOSE_AFTER_ACTION: bool = False
 
-    def __init__(self, parent: 'MainMenu', topleft: Tuple[int, int]):
+    def __init__(self, parent: "MainMenu", topleft: Tuple[int, int]):
         self.left, self.top = topleft
         self.is_closed = False
         self.waiting_for_let_go = True
@@ -24,8 +24,10 @@ class ContextMenu(ContextBar, ABC):
         super().__init__(parent)
 
     def pre_loop(self):
-        pe.draw.rect(Defaults.SELECTED if self.INVERT else Defaults.BACKGROUND, self.rect)
-        pe.button.action(self.rect, name=f'context_menu<{id(self)}>.blank_space')
+        pe.draw.rect(
+            Defaults.SELECTED if self.INVERT else Defaults.BACKGROUND, self.rect
+        )
+        pe.button.action(self.rect, name=f"context_menu<{id(self)}>.blank_space")
         if self.ENABLE_OUTLINE:
             pe.draw.rect(Defaults.LINE_GRAY, self.rect, self.ratios.line)
         super().pre_loop()
@@ -36,7 +38,7 @@ class ContextMenu(ContextBar, ABC):
         self.is_closed = True
 
     def handle_context_menu_closed(self, button, button_meta):
-        if button_meta['_context_menu'].CLOSE_AFTER_ACTION:
+        if button_meta["_context_menu"].CLOSE_AFTER_ACTION:
             super().handle_context_menu_closed(button, button_meta)
             return self.close()
         super().handle_context_menu_closed(button, button_meta)
@@ -89,7 +91,9 @@ class ContextMenu(ContextBar, ABC):
 
     def __call__(self):
         try:
-            self.extension_manager.opened_context_menus.append(getattr(self, 'KEY', self.__class__.__name__))
+            self.extension_manager.opened_context_menus.append(
+                getattr(self, "KEY", self.__class__.__name__)
+            )
         except AttributeError:
             pass
         super().__call__()

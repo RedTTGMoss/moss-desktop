@@ -29,8 +29,10 @@ def moss_em_get_state() -> Annotated[dict, Json]:
 
 @d.host_fn()
 def moss_em_register_extension_button(button: Annotated[dict, Json]):
-    button['_extension'] = d.extension_manager.current_extension
-    d.extension_manager.extension_buttons.append(context_button_clean(button, append=d.ACTION_APPEND))
+    button["_extension"] = d.extension_manager.current_extension
+    d.extension_manager.extension_buttons.append(
+        context_button_clean(button, append=d.ACTION_APPEND)
+    )
 
 
 @d.host_fn(signature=([], []))

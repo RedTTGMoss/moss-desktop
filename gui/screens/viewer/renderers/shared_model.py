@@ -9,10 +9,10 @@ if TYPE_CHECKING:
 
 
 class AbstractRenderer(ABC):
-    def __init__(self, document_renderer: 'DocumentRenderer'):
+    def __init__(self, document_renderer: "DocumentRenderer"):
         self.document_renderer = document_renderer
-        self.gui: 'GUI' = document_renderer.parent_context
-        self.document: 'Document' = document_renderer.document
+        self.gui: "GUI" = document_renderer.parent_context
+        self.document: "Document" = document_renderer.document
 
     @property
     def error(self):
@@ -35,20 +35,16 @@ class AbstractRenderer(ABC):
         return self.document_renderer.height
 
     @abstractmethod
-    def load(self):
-        ...
+    def load(self): ...
 
     @abstractmethod
-    def handle_event(self, event):
-        ...
+    def handle_event(self, event): ...
 
     @abstractmethod
-    def render(self, page_uuid: str):
-        ...
+    def render(self, page_uuid: str): ...
 
     @abstractmethod
-    def close(self):
-        ...
+    def close(self): ...
 
     def get_enhance_scale(self):
         # Return an enhancement scale for when the page is zoomed in
@@ -60,10 +56,8 @@ class AbstractRenderer(ABC):
         expected_frame_sizes = tuple(
             # Calculate frame size for both zoom levels to determine the zoom scaling offset
             (
-                self.frame_width * zoom *
-                self.gui.ratios.rm_scaled(self.frame_width),
-                self.frame_height * zoom *
-                self.gui.ratios.rm_scaled(self.frame_width)
+                self.frame_width * zoom * self.gui.ratios.rm_scaled(self.frame_width),
+                self.frame_height * zoom * self.gui.ratios.rm_scaled(self.frame_width),
             )
             for zoom in (self.document_renderer.zoom, self.document_renderer.zoom + 1)
         )

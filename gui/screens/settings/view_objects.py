@@ -14,15 +14,14 @@ if TYPE_CHECKING:
 
 
 class ViewObject(ABC):
-    VALUE_TYPE_KEY = 'any'
+    VALUE_TYPE_KEY = "any"
 
-    def __init__(self, element, settings_view: 'SettingsView'):
-        self.gui: 'GUI' = settings_view.settings.parent_context
+    def __init__(self, element, settings_view: "SettingsView"):
+        self.gui: "GUI" = settings_view.settings.parent_context
         self.settings_view = settings_view
         self.element = element
 
-    def on_resize(self):
-        ...
+    def on_resize(self): ...
 
     @abstractmethod
     def display(self, x, y) -> int:
@@ -36,15 +35,15 @@ class ViewObject(ABC):
 
     @property
     def id(self) -> str:
-        return self.element.get('id')
+        return self.element.get("id")
 
     @property
     def key(self) -> str:
-        return self.element.get('key')
+        return self.element.get("key")
 
     @property
     def file(self) -> str:
-        return self.element.get('file')
+        return self.element.get("file")
 
     # Access to the value of the current setting if applicable
     @property
@@ -77,10 +76,10 @@ class ViewObject(ABC):
 
 
 class GenericText(ViewObject, ABC):
-    SIZE = 'xml_title_size'
-    PADDING = 'xml_title_padding'
-    FONT = 'XML_TITLE_FONT'
-    COLORS = 'TEXT_COLOR'
+    SIZE = "xml_title_size"
+    PADDING = "xml_title_padding"
+    FONT = "XML_TITLE_FONT"
+    COLORS = "TEXT_COLOR"
     ALPHA = 255
 
     text: pe.Text
@@ -92,16 +91,13 @@ class GenericText(ViewObject, ABC):
 
     def make_texts(self):
         formatted = dynamic_text(
-            t(self.element.text) or '',
-            self.font, self.size,
+            t(self.element.text) or "",
+            self.font,
+            self.size,
             self.settings_view.width - self.padding_x - self.padding_end,
-            new_line=True
+            new_line=True,
         )
-        self.text = pe.Text(
-            formatted,
-            self.font, self.size,
-            colors=self.colors
-        )
+        self.text = pe.Text(formatted, self.font, self.size, colors=self.colors)
         if self.ALPHA != 255:
             self.text.obj.set_alpha(self.ALPHA)
 
@@ -110,7 +106,7 @@ class GenericText(ViewObject, ABC):
 
     @property
     def padding_x(self):
-        return getattr(self.gui.ratios, f'{self.PADDING}_x')
+        return getattr(self.gui.ratios, f"{self.PADDING}_x")
 
     @property
     def padding_end(self):
@@ -118,7 +114,7 @@ class GenericText(ViewObject, ABC):
 
     @property
     def padding_y(self):
-        return getattr(self.gui.ratios, f'{self.PADDING}_y')
+        return getattr(self.gui.ratios, f"{self.PADDING}_y")
 
     @property
     def padding_bottom(self):
@@ -135,8 +131,8 @@ class GenericText(ViewObject, ABC):
     @property
     def colors(self):
         fore, back = getattr(Defaults, self.COLORS)
-        different_fore = self.element.get('fore')
-        different_back = self.element.get('back')
+        different_fore = self.element.get("fore")
+        different_back = self.element.get("back")
 
         if different_fore:
             fore = tools.get_single_color(different_fore)
@@ -144,12 +140,14 @@ class GenericText(ViewObject, ABC):
             back = tools.get_single_color(different_back)
 
         if self.inverted:
-            return fore if different_fore else tuple(
-                255 - c if i < 3 else c
-                for i, c in enumerate(fore)
-            ), back if different_back else tuple(
-                255 - c if i < 3 else c
-                for i, c in enumerate(back)
+            return (
+                fore
+                if different_fore
+                else tuple(255 - c if i < 3 else c for i, c in enumerate(fore))
+            ), (
+                back
+                if different_back
+                else tuple(255 - c if i < 3 else c for i, c in enumerate(back))
             )
         return fore, back
 
@@ -164,41 +162,41 @@ class Title(GenericText):
 
 
 class Subtitle(GenericText):
-    SIZE = 'xml_subtitle_size'
-    PADDING = 'xml_subtitle_padding'
-    FONT = 'XML_SUBTITLE_FONT'
+    SIZE = "xml_subtitle_size"
+    PADDING = "xml_subtitle_padding"
+    FONT = "XML_SUBTITLE_FONT"
 
 
 class Text(GenericText):
-    SIZE = 'xml_text_size'
-    PADDING = 'xml_text_padding'
-    FONT = 'XML_TEXT_FONT'
+    SIZE = "xml_text_size"
+    PADDING = "xml_text_padding"
+    FONT = "XML_TEXT_FONT"
 
 
 class DescriptionText(GenericText):
-    SIZE = 'xml_text_size'
-    PADDING = 'xml_subtext_padding'
-    FONT = 'XML_TEXT_FONT'
+    SIZE = "xml_text_size"
+    PADDING = "xml_subtext_padding"
+    FONT = "XML_TEXT_FONT"
 
 
 class Subtext(GenericText):
-    SIZE = 'xml_subtext_size'
-    PADDING = 'xml_subtext_padding'
-    FONT = 'XML_SUBTEXT_FONT'
+    SIZE = "xml_subtext_size"
+    PADDING = "xml_subtext_padding"
+    FONT = "XML_SUBTEXT_FONT"
     ALPHA = 150
 
 
 class OptionText(GenericText):
-    SIZE = 'xml_option_size'
-    PADDING = 'xml_option_padding'
-    FONT = 'XML_OPTION_FONT'
+    SIZE = "xml_option_size"
+    PADDING = "xml_option_padding"
+    FONT = "XML_OPTION_FONT"
 
 
 class Toggle(OptionText):
-    COLOR_OFF = 'BACKGROUND'
-    COLOR_ON = 'SELECTED'
-    HANDLE_OFF = 'SELECTED'
-    HANDLE_ON = 'BACKGROUND'
+    COLOR_OFF = "BACKGROUND"
+    COLOR_ON = "SELECTED"
+    HANDLE_OFF = "SELECTED"
+    HANDLE_ON = "BACKGROUND"
     SPEED = 5
 
     left: int
@@ -208,25 +206,27 @@ class Toggle(OptionText):
     handle_left: int
     handle_right: int
 
-    def __init__(self, element, settings_view: 'SettingsView'):
+    def __init__(self, element, settings_view: "SettingsView"):
         super().__init__(element, settings_view)
 
         self.outer_rect = pe.Rect(
-            0, 0,
+            0,
+            0,
             self.ratios.xml_toggle_outer_width,
-            self.ratios.xml_toggle_outer_height
+            self.ratios.xml_toggle_outer_height,
         )
 
         self.inner_rect = pe.Rect(
-            0, 0,
+            0,
+            0,
             self.ratios.xml_toggle_inner_width,
-            self.ratios.xml_toggle_inner_height
+            self.ratios.xml_toggle_inner_height,
         )
 
         self.align_toggle_handle()
 
         self.t = 0.99 if self.value else 0.01  # leave some space to correct positions
-        self.icon = self.gui.icons['checkmark'].copy()
+        self.icon = self.gui.icons["checkmark"].copy()
         self.icon_rect = pe.Rect(0, 0, *self.icon.size)
 
     def align_toggle_handle(self):
@@ -248,46 +248,59 @@ class Toggle(OptionText):
 
     @property
     def color_on(self):
-        if different_color := self.element.get('color_on'):
+        if different_color := self.element.get("color_on"):
             color = tools.get_single_color(different_color)
         else:
             color = getattr(Defaults, self.COLOR_ON)
 
-        return tools.invert_color(color) if self.inverted and not different_color else color
+        return (
+            tools.invert_color(color)
+            if self.inverted and not different_color
+            else color
+        )
 
     @property
     def color_off(self):
-        if different_color := self.element.get('color_off'):
+        if different_color := self.element.get("color_off"):
             color = tools.get_single_color(different_color)
         else:
             color = getattr(Defaults, self.COLOR_OFF)
 
-        return tools.invert_color(color) if self.inverted and not different_color else color
-
-    @property
-    def padding_end(self):
         return (
-                self.ratios.xml_toggle_outer_width +
-                self.ratios.xml_toggle_margin * 2
+            tools.invert_color(color)
+            if self.inverted and not different_color
+            else color
         )
 
     @property
+    def padding_end(self):
+        return self.ratios.xml_toggle_outer_width + self.ratios.xml_toggle_margin * 2
+
+    @property
     def handle_off(self):
-        if different_color := self.element.get('handle_off'):
+        if different_color := self.element.get("handle_off"):
             color = tools.get_single_color(different_color)
         else:
             color = getattr(Defaults, self.HANDLE_OFF)
 
-        return tools.invert_color(color) if self.inverted and not different_color else color
+        return (
+            tools.invert_color(color)
+            if self.inverted and not different_color
+            else color
+        )
 
     @property
     def handle_on(self):
-        if different_color := self.element.get('handle_on'):
+        if different_color := self.element.get("handle_on"):
             color = tools.get_single_color(different_color)
         else:
             color = getattr(Defaults, self.HANDLE_ON)
 
-        return tools.invert_color(color) if self.inverted and not different_color else color
+        return (
+            tools.invert_color(color)
+            if self.inverted and not different_color
+            else color
+        )
 
     @property
     def handle_blend(self):
@@ -304,8 +317,10 @@ class Toggle(OptionText):
     @property
     def inner_rect_animation(self):
         return pe.Rect(
-            self.outer_rect.left + self.handle_left, self.inner_rect.top,
-            self.handle_width, self.inner_rect.height
+            self.outer_rect.left + self.handle_left,
+            self.inner_rect.top,
+            self.handle_width,
+            self.inner_rect.height,
         )
 
     def toggle(self):
@@ -313,10 +328,16 @@ class Toggle(OptionText):
 
     def handle_animation(self):
         if self.value and self.t < 1:
-            self.handle_left = tools.lerp(self.left, self.right_end, tools.ease_in_quad(self.t))
-            self.handle_right = tools.lerp(self.left_end, self.right, tools.ease_out_quad(self.t))
+            self.handle_left = tools.lerp(
+                self.left, self.right_end, tools.ease_in_quad(self.t)
+            )
+            self.handle_right = tools.lerp(
+                self.left_end, self.right, tools.ease_out_quad(self.t)
+            )
             if self.t > 0.5:
-                self.icon.set_alpha(int(255 * tools.lerp(-1, 1, self.t)))  # go from 0 to 1 after t=0.5
+                self.icon.set_alpha(
+                    int(255 * tools.lerp(-1, 1, self.t))
+                )  # go from 0 to 1 after t=0.5
             self.t += self.delta_time * self.SPEED
             if self.t >= 1:
                 self.t = 1
@@ -324,10 +345,16 @@ class Toggle(OptionText):
                 self.handle_right = self.right
                 self.icon.set_alpha(255)
         elif not self.value and self.t > 0:
-            self.handle_left = tools.lerp(self.right_end, self.left, 1 - tools.ease_in_quad(self.t))
-            self.handle_right = tools.lerp(self.right, self.left_end, 1 - tools.ease_out_quad(self.t))
+            self.handle_left = tools.lerp(
+                self.right_end, self.left, 1 - tools.ease_in_quad(self.t)
+            )
+            self.handle_right = tools.lerp(
+                self.right, self.left_end, 1 - tools.ease_out_quad(self.t)
+            )
             if self.t > 0.5:
-                self.icon.set_alpha(int(255 * tools.lerp(-1, 1, self.t)))  # go from 0 to 1 after t=0.5
+                self.icon.set_alpha(
+                    int(255 * tools.lerp(-1, 1, self.t))
+                )  # go from 0 to 1 after t=0.5
             self.t -= self.delta_time * self.SPEED
             if self.t <= 0:
                 self.t = 0
@@ -351,14 +378,14 @@ class Toggle(OptionText):
             pe.draw.rect(  # Outer fill
                 self.color_blend,
                 self.outer_rect,
-                edge_rounding=self.ratios.xml_toggle_outer_edge_rounding
+                edge_rounding=self.ratios.xml_toggle_outer_edge_rounding,
             )
 
         pe.draw.rect(  # Outer outline
             self.color_on,
             self.outer_rect,
             w=self.ratios.line,
-            edge_rounding=self.ratios.xml_toggle_outer_edge_rounding
+            edge_rounding=self.ratios.xml_toggle_outer_edge_rounding,
         )
 
         handle_rect = self.inner_rect_animation
@@ -369,20 +396,24 @@ class Toggle(OptionText):
                 self.handle_on,
                 handle_rect,
                 w=0,
-                edge_rounding=self.ratios.xml_toggle_inner_edge_rounding
+                edge_rounding=self.ratios.xml_toggle_inner_edge_rounding,
             )
 
         pe.draw.rect(  # Inner outline
             self.handle_off,
             handle_rect,
             w=self.ratios.line,
-            edge_rounding=self.ratios.xml_toggle_inner_edge_rounding
+            edge_rounding=self.ratios.xml_toggle_inner_edge_rounding,
         )
 
         if self.t > 0.5:
             self.icon.display(self.icon_rect.topleft)
 
         # Handle the button
-        pe.button.action(self.ratios.pad_button_rect(self.outer_rect), action=self.toggle, name=f'TOGGLE<{id(self)}>')
+        pe.button.action(
+            self.ratios.pad_button_rect(self.outer_rect),
+            action=self.toggle,
+            name=f"TOGGLE<{id(self)}>",
+        )
 
         return height

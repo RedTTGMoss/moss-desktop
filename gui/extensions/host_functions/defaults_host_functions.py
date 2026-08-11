@@ -18,7 +18,9 @@ def moss_defaults_get_color(key: str):
 
 @d.host_fn()
 @d.set_text_color
-def moss_defaults_set_text_color(key: str, colors: Tuple[Optional[Tuple[int, ...]], ...]):
+def moss_defaults_set_text_color(
+    key: str, colors: Tuple[Optional[Tuple[int, ...]], ...]
+):
     setattr(Defaults, key, colors)
 
 

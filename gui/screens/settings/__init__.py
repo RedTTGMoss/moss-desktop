@@ -18,37 +18,44 @@ class Settings(pe.ChildContext):
     LAYER = pe.AFTER_LOOP_LAYER
     MENUS = [
         {
-            'text': f'settings.moss.title',
-            'icon': 'moss',
-            'action': 'moss',
-            'data': 'xml_settings',
+            "text": f"settings.moss.title",
+            "icon": "moss",
+            "action": "moss",
+            "data": "xml_settings",
         }
     ]
 
     # definitions from GUI
-    api: 'API'
-    extension_manager: 'ExtensionManager'
-    parent_context: 'GUI'
+    api: "API"
+    extension_manager: "ExtensionManager"
+    parent_context: "GUI"
     icons: Dict[str, pe.Image]
-    ratios: 'Ratios'
+    ratios: "Ratios"
 
-    def __init__(self, parent: 'GUI'):
+    def __init__(self, parent: "GUI"):
         super().__init__(parent)
 
-        self.MENUS = [*self.MENUS, *list(self.extension_manager.extension_menus.values())]
+        self.MENUS = [
+            *self.MENUS,
+            *list(self.extension_manager.extension_menus.values()),
+        ]
 
         self.sidebar = SettingsSidebarChain(self)
-        self.xml_interactor = SettingsView(self, parse_menu_xml(self.data.get(f'xml_settings/default'))[0], self)
+        self.xml_interactor = SettingsView(
+            self, parse_menu_xml(self.data.get(f"xml_settings/default"))[0], self
+        )
 
         if len(self.sidebar.stack[0].BUTTONS) == 1:
             # If there is only one button in the sidebar, we open the moss settings directly
-            self.sidebar.stack[0].open_sub('xml_settings')  # Open the default settings
+            self.sidebar.stack[0].open_sub("xml_settings")  # Open the default settings
             del self.sidebar.stack[0]  # Remove the empty menu from the stack
             self.sidebar.transitioning = False  # Reset the transitioning state
-            self.sidebar.stack[-1].open_sub('xml_settings/moss')  # Open the moss settings
+            self.sidebar.stack[-1].open_sub(
+                "xml_settings/moss"
+            )  # Open the moss settings
 
         self.back_button = BackButton(self)
-        self.api.add_hook('settings_resize_check', self.handle_resize_event)
+        self.api.add_hook("settings_resize_check", self.handle_resize_event)
 
     def handle_resize_event(self, event):
         if isinstance(event, ResizeEvent):
@@ -67,7 +74,7 @@ class Settings(pe.ChildContext):
             Defaults.OUTLINE_COLOR,
             (0, self.ratios.main_menu_top_height),
             (self.ratios.main_menu_side_bar_width, self.ratios.main_menu_top_height),
-            w=self.ratios.line
+            w=self.ratios.line,
         )
 
         # Outline the end of the Side bar
@@ -75,7 +82,7 @@ class Settings(pe.ChildContext):
             Defaults.OUTLINE_COLOR,
             (self.ratios.main_menu_side_bar_width, 0),
             (self.ratios.main_menu_side_bar_width, self.height),
-            w=self.ratios.line
+            w=self.ratios.line,
         )
 
     def close(self):

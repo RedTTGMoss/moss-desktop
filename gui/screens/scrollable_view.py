@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class ScrollableView(pe.Context, ABC):
     T = 20
 
-    def __init__(self, gui: 'GUI'):
+    def __init__(self, gui: "GUI"):
         self.gui = gui
         self.BACKGROUND = self.gui.BACKGROUND
         self._top = 0
@@ -30,13 +30,24 @@ class ScrollableView(pe.Context, ABC):
 
     @property
     def top(self):
-        correct_top = min(0, max(self.active_top,
-                                 (-self.bottom + self.height) - self.gui.ratios.main_menu_document_margin))
+        correct_top = min(
+            0,
+            max(
+                self.active_top,
+                (-self.bottom + self.height)
+                - self.gui.ratios.main_menu_document_margin,
+            ),
+        )
         self.active_top = int(
-            (1 - self.T * self.gui.delta_time) * self.active_top + self.T * self.gui.delta_time * correct_top)
+            (1 - self.T * self.gui.delta_time) * self.active_top
+            + self.T * self.gui.delta_time * correct_top
+        )
         if self.active_top - 5 < self._top < self.active_top + 5:
             return self._top
-        self._top = int((1 - self.T * self.gui.delta_time) * self._top + self.T * self.gui.delta_time * self.active_top)
+        self._top = int(
+            (1 - self.T * self.gui.delta_time) * self._top
+            + self.T * self.gui.delta_time * self.active_top
+        )
 
         return self._top
 

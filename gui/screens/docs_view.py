@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class DocumentTreeViewer(ScrollableView, ABC):
-    def __init__(self, gui: 'GUI', area):
+    def __init__(self, gui: "GUI", area):
         self.AREA = area
         self.texts: Dict[str, pe.Text] = {}
         self._text_information: Dict[str, str] = {}
@@ -47,27 +47,40 @@ class DocumentTreeViewer(ScrollableView, ABC):
         # documents: Dict[str, Document] = dict(self.documents)
 
         # Preparing the document collection texts
-        folder_font_details = (Defaults.FOLDER_TITLE_FONT, self.gui.ratios.document_tree_view_title_size)
-        document_font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_title_size)
-        small_font_details = (Defaults.DOCUMENT_SUBTITLE_FONT, self.gui.ratios.document_tree_view_small_info_size)
+        folder_font_details = (
+            Defaults.FOLDER_TITLE_FONT,
+            self.gui.ratios.document_tree_view_title_size,
+        )
+        document_font_details = (
+            Defaults.DOCUMENT_SUBTITLE_FONT,
+            self.gui.ratios.document_tree_view_title_size,
+        )
+        small_font_details = (
+            Defaults.DOCUMENT_SUBTITLE_FONT,
+            self.gui.ratios.document_tree_view_small_info_size,
+        )
 
         font_map = {  # Mapping text keys to their respective font details
-            't_title': document_font_details,
-            't_title_folder': folder_font_details,
-            't_description': small_font_details,
-            't_extra_tags': small_font_details,  # TODO: Maybe implement another font for this?
-            't_filesize': small_font_details,
-            't_tag': small_font_details
+            "t_title": document_font_details,
+            "t_title_folder": folder_font_details,
+            "t_description": small_font_details,
+            "t_extra_tags": small_font_details,  # TODO: Maybe implement another font for this?
+            "t_filesize": small_font_details,
+            "t_tag": small_font_details,
         }
 
         self.texts.clear()  # Clear existing texts to avoid build-up
 
         for key, value in self.text_information.items():
-            state_uuid, text_key = key.split('|')  # Get the text key to determine the font
+            state_uuid, text_key = key.split(
+                "|"
+            )  # Get the text key to determine the font
             if expected_uuid and state_uuid != expected_uuid:
                 continue
-            font = font_map.get('t_tag' if 't_tag_' in text_key else text_key, small_font_details)
-            state: 'DocInfoState' = self.manager.get_state(state_uuid)
+            font = font_map.get(
+                "t_tag" if "t_tag_" in text_key else text_key, small_font_details
+            )
+            state: "DocInfoState" = self.manager.get_state(state_uuid)
             state.dirty()
             size_constraint = state.trim_text_sizes.get(text_key, None)
 
@@ -77,15 +90,22 @@ class DocumentTreeViewer(ScrollableView, ABC):
                 trimmed_text = value
 
             if trimmed_text != value:
-                self.texts[key] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR_T)
-                self.texts[f'{key}_inverted'] = pe.Text(trimmed_text, *font, colors=Defaults.TEXT_COLOR_H)
-                self.texts[f'{key}_full'] = pe.Text(
+                self.texts[key] = pe.Text(
+                    trimmed_text, *font, colors=Defaults.TEXT_COLOR_T
+                )
+                self.texts[f"{key}_inverted"] = pe.Text(
+                    trimmed_text, *font, colors=Defaults.TEXT_COLOR_H
+                )
+                self.texts[f"{key}_full"] = pe.Text(
                     dynamic_text(value, *font, state.gui.width * 0.5, True),
-                    *font, colors=Defaults.TEXT_COLOR
+                    *font,
+                    colors=Defaults.TEXT_COLOR,
                 )
             else:
                 self.texts[key] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_T)
-                self.texts[f'{key}_inverted'] = pe.Text(value, *font, colors=Defaults.TEXT_COLOR_H)
+                self.texts[f"{key}_inverted"] = pe.Text(
+                    value, *font, colors=Defaults.TEXT_COLOR_H
+                )
 
     @property
     @abstractmethod
@@ -100,7 +120,7 @@ class DocumentTreeViewer(ScrollableView, ABC):
     @property
     @abstractmethod
     def mode(self) -> MAIN_MENU_MODES:
-        return 'list'
+        return "list"
 
     def pre_loop(self):
         # Get the sizes from the manager
@@ -110,13 +130,17 @@ class DocumentTreeViewer(ScrollableView, ABC):
         # Figure out the columns, if we should add padding or not
         self.collection_columns_fittable = max(
             1,
-            int(self.width /  # Divide the width by the size of one collection
-                (collection_size[0] + self.manager.collection_margin))
+            int(
+                self.width  # Divide the width by the size of one collection
+                / (collection_size[0] + self.manager.collection_margin)
+            ),
         )
         self.document_columns_fittable = max(
             1,
-            int(self.width /  # Do the same for document columns
-                (document_size[0] + self.manager.document_margin))
+            int(
+                self.width  # Do the same for document columns
+                / (document_size[0] + self.manager.document_margin)
+            ),
         )
 
         # Calculate x padding for collections based on length
@@ -124,8 +148,11 @@ class DocumentTreeViewer(ScrollableView, ABC):
         if len(self.document_collections) < self.collection_columns_fittable:
             self.x_padding_collections = self.gui.ratios.main_menu_x_padding
         else:
-            width = self.collection_columns_fittable * collection_size[0] + \
-                    self.gui.ratios.main_menu_folder_margin * (self.collection_columns_fittable - 1)
+            width = self.collection_columns_fittable * collection_size[
+                0
+            ] + self.gui.ratios.main_menu_folder_margin * (
+                self.collection_columns_fittable - 1
+            )
             self.x_padding_collections = (self.width - width) / 2
 
         # Calculate x padding for documents based on length
@@ -133,13 +160,18 @@ class DocumentTreeViewer(ScrollableView, ABC):
         if len(self.documents) < self.document_columns_fittable:
             self.x_padding_documents = self.gui.ratios.main_menu_x_padding
         else:
-            width = self.document_columns_fittable * document_size[0] + \
-                    self.gui.ratios.main_menu_document_margin * (self.document_columns_fittable - 1)
+            width = self.document_columns_fittable * document_size[
+                0
+            ] + self.gui.ratios.main_menu_document_margin * (
+                self.document_columns_fittable - 1
+            )
             self.x_padding_documents = (self.width - width) / 2
 
         # Finally calculate row count for final height determination of the scrollable view
         if len(self.document_collections) > 0:
-            collection_rows = ceil(len(self.document_collections) / self.collection_columns_fittable)
+            collection_rows = ceil(
+                len(self.document_collections) / self.collection_columns_fittable
+            )
         else:
             collection_rows = 0
 
@@ -180,12 +212,19 @@ class DocumentTreeViewer(ScrollableView, ABC):
 
         # Rendering the folders
         for i, document_collection in enumerate(
-                self.gui.main_menu.get_sorted_document_collections(self.document_collections.values())):
-            self.manager.handle(document_collection, area, x, y)  # Render the collection
+            self.gui.main_menu.get_sorted_document_collections(
+                self.document_collections.values()
+            )
+        ):
+            self.manager.handle(
+                document_collection, area, x, y
+            )  # Render the collection
 
             if (
-                    i % self.collection_columns_fittable == self.collection_columns_fittable - 1 and
-                    i < len(self.document_collections) - 1):  # Also skip this operation for the last collection
+                i % self.collection_columns_fittable
+                == self.collection_columns_fittable - 1
+                and i < len(self.document_collections) - 1
+            ):  # Also skip this operation for the last collection
                 # If we reached the end of the row, reset x and increase y
                 x = self.x_padding_collections
                 y += collection_size[1] + self.manager.collection_margin
@@ -201,12 +240,15 @@ class DocumentTreeViewer(ScrollableView, ABC):
             y = top
 
         # Rendering the documents
-        for i, document in enumerate(self.gui.main_menu.get_sorted_documents(self.documents.values())):
+        for i, document in enumerate(
+            self.gui.main_menu.get_sorted_documents(self.documents.values())
+        ):
             self.manager.handle(document, area, x, y)  # Render the document
 
             if (
-                    i % self.document_columns_fittable == self.document_columns_fittable - 1 and
-                    i < len(self.documents) - 1):  # Also skip this operation for the last document
+                i % self.document_columns_fittable == self.document_columns_fittable - 1
+                and i < len(self.documents) - 1
+            ):  # Also skip this operation for the last document
                 # If we reached the end of the row, reset x and increase y
                 x = self.x_padding_documents
                 y += document_size[1] + self.manager.document_margin
@@ -216,7 +258,8 @@ class DocumentTreeViewer(ScrollableView, ABC):
 
     def select_document(self, document_uuid: str):
         print(
-            f"Toggling selection for document {document_uuid} {self.manager.__class__.__name__} {self.__class__.__name__}")
+            f"Toggling selection for document {document_uuid} {self.manager.__class__.__name__} {self.__class__.__name__}"
+        )
         if document_uuid in self.selected_documents:
             self.selected_documents.remove(document_uuid)
         else:

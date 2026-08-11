@@ -11,7 +11,9 @@ from rm_api.storage.common import FileHandle
 from rm_api.storage.v3 import check_file_exists, CacheMiss
 
 from gui.defaults import Defaults
-from gui.screens.viewer.renderers.notebook.lib_rm_lines_renderer import Notebook_LIB_rM_Lines_Renderer
+from gui.screens.viewer.renderers.notebook.lib_rm_lines_renderer import (
+    Notebook_LIB_rM_Lines_Renderer,
+)
 
 PREVIEW_TIMEOUT = 1  # second to wait for LIB rm lines to load the preview
 
@@ -25,7 +27,7 @@ if TYPE_CHECKING:
 
 
 class PreviewDocumentRenderer:
-    def __init__(self, document: Document, gui: 'GUI'):
+    def __init__(self, document: Document, gui: "GUI"):
         self.document = document
         self.parent_context = gui
         self.loading = 0
@@ -38,10 +40,12 @@ class PreviewHandler:
     PREVIEW_LOAD_TASKS: List[str] = []
     PYGAME_THREAD_LOCK = threading.Lock()
     TASK_LOCK = threading.Lock()
-    gui: 'GUI'  # Type hint for GUI instance, to be set externally
+    gui: "GUI"  # Type hint for GUI instance, to be set externally
 
     @classmethod
-    def get_preview(cls, document: Document, size: Tuple[int, int] = None) -> Optional[pe.Sprite]:
+    def get_preview(
+        cls, document: Document, size: Tuple[int, int] = None
+    ) -> Optional[pe.Sprite]:
         try:
             sprite = cls._get_preview(document)
         except:
@@ -50,7 +54,9 @@ class PreviewHandler:
         if sprite is None:
             return None
         if size is not None:
-            size = tuple(min(given, max) for given, max in zip(size, Defaults.PREVIEW_SIZE))
+            size = tuple(
+                min(given, max) for given, max in zip(size, Defaults.PREVIEW_SIZE)
+            )
             sprite.resize = size
         return sprite
 
@@ -62,14 +68,18 @@ class PreviewHandler:
             else:
                 page_id = document.content.c_pages.pages[0].id
         except:
-            page_id = 'index-error'
+            page_id = "index-error"
         document_id = document.uuid
-        loading_task = f'{document_id}.{page_id}'
-        location = os.path.join(Defaults.THUMB_FILE_PATH, f'{loading_task}.png')
+        loading_task = f"{document_id}.{page_id}"
+        location = os.path.join(Defaults.THUMB_FILE_PATH, f"{loading_task}.png")
         if preview := cls.CACHED_PREVIEW.get(document_id):
             if preview[0] == page_id:
                 if os.path.isdir(Defaults.THUMB_FILE_PATH):
-                    if not document.provision and preview[1] and not os.path.exists(location):
+                    if (
+                        not document.provision
+                        and preview[1]
+                        and not os.path.exists(location)
+                    ):
                         preview[1].get_finished_surface().save_to_file(location)
                 return preview[1]
         # If the preview is not cached, load it
@@ -85,7 +95,11 @@ class PreviewHandler:
 
         # Create a new loading task
         cls.PREVIEW_LOAD_TASKS.append(loading_task)
-        threading.Thread(target=cls.handle_loading_task, args=(loading_task, document, page_id), daemon=True).start()
+        threading.Thread(
+            target=cls.handle_loading_task,
+            args=(loading_task, document, page_id),
+            daemon=True,
+        ).start()
 
     @classmethod
     def handle_loading_task(cls, loading_task, document: Document, page_id: str):
@@ -100,32 +114,35 @@ class PreviewHandler:
 
     @classmethod
     def _handle_loading_task(cls, document: Document, page_id: str):
-        file = document.files_available.get(file_uuid := f'{document.uuid}/{page_id}.rm')
+        file = document.files_available.get(
+            file_uuid := f"{document.uuid}/{page_id}.rm"
+        )
 
         base_img: pe.Surface = None
 
-        if document.content.file_type in ('pdf', 'epub'):
-            if page_id == 'index-error':
-                page = Page.new_pdf_redirect(0, 'index-error', 'index-error')
+        if document.content.file_type in ("pdf", "epub"):
+            if page_id == "index-error":
+                page = Page.new_pdf_redirect(0, "index-error", "index-error")
             else:
                 page = document.content.c_pages.get_page_from_uuid(page_id)
 
             if page and page.redirect:
-                pdf_file = document.files_available.get(f'{document.uuid}.pdf')
+                pdf_file = document.files_available.get(f"{document.uuid}.pdf")
                 try:
                     document.load_files_from_cache()
                 except CacheMiss:
                     cls.CACHED_PREVIEW[document.uuid] = (page_id, None)
                     return
 
-                if pdf_file and (stream := document.content_data.get(pdf_file.uuid)) and pymupdf:
+                if (
+                    pdf_file
+                    and (stream := document.content_data.get(pdf_file.uuid))
+                    and pymupdf
+                ):
                     if isinstance(stream, FileHandle):
-                        pdf = pymupdf.open(stream.file_path, filetype='pdf')
+                        pdf = pymupdf.open(stream.file_path, filetype="pdf")
                     else:
-                        pdf = pymupdf.open(
-                            stream=stream,
-                            filetype='pdf'
-                        )
+                        pdf = pymupdf.open(stream=stream, filetype="pdf")
 
                     pdf_page = pdf[page.redirect.value]
 
@@ -139,7 +156,10 @@ class PreviewHandler:
                     # noinspection PyTypeChecker
                     with PreviewHandler.PYGAME_THREAD_LOCK:
                         base_img = pe.Surface(
-                            surface=pe.pygame.image.frombuffer(pix.samples, (pix.width, pix.height), mode))
+                            surface=pe.pygame.image.frombuffer(
+                                pix.samples, (pix.width, pix.height), mode
+                            )
+                        )
 
         if not document.provision:
             document.unload_files()
@@ -161,7 +181,7 @@ class PreviewHandler:
             renderer = Notebook_LIB_rM_Lines_Renderer(document_renderer)
             renderer._load(page_id)
 
-            if hasattr(renderer, 'expanded_notebook'):
+            if hasattr(renderer, "expanded_notebook"):
                 renderer.expanded_notebook.get_frame_from_initial(0, 0)
                 preview = renderer.expanded_notebook.get_preview(0, 0)
 

@@ -8,22 +8,24 @@ if TYPE_CHECKING:
 class SettingsView(ScrollableView):
     LAYER = pe.BEFORE_LOOP_LAYER
     VIEW_OBJECTS = {
-        'title': Title,
-        'description': DescriptionText,
-        'subtitle': Subtitle,
-        'text': Text,
-        'subtext': Subtext,
-        'toggle': Toggle
+        "title": Title,
+        "description": DescriptionText,
+        "subtitle": Subtitle,
+        "text": Text,
+        "subtext": Subtext,
+        "toggle": Toggle,
     }
 
-    def __init__(self, settings: 'Settings', xml_tree, interactor=None):
+    def __init__(self, settings: "Settings", xml_tree, interactor=None):
         self.settings = settings
         self.interactor = interactor
         self.elements = []
 
         self.AREA = (
-            settings.ratios.main_menu_side_bar_width, 0, settings.width - settings.ratios.main_menu_side_bar_width,
-            settings.height
+            settings.ratios.main_menu_side_bar_width,
+            0,
+            settings.width - settings.ratios.main_menu_side_bar_width,
+            settings.height,
         )
 
         super().__init__(settings.parent_context)
@@ -42,10 +44,12 @@ class SettingsView(ScrollableView):
         self.bottom = y - self.top
 
     def handle_resize(self):
-        self.resize((
-            self.settings.width - self.settings.ratios.main_menu_side_bar_width,
-            self.settings.height
-        ))
+        self.resize(
+            (
+                self.settings.width - self.settings.ratios.main_menu_side_bar_width,
+                self.settings.height,
+            )
+        )
 
         for element in self.elements:
             element.on_resize()

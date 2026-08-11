@@ -16,10 +16,11 @@ class rMDocInfoManager(DocInfoManager):
         document: DocumentCollection = state.document
         return {
             **cls.get_general_state_info(state),
-            'item_count': document.get_item_count(state.gui.api),
-            'selected': state.document.uuid in state.manager.viewer.selected_document_collections,
-            'tags': document.tags,
-            **{f't_tag_{tag.name}': tag.name for tag in document.tags}
+            "item_count": document.get_item_count(state.gui.api),
+            "selected": state.document.uuid
+            in state.manager.viewer.selected_document_collections,
+            "tags": document.tags,
+            **{f"t_tag_{tag.name}": tag.name for tag in document.tags},
         }
 
     @classmethod
@@ -41,32 +42,39 @@ class rMDocInfoManager(DocInfoManager):
 
         result = {
             **cls.get_general_state_info(state),
-            'provision': document.provision,
-            'content_hash': document.file_uuid_map[f'{document.uuid}.content'].hash,
-            'metadata_hash': document.file_uuid_map[f'{document.uuid}.metadata'].hash,
-            'files_available': document.files_available,
-            'tags': document.content.tags,
-            **{f't_tag_{tag.name}': tag.name for tag in document.content.tags},
-            't_size': f'{humanize.naturalsize(document.content.size_in_bytes, binary=True)}',
-            'selected': state.document.uuid in state.manager.viewer.selected_documents,
+            "provision": document.provision,
+            "content_hash": document.file_uuid_map[f"{document.uuid}.content"].hash,
+            "metadata_hash": document.file_uuid_map[f"{document.uuid}.metadata"].hash,
+            "files_available": document.files_available,
+            "tags": document.content.tags,
+            **{f"t_tag_{tag.name}": tag.name for tag in document.content.tags},
+            "t_size": f"{humanize.naturalsize(document.content.size_in_bytes, binary=True)}",
+            "selected": state.document.uuid in state.manager.viewer.selected_documents,
         }
 
         if sync_operation:  # Register the sync operation on the state
-            result['done'] = sync_operation.done
-            result['total'] = sync_operation.total
+            result["done"] = sync_operation.done
+            result["total"] = sync_operation.total
 
-            result['sync_operation'] = sync_operation
+            result["sync_operation"] = sync_operation
 
-        if document.content.file_type == 'notebook':
-            result['t_description'] = t('doc_display.sub.page_count', page_count=document.get_page_count())
-        elif document.content.file_type == 'pdf':
-            result['t_description'] = t('doc_display.sub.page_of', page=document.metadata.last_opened_page + 1,
-                                        total=document.get_page_count())
-        elif document.content.file_type == 'epub':
-            result['t_description'] = t('doc_display.sub.pages_read', read_percent=document.get_read())
+        if document.content.file_type == "notebook":
+            result["t_description"] = t(
+                "doc_display.sub.page_count", page_count=document.get_page_count()
+            )
+        elif document.content.file_type == "pdf":
+            result["t_description"] = t(
+                "doc_display.sub.page_of",
+                page=document.metadata.last_opened_page + 1,
+                total=document.get_page_count(),
+            )
+        elif document.content.file_type == "epub":
+            result["t_description"] = t(
+                "doc_display.sub.pages_read", read_percent=document.get_read()
+            )
 
         if state.document.downloading:
-            result['download_done'] = state.document.download_done
+            result["download_done"] = state.document.download_done
 
         return result
 
@@ -75,36 +83,40 @@ class rMDocInfoManager(DocInfoManager):
         document: Union[Document, DocumentCollection] = state.document
         result = {
             **cls.get_required_state_info(state),
-            'uuid': document.uuid,
-            'last_modified': document.metadata.last_modified,
-            'preview_cache': PreviewHandler.CACHED_PREVIEW.get(document.uuid),
-            'pinned': document.metadata.pinned
+            "uuid": document.uuid,
+            "last_modified": document.metadata.last_modified,
+            "preview_cache": PreviewHandler.CACHED_PREVIEW.get(document.uuid),
+            "pinned": document.metadata.pinned,
         }
 
         # Optimize title text based on state type
         if state.is_document:
-            result['t_title'] = document.metadata.visible_name
-            del result['t_title_folder']
+            result["t_title"] = document.metadata.visible_name
+            del result["t_title_folder"]
         else:
-            result['t_title_folder'] = document.metadata.visible_name
-            del result['t_title']
+            result["t_title_folder"] = document.metadata.visible_name
+            del result["t_title"]
         return result
 
     @classmethod
     def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
             state=state,
-            preview=PreviewHandler.get_preview(state.document) if not state.document.provision else None,
-            selected=state.current_state['selected'],
-            progress=state.current_state.get('sync_operation'),
+            preview=(
+                PreviewHandler.get_preview(state.document)
+                if not state.document.provision
+                else None
+            ),
+            selected=state.current_state["selected"],
+            progress=state.current_state.get("sync_operation"),
         )
 
     @classmethod
     def get_collection_render_info(cls, state: DocInfoState) -> RenderInfo:
         return RenderInfo(
             state=state,
-            icon='folder' if state.document.has_items else 'folder_empty',
-            selected=state.current_state['selected'],
+            icon="folder" if state.document.has_items else "folder_empty",
+            selected=state.current_state["selected"],
         )
 
     @classmethod
@@ -118,7 +130,7 @@ class rMDocInfoManager(DocInfoManager):
                 partial(
                     PreviewHandler.clear_for,
                     state.document.uuid,
-                    partial(open_document, state.gui, state.document.uuid)
+                    partial(open_document, state.gui, state.document.uuid),
                 )
             )
         else:

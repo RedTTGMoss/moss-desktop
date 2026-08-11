@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 class ButtonReadyMixin:
     BUTTON_TEXTS = {
-        'cancel': "Cancel",
+        "cancel": "Cancel",
     }
-    ratios: 'Ratios'
+    ratios: "Ratios"
     texts: dict[str, pe.Text]
     width: int
     height: int
@@ -22,8 +22,10 @@ class ButtonReadyMixin:
         self.texts = {
             key: pe.Text(
                 t(text, None, **kwargs),
-                Defaults.BUTTON_FONT, self.ratios.import_screen_button_size,
-                colors=Defaults.TEXT_COLOR_T)
+                Defaults.BUTTON_FONT,
+                self.ratios.import_screen_button_size,
+                colors=Defaults.TEXT_COLOR_T,
+            )
             for key, text in self.BUTTON_TEXTS.items()
         }
         self.calculate_texts()
@@ -31,7 +33,9 @@ class ButtonReadyMixin:
     def calculate_texts(self):
         right = self.width - self.ratios.import_screen_button_margin
         for text in self.texts.values():
-            text.rect.height = max(text.rect.height, self.ratios.import_screen_button_size)
+            text.rect.height = max(
+                text.rect.height, self.ratios.import_screen_button_size
+            )
             text.rect.centery = self.height - self.ratios.import_screen_button_margin
             text.rect.right = right
             text.position = text.rect.center

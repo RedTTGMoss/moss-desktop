@@ -9,39 +9,39 @@ from rm_api.defaults import ZoomModes, FileTypes, Orientations, DocumentTypes
 
 class AccessorTypes(Enum):
     # Document API SUB
-    APIDocumentMetadata = 'api_document_metadata'
-    APIDocumentContent = 'api_document_content'
+    APIDocumentMetadata = "api_document_metadata"
+    APIDocumentContent = "api_document_content"
 
     # Collection API SUB
-    APICollectionMetadata = 'api_collection_metadata'
+    APICollectionMetadata = "api_collection_metadata"
 
     # API
-    APIDocument = 'api_document'
-    APICollection = 'api_collection'
+    APIDocument = "api_document"
+    APICollection = "api_collection"
 
     # Document Standalone SUB
-    StandaloneDocumentMetadata = 'document_metadata'
-    StandaloneDocumentContent = 'document_content'
+    StandaloneDocumentMetadata = "document_metadata"
+    StandaloneDocumentContent = "document_content"
 
     # Collection Standalone SUB
-    StandaloneCollectionMetadata = 'collection_metadata'
+    StandaloneCollectionMetadata = "collection_metadata"
 
     # Standalone
-    StandaloneDocument = 'document'
-    StandaloneCollection = 'collection'
+    StandaloneDocument = "document"
+    StandaloneCollection = "collection"
 
-    StandaloneMetadata = 'metadata'
-    StandaloneContent = 'content'
+    StandaloneMetadata = "metadata"
+    StandaloneContent = "content"
 
     # Sync operations
-    FileSyncProgress = 'file_sync_progress'
-    DocumentSyncProgress = 'document_sync_progress'
+    FileSyncProgress = "file_sync_progress"
+    DocumentSyncProgress = "document_sync_progress"
 
-    SyncStage = 'sync_stage'
+    SyncStage = "sync_stage"
 
     # Events
-    EventMossFatal = 'moss_fatal'
-    EventApiFatal = 'api_fatal'
+    EventMossFatal = "moss_fatal"
+    EventApiFatal = "api_fatal"
 
 
 class AccessorInstance(TypedDict):

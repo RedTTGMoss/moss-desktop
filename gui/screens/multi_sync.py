@@ -16,12 +16,12 @@ if TYPE_CHECKING:
 class MultiSync(pe.ChildContext, LogoMixin):
     LAYER = pe.AFTER_LOOP_LAYER
     icons: Dict[str, pe.Image]
-    api: 'API'
+    api: "API"
     logo: pe.Text
     line_rect: pe.Rect
-    EVENT_HOOK = 'multi_sync_resize_check'
+    EVENT_HOOK = "multi_sync_resize_check"
 
-    def __init__(self, parent: 'GUI'):
+    def __init__(self, parent: "GUI"):
         super().__init__(parent)
         self.initialize_logo_and_line()
         self.api.add_hook(self.EVENT_HOOK, self.resize_check_hook)
@@ -38,9 +38,9 @@ class MultiSync(pe.ChildContext, LogoMixin):
         self.progress[key] = current
 
     def _update_total_progress(self):
-        self.progress['total'] = (
+        self.progress["total"] = (
             sum(p[0] for p in self.progress.values()),
-            sum(p[1] for p in self.progress.values())
+            sum(p[1] for p in self.progress.values()),
         )
 
     def pre_loop(self):
@@ -50,7 +50,7 @@ class MultiSync(pe.ChildContext, LogoMixin):
         self.logo.display()
 
         # Define the end of the progress bar's black outline to be hidden
-        total_cutter = self.big_line_rect.scale_by(self._('total'), 0)
+        total_cutter = self.big_line_rect.scale_by(self._("total"), 0)
         total_cutter.right = self.big_line_rect.right
 
         # Calculate all progress keys rects
@@ -59,10 +59,14 @@ class MultiSync(pe.ChildContext, LogoMixin):
             for key in self.progress.keys()
         }
 
-        for progress_key in sorted(self.progress.keys(), key=lambda key: Defaults.PROGRESS_ORDER.index(key)):
-            if progress_key == 'total':
+        for progress_key in sorted(
+            self.progress.keys(), key=lambda key: Defaults.PROGRESS_ORDER.index(key)
+        ):
+            if progress_key == "total":
                 continue
-            pe.draw.rect(Defaults.PROGRESS_COLOR[progress_key], progress_rects[progress_key], 0)
+            pe.draw.rect(
+                Defaults.PROGRESS_COLOR[progress_key], progress_rects[progress_key], 0
+            )
 
         pe.draw.rect(pe.colors.black, self.big_line_rect, 1)
         pe.draw.rect(self.BACKGROUND, total_cutter, 1)
@@ -77,4 +81,4 @@ class MultiSync(pe.ChildContext, LogoMixin):
     def close(self):
         self.document_renderer.close()
         self.api.remove_hook(self.EVENT_HOOK)
-        del self.close_screen()
+        self.close_screen()

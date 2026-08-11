@@ -22,10 +22,15 @@ from rm_api.models import make_uuid
 from rm_api.notifications.models import APIFatal, Notification, LongLasting
 
 from .events import ResizeEvent, MossFatal, ScreenClosure
-from .literals import PDF_RENDER_MODES, NOTEBOOK_RENDER_MODES, MAIN_MENU_MODES, MAIN_MENU_LOCATIONS, \
-    DOCUMENT_VIEWER_MODES
+from .literals import (
+    PDF_RENDER_MODES,
+    NOTEBOOK_RENDER_MODES,
+    MAIN_MENU_MODES,
+    MAIN_MENU_LOCATIONS,
+    DOCUMENT_VIEWER_MODES,
+)
 
-Defaults: 'defaults.Defaults' = None
+Defaults: "defaults.Defaults" = None
 
 try:
     import pymupdf
@@ -111,53 +116,51 @@ class ConfigDict(TypedDict):
 
 
 DEFAULT_CONFIG: ConfigDict = {
-    'enable_fake_screen_refresh': False,
-    'wait_for_everything_to_load': False,
-    'maintain_aspect_size': True,
-    'uri': 'https://webapp.cloud.remarkable.com/',
-    'discovery_uri': 'https://service-manager-production-dot-remarkable-production.appspot.com/',
-    'priority_uuids': '',
-    'author_id': None,
-    'last_root': None,
-    'last_guide': 'welcome',
-    'pdf_render_mode': 'pymupdf',
-    'notebook_render_mode': 'librm_lines_renderer',
-    'document_viewer_mode': 'read',
-    'download_everything': False,
-    'download_last_opened_page_to_make_preview': False,
-    'save_last_opened_folder': True,
-    'save_after_close': True,
-    'last_opened_folder': None,
-    'last_prompt_directory': None,
-    'scale': .9,
-    'doc_view_scale': 1,
-    'doc_view_more_tags': False,
-    'main_menu_view_mode': 'grid',
-    'main_menu_menu_location': 'my_files',
-    'format_raw_exports': True,
-    'add_ext_to_raw_exports': True,
-    'debug': False,
-    'debug_log': False,
-    'debug_api_events': False,
-    'debug_disable_lines_alignment': False,
-    'debug_lines': False,
-    'debug_viewer': False,
-    'debug_button_rects': False,
-    'show_orphans': True,
-    'allow_statistics': False,
-    'portable_mode': False,
-    'extensions': {},
+    "enable_fake_screen_refresh": False,
+    "wait_for_everything_to_load": False,
+    "maintain_aspect_size": True,
+    "uri": "https://webapp.cloud.remarkable.com/",
+    "discovery_uri": "https://service-manager-production-dot-remarkable-production.appspot.com/",
+    "priority_uuids": "",
+    "author_id": None,
+    "last_root": None,
+    "last_guide": "welcome",
+    "pdf_render_mode": "pymupdf",
+    "notebook_render_mode": "librm_lines_renderer",
+    "document_viewer_mode": "read",
+    "download_everything": False,
+    "download_last_opened_page_to_make_preview": False,
+    "save_last_opened_folder": True,
+    "save_after_close": True,
+    "last_opened_folder": None,
+    "last_prompt_directory": None,
+    "scale": 0.9,
+    "doc_view_scale": 1,
+    "doc_view_more_tags": False,
+    "main_menu_view_mode": "grid",
+    "main_menu_menu_location": "my_files",
+    "format_raw_exports": True,
+    "add_ext_to_raw_exports": True,
+    "debug": False,
+    "debug_log": False,
+    "debug_api_events": False,
+    "debug_disable_lines_alignment": False,
+    "debug_lines": False,
+    "debug_viewer": False,
+    "debug_button_rects": False,
+    "show_orphans": True,
+    "allow_statistics": False,
+    "portable_mode": False,
+    "extensions": {},
     # True for passed guides, False for not passed
-    'guides': {
-        'introduction_to_menu': False,
-        'introduction_to_viewer': False,
-        'switch_to_librm_lines': True,
+    "guides": {
+        "introduction_to_menu": False,
+        "introduction_to_viewer": False,
+        "switch_to_librm_lines": True,
     },
-    'language': 'en'
+    "language": "en",
 }
-DYNAMIC_CONFIG_KEYS = (
-    'extensions',
-)
+DYNAMIC_CONFIG_KEYS = ("extensions",)
 
 ConfigType = Box[ConfigDict]
 
@@ -171,13 +174,12 @@ def encode_uuid_list(uuids: list[str]) -> str:
 def decode_uuid_list(data: str) -> list[str]:
     compressed = base64.b64decode(data)
     raw = zlib.decompress(compressed)
-    return [
-        str(uuid.UUID(bytes=raw[i:i + 16]))
-        for i in range(0, len(raw), 16)
-    ]
+    return [str(uuid.UUID(bytes=raw[i : i + 16])) for i in range(0, len(raw), 16)]
 
 
-def merge_dictionaries(current: dict, default: dict, dynamic: bool = False) -> tuple[ConfigType, bool]:
+def merge_dictionaries(
+    current: dict, default: dict, dynamic: bool = False
+) -> tuple[ConfigType, bool]:
     """
     Merges the current configuration with the default configuration.
     If a key is missing in the current configuration, it will be added from the default.
@@ -188,7 +190,9 @@ def merge_dictionaries(current: dict, default: dict, dynamic: bool = False) -> t
     for key, value in default.items():
         if key in current:
             if isinstance(value, dict) and isinstance(current[key], dict):
-                merged[key], sub_changes = merge_dictionaries(current[key], value, key in DYNAMIC_CONFIG_KEYS)
+                merged[key], sub_changes = merge_dictionaries(
+                    current[key], value, key in DYNAMIC_CONFIG_KEYS
+                )
                 changes = changes or sub_changes
             else:
                 merged[key] = current[key]
@@ -196,8 +200,13 @@ def merge_dictionaries(current: dict, default: dict, dynamic: bool = False) -> t
             merged[key] = value
             changes = True
 
-    for key, value in current.items():  # Add any extra keys from current that are not in default
-        if dynamic or key not in default and key.startswith('_'):  # Only include keys that start with '_'
+    for (
+        key,
+        value,
+    ) in current.items():  # Add any extra keys from current that are not in default
+        if (
+            dynamic or key not in default and key.startswith("_")
+        ):  # Only include keys that start with '_'
             merged[key] = value
 
     return merged, changes
@@ -209,20 +218,24 @@ def load_config() -> ConfigType:
 
     try:
         # noinspection PyUnresolvedReferences
-        i_am_an_install = os.path.exists(os.path.join(__compiled__.containing_dir, 'installed'))
+        i_am_an_install = os.path.exists(
+            os.path.join(__compiled__.containing_dir, "installed")
+        )
     except NameError:
-        i_am_an_install = os.path.exists(os.path.join(os.path.dirname(__file__), 'installed'))
+        i_am_an_install = os.path.exists(
+            os.path.join(os.path.dirname(__file__), "installed")
+        )
 
     if i_am_an_install:
-        file = os.path.join(USER_DATA_DIR, 'config.json')
+        file = os.path.join(USER_DATA_DIR, "config.json")
     else:
         try:
             # noinspection PyUnresolvedReferences
-            file = os.path.join(__compiled__.containing_dir, 'config.json')
+            file = os.path.join(__compiled__.containing_dir, "config.json")
         except NameError:
-            file = 'config.json'
+            file = "config.json"
 
-    setattr(pe.settings, 'config_file_path', file)
+    setattr(pe.settings, "config_file_path", file)
 
     # Ensure config directory path exists
     if base_dir := os.path.dirname(file):
@@ -241,35 +254,39 @@ def load_config() -> ConfigType:
     _box = Box(config)
     if _box.pdf_render_mode not in PDF_RENDER_MODES.__args__:
         raise ValueError(f"Invalid pdf_render_mode: {_box.pdf_render_mode}")
-    if _box.pdf_render_mode == 'retry':
-        _box.pdf_render_mode = 'pymupdf'
+    if _box.pdf_render_mode == "retry":
+        _box.pdf_render_mode = "pymupdf"
         changes = True
-    if _box.pdf_render_mode == 'cef':
+    if _box.pdf_render_mode == "cef":
         print(f"{Fore.RED}Sorry but CEF is no longer supported!{Fore.RESET}")
-        _box.pdf_render_mode = 'pymupdf'
+        _box.pdf_render_mode = "pymupdf"
         changes = True
-    if _box.pdf_render_mode == 'pymupdf' and not pymupdf:
-        print(f"{Fore.YELLOW}PyMuPDF is not installed or is not compatible with your python version.{Fore.RESET}")
-        _box.pdf_render_mode = 'retry'
+    if _box.pdf_render_mode == "pymupdf" and not pymupdf:
+        print(
+            f"{Fore.YELLOW}PyMuPDF is not installed or is not compatible with your python version.{Fore.RESET}"
+        )
+        _box.pdf_render_mode = "retry"
         changes = True
 
-    if _box.notebook_render_mode == 'rm_lines_svg_inker':
+    if _box.notebook_render_mode == "rm_lines_svg_inker":
         # Check if user used the old rm_lines_svg_inker mode before the changes
         _box.guides.switch_to_librm_lines = False  # Trigger switch guide
-        _box.notebook_render_mode = 'rm_lines_svg_inker_OLD'  # Rename to the old mode
+        _box.notebook_render_mode = "rm_lines_svg_inker_OLD"  # Rename to the old mode
         changes = True
 
     if _box.notebook_render_mode not in NOTEBOOK_RENDER_MODES.__args__:
         # Check for user error in config
         raise ValueError(f"Invalid notebook_render_mode: {_box.notebook_render_mode}")
-    if _box.notebook_render_mode == 'retry':
+    if _box.notebook_render_mode == "retry":
         # In case of retry, we will use the default mode
-        _box.notebook_render_mode = 'librm_lines_renderer'
+        _box.notebook_render_mode = "librm_lines_renderer"
         changes = True
 
-    if _box.notebook_render_mode == 'librm_lines_renderer' and not rm_lines_lib:
-        print(f"{Fore.YELLOW}rm_lines_lib is not installed or is not compatible with your system.{Fore.RESET}")
-        _box.notebook_render_mode = 'rm_lines_svg_inker_OLD'  # Fallback to the old mode
+    if _box.notebook_render_mode == "librm_lines_renderer" and not rm_lines_lib:
+        print(
+            f"{Fore.YELLOW}rm_lines_lib is not installed or is not compatible with your system.{Fore.RESET}"
+        )
+        _box.notebook_render_mode = "rm_lines_svg_inker_OLD"  # Fallback to the old mode
         changes = True
 
     # Decode the priority UUIDs from the config if they are in string format (for backward compatibility)
@@ -282,9 +299,13 @@ def load_config() -> ConfigType:
     if changes:
         with open(file, "w") as f:
             decoded_uuids = _box.priority_uuids
-            _box.priority_uuids = encode_uuid_list(_box.priority_uuids)  # Encode the priority UUIDs before saving
+            _box.priority_uuids = encode_uuid_list(
+                _box.priority_uuids
+            )  # Encode the priority UUIDs before saving
             json.dump(_box, f, indent=4)
-            _box.priority_uuids = decoded_uuids  # Restore the decoded UUIDs in the config
+            _box.priority_uuids = (
+                decoded_uuids  # Restore the decoded UUIDs in the config
+            )
         if not exists:
             print("Config file created. You can edit it manually if you want.")
 
@@ -298,11 +319,11 @@ class GUI(pe.GameContext):
     FPS = 60
     TITLE = f"{AUTHOR} {APP_NAME}"
     MODE = pe.display.DISPLAY_MODE_RESIZABLE
-    FAKE_SCREEN_REFRESH_TIME = .1
+    FAKE_SCREEN_REFRESH_TIME = 0.1
 
-    extension_manager: 'ExtensionManager'
-    loader: 'Loader'
-    api: 'API'
+    extension_manager: "ExtensionManager"
+    loader: "Loader"
+    api: "API"
 
     def __init__(self):
         global _defaults_module, Defaults
@@ -314,13 +335,16 @@ class GUI(pe.GameContext):
         self.screenshot = False
 
         atexit.register(self.save_config_if_dirty)
-        setattr(pe.settings, 'config', self.config)
-        setattr(pe.settings, 'indev', False)
+        setattr(pe.settings, "config", self.config)
+        setattr(pe.settings, "indev", False)
 
         from .defaults import Defaults
         from .i10n import I10nManager
+
         Defaults.init(self.config)  # Initialize Defaults with the loaded config
-        self.i10n = I10nManager(self)  # Initialize the I10nManager with the GUI instance
+        self.i10n = I10nManager(
+            self
+        )  # Initialize the I10nManager with the GUI instance
 
         try:
             from gui.extensions import ExtensionManager
@@ -331,10 +355,12 @@ class GUI(pe.GameContext):
         if self.config.debug:
             self.FPS_LOGGER = True
             console_handler = logging.StreamHandler()
-            console_handler.setFormatter(ColorFormatter("%(name)s - %(levelname)s - %(message)s"))
+            console_handler.setFormatter(
+                ColorFormatter("%(name)s - %(levelname)s - %(message)s")
+            )
             logging.basicConfig(
                 level=logging.DEBUG if self.config.debug_log else logging.INFO,
-                handlers=[console_handler]
+                handlers=[console_handler],
             )
 
         try:
@@ -354,9 +380,9 @@ class GUI(pe.GameContext):
         self.data = {}
         self.shift_hold = False
         self.ctrl_hold = False
-        self.ctrl_key = pe.KMOD_META if sys.platform == 'darwin' else pe.KMOD_CTRL
+        self.ctrl_key = pe.KMOD_META if sys.platform == "darwin" else pe.KMOD_CTRL
         self._import_screen: Union[ImportScreen, None] = None
-        self.main_menu: Union['MainMenu', None] = None
+        self.main_menu: Union["MainMenu", None] = None
         from gui.screens.integrity_checker import IntegrityChecker
         from gui.preview_handler import PreviewHandler
 
@@ -364,24 +390,32 @@ class GUI(pe.GameContext):
 
         if self.api.token or self.api.offline_mode:
             from gui.screens.loader import Loader
+
             self.add_screen(Loader(self))
         else:
             from gui.screens.code_screen import CodeScreen
+
             self.add_screen(CodeScreen(self))
-        if not pe.settings.indev and not self.config.debug and not self.config.portable_mode and not Defaults.INSTALLED:
+        if (
+            not pe.settings.indev
+            and not self.config.debug
+            and not self.config.portable_mode
+            and not Defaults.INSTALLED
+        ):
             from gui.screens.installer import Installer
+
             self.add_screen(Installer(self))
         self.add_screen(IntegrityChecker(self))
         self.running = True
         self.quit_next = False
-        self.warning: 'GUIConfirmPopup' = None
+        self.warning: "GUIConfirmPopup" = None
         self.doing_fake_screen_refresh = False
         self.reset_fake_screen_refresh = True
         self.fake_screen_refresh_timer: float = None
         self.original_screen_refresh_surface: pe.Surface = None
         self.fake_screen_refresh_surface: pe.Surface = None
         self.last_screen_count = 1
-        self.api.add_hook('GUI', self.handle_api_event)
+        self.api.add_hook("GUI", self.handle_api_event)
         pe.display.set_icon(Defaults.APP_ICON)
         self.create_directories()
 
@@ -412,34 +446,41 @@ class GUI(pe.GameContext):
             self.config.author_id = make_uuid()
             self.dirty_config = True
         return {
-            'require_token': False,
-            'token_file_path': Defaults.TOKEN_FILE_PATH,
-            'sync_file_path': Defaults.SYNC_FILE_PATH,
-            'log_file': Defaults.LOG_FILE,
-            'uri': self.config.uri,
-            'discovery_uri': self.config.discovery_uri,
-            'author_id': self.config.author_id,
+            "require_token": False,
+            "token_file_path": Defaults.TOKEN_FILE_PATH,
+            "sync_file_path": Defaults.SYNC_FILE_PATH,
+            "log_file": Defaults.LOG_FILE,
+            "uri": self.config.uri,
+            "discovery_uri": self.config.discovery_uri,
+            "author_id": self.config.author_id,
         }
 
     def pre_loop(self):
         if self.warning:
             self.warning()
-            if self.warning.TYPE == 'sync_locked' and not self.api._upload_lock.locked():
+            if (
+                self.warning.TYPE == "sync_locked"
+                and not self.api._upload_lock.locked()
+            ):
                 self.warning = None
                 self.quit_check()
             elif self.warning.closed:
                 self.warning = None
-        if self.config.enable_fake_screen_refresh and not self.reset_fake_screen_refresh:
+        if (
+            self.config.enable_fake_screen_refresh
+            and not self.reset_fake_screen_refresh
+        ):
             self.doing_fake_screen_refresh = True
             if self.reset_fake_screen_refresh:
                 self.fake_screen_refresh_timer = time.time()
             else:
                 self.reset_fake_screen_refresh = True
-            smaller_size = tuple(v * .8 for v in self.size)
+            smaller_size = tuple(v * 0.8 for v in self.size)
 
             self.original_screen_refresh_surface = pe.Surface(self.size)
-            self.fake_screen_refresh_surface = pe.Surface(self.size,
-                                                          surface=pe.pygame.Surface(self.size, flags=0))  # Non alpha
+            self.fake_screen_refresh_surface = pe.Surface(
+                self.size, surface=pe.pygame.Surface(self.size, flags=0)
+            )  # Non alpha
 
             self.original_screen_refresh_surface.stamp(self.surface)
             self.fake_screen_refresh_surface.stamp(self.surface.surface)
@@ -451,8 +492,10 @@ class GUI(pe.GameContext):
             self.fake_screen_refresh_surface.resize(self.size)
 
             # Invert colors
-            pixels = pe.pygame.surfarray.pixels2d(self.fake_screen_refresh_surface.surface)
-            pixels ^= 2 ** 32 - 1
+            pixels = pe.pygame.surfarray.pixels2d(
+                self.fake_screen_refresh_surface.surface
+            )
+            pixels ^= 2**32 - 1
             del pixels
 
         mods = pe.pygame.key.get_mods()
@@ -473,7 +516,7 @@ class GUI(pe.GameContext):
         if not self.running:
             self.display_quit_screen()
             return
-        if not self.warning or not getattr(self.warning, 'wait', False):
+        if not self.warning or not getattr(self.warning, "wait", False):
             self.current_screen()
         try:
             self.extension_manager.loop()
@@ -485,10 +528,13 @@ class GUI(pe.GameContext):
             _save = self.config.copy()
             # Encode the priority UUIDs before saving
             try:
-                _save.priority_uuids = encode_uuid_list(
-                    self.config.priority_uuids) if self.config.priority_uuids else ''
+                _save.priority_uuids = (
+                    encode_uuid_list(self.config.priority_uuids)
+                    if self.config.priority_uuids
+                    else ""
+                )
             except:
-                _save.priority_uuids = ''
+                _save.priority_uuids = ""
             json.dump(_save, f, indent=4)
         self.dirty_config = False
 
@@ -502,7 +548,9 @@ class GUI(pe.GameContext):
             self.save_config()
 
     def fake_screen_refresh(self):
-        section = (time.time() - self.fake_screen_refresh_timer) / self.FAKE_SCREEN_REFRESH_TIME
+        section = (
+            time.time() - self.fake_screen_refresh_timer
+        ) / self.FAKE_SCREEN_REFRESH_TIME
         if section < 1:
             pe.fill.full(pe.colors.black)
             pe.display.blit(self.fake_screen_refresh_surface, (0, 0))
@@ -565,8 +613,10 @@ class GUI(pe.GameContext):
         if self.ctrl_hold and pe.event.key_DOWN(pe.K_p):
             self.screenshot = True
         if (
-                self.ctrl_hold and pe.event.key_DOWN(pe.K_s) and
-                self.main_menu and self.current_screen is self.main_menu
+            self.ctrl_hold
+            and pe.event.key_DOWN(pe.K_s)
+            and self.main_menu
+            and self.current_screen is self.main_menu
         ):
             # Quickly trigger the settings if currently on the main menu
             self.main_menu.side_bar.settings()
@@ -578,6 +628,7 @@ class GUI(pe.GameContext):
 
     def display_quit_screen(self):
         from .screens.quit_screen import QuitScreen
+
         _s = QuitScreen(self)
         self.MODE = pe.display.DISPLAY_MODE_NORMAL
         pe.fill.full(Defaults.BACKGROUND)
@@ -614,22 +665,33 @@ class GUI(pe.GameContext):
     def quit_check(self):
         if self.api._upload_lock.locked():
             from .pp_helpers.popups import GUISyncLockedPopup
+
             self.warning = GUISyncLockedPopup(self)
         else:
             self.quit()
 
     def handle_api_event(self, e):
         if self.config.debug_api_events and self.running:
-            event_dict = {k: v.__dict__ if isinstance(v, Notification) or isinstance(v, LongLasting) else v for k, v in
-                          e.__dict__.items()}
-            print(f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(event_dict)}{Fore.RESET}")
+            event_dict = {
+                k: (
+                    v.__dict__
+                    if isinstance(v, Notification) or isinstance(v, LongLasting)
+                    else v
+                )
+                for k, v in e.__dict__.items()
+            }
+            print(
+                f"{Fore.YELLOW}API Event [{e.__class__.__name__}]\n{pformat(event_dict)}{Fore.RESET}"
+            )
         if isinstance(e, APIFatal):
             self.quit_next = True
             self.api.log(msg := "A FATAL API ERROR OCCURRED, CRASHING!")
             raise AssertionError(msg)
         if isinstance(e, MossFatal):
             self.quit_next = True
-            self.api.log(msg := "A FATAL MOSS ERROR OCCURRED, CRASHING! May have been caused by an extension.")
+            self.api.log(
+                msg := "A FATAL MOSS ERROR OCCURRED, CRASHING! May have been caused by an extension."
+            )
             raise AssertionError(msg)
 
     @property
@@ -637,11 +699,12 @@ class GUI(pe.GameContext):
         if self._import_screen is not None:
             return self._import_screen
         from .screens.import_screen import ImportScreen
+
         self.add_screen(ImportScreen(self))
         return self.import_screen
 
     @import_screen.setter
-    def import_screen(self, screen: Union['ImportScreen', None]):
+    def import_screen(self, screen: Union["ImportScreen", None]):
         if screen is None:
             self._import_screen = None
         else:
@@ -649,25 +712,27 @@ class GUI(pe.GameContext):
 
     def reload(self):
         """
-            This function reloads the entirety of Moss assets and reinitializes the GUI elements.
-            Please do note that it jumps ahead to the loading screen.
-            This means that your cloud session should already be validly set up.
-            Hence, do not call this function unless Moss is fully loaded and unless fully necessary.
+        This function reloads the entirety of Moss assets and reinitializes the GUI elements.
+        Please do note that it jumps ahead to the loading screen.
+        This means that your cloud session should already be validly set up.
+        Hence, do not call this function unless Moss is fully loaded and unless fully necessary.
         """
         from .i10n import _t
+
         self.extension_manager.reset()
         for hook in list(self.api.hook_list.keys()):
-            if hook == 'GUI':
+            if hook == "GUI":
                 continue
             self.api.remove_hook(hook)
         for screen in self.screens:
             # Try to call any close method if it exists
-            getattr(screen, 'close', lambda: None)()
+            getattr(screen, "close", lambda: None)()
         self.screens.clear()
         pe.text.get_font.cache_clear()
         _t.cache_clear()
         Defaults.init(self.config)
         from gui.screens.loader import Loader
+
         self.add_screen(Loader(self))
         self.extension_manager.init()
 

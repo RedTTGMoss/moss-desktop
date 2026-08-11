@@ -7,32 +7,46 @@ from ...defaults import Defaults
 
 
 class GridDocInfoDisplay(DocInfoDisplay):
-    def render_collection(self, state: 'DocInfoState', area: pe.Rect) -> pe.Surface:
+    def render_collection(self, state: "DocInfoState", area: pe.Rect) -> pe.Surface:
         icon: pe.Sprite = self.gui.icons[
-            (state.render_info.icon or 'folder') + ('_inverted' if state.render_info.selected else '')]
+            (state.render_info.icon or "folder")
+            + ("_inverted" if state.render_info.selected else "")
+        ]
         state.rect = self.collection_rect
         surface = pe.Surface(state.rect.size)
-        invert_key = '_inverted' if state.render_info.selected else ''
+        invert_key = "_inverted" if state.render_info.selected else ""
 
-        text: Optional[pe.Text] = getattr(state.render_info, f't_title_folder{invert_key}')
-        star_icon = self.gui.icons['star' + invert_key]
-        tag_icon = self.gui.icons['tag' + invert_key]
+        text: Optional[pe.Text] = getattr(
+            state.render_info, f"t_title_folder{invert_key}"
+        )
+        star_icon = self.gui.icons["star" + invert_key]
+        tag_icon = self.gui.icons["tag" + invert_key]
 
         icon_position = (  # Calculate the offset where the folder icon will be displayed
             self.gui.ratios.main_menu_folder_inflate_x // 2,
-            self.gui.ratios.main_menu_folder_inflate_y // 2
+            self.gui.ratios.main_menu_folder_inflate_y // 2,
         )
-        text_left_margin = icon.width + self.gui.ratios.main_menu_folder_margin  # Margin between icon and text
+        text_left_margin = (
+            icon.width + self.gui.ratios.main_menu_folder_margin
+        )  # Margin between icon and text
 
         # Calculate the available width for the text, accounting for icons and margins
         available_width = surface.width - (
-                icon_position[0] + text_left_margin + self.gui.ratios.main_menu_folder_margin  # Base margin
-                + (star_icon.width + self.gui.ratios.main_menu_folder_margin
-                   if state.current_state['pinned'] else 0)  # If pinned, add star icon width + margin
-                + (tag_icon.width + self.gui.ratios.main_menu_folder_margin
-                   if state.current_state['tags'] else 0)  # If tags, add tag icon width + margin
+            icon_position[0]
+            + text_left_margin
+            + self.gui.ratios.main_menu_folder_margin  # Base margin
+            + (
+                star_icon.width + self.gui.ratios.main_menu_folder_margin
+                if state.current_state["pinned"]
+                else 0
+            )  # If pinned, add star icon width + margin
+            + (
+                tag_icon.width + self.gui.ratios.main_menu_folder_margin
+                if state.current_state["tags"]
+                else 0
+            )  # If tags, add tag icon width + margin
         )
-        state.set_trim_text_size('t_title_folder', available_width)
+        state.set_trim_text_size("t_title_folder", available_width)
 
         if text:  # Position the text relative to the icon
             text.rect.midleft = icon_position
@@ -51,15 +65,21 @@ class GridDocInfoDisplay(DocInfoDisplay):
                 icon_rect.x += self.gui.ratios.main_menu_folder_margin
                 icon_rect.centery = surface.height // 2  # Center vertically
 
-                if state.current_state['pinned']:
+                if state.current_state["pinned"]:
                     star_icon.display(icon_rect.topleft)
-                    icon_rect.x += star_icon.width + self.gui.ratios.main_menu_folder_margin
+                    icon_rect.x += (
+                        star_icon.width + self.gui.ratios.main_menu_folder_margin
+                    )
 
-                if state.current_state['tags']:
+                if state.current_state["tags"]:
                     tag_icon.display(icon_rect.topleft)
 
             if state.button.hovered:  # Highlight the button if hovered
-                pe.draw.rect(Defaults.OUTLINE_COLOR, (0, 0, *surface.size), self.gui.ratios.outline)
+                pe.draw.rect(
+                    Defaults.OUTLINE_COLOR,
+                    (0, 0, *surface.size),
+                    self.gui.ratios.outline,
+                )
 
             # Debug updates to this surface
             # w = (time.time() * 100) % surface.width
@@ -68,7 +88,9 @@ class GridDocInfoDisplay(DocInfoDisplay):
 
     def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
         surface = pe.Surface(self.document_rect.size)
-        preview_rect = pe.Rect(0, 0, self.viewer.document_width, self.viewer.document_height)
+        preview_rect = pe.Rect(
+            0, 0, self.viewer.document_width, self.viewer.document_height
+        )
 
         if state.render_info.selected:
             preview_rect.inflate_ip(tuple(-0.1 * x for x in preview_rect.size))
@@ -77,18 +99,25 @@ class GridDocInfoDisplay(DocInfoDisplay):
         bar_rect.x += self.gui.ratios.document_sync_progress_margin
         bar_rect.width -= self.gui.ratios.document_sync_progress_margin * 2
         bar_rect.height = self.gui.ratios.document_sync_progress_height
-        bar_rect.bottom = preview_rect.bottom - self.gui.ratios.document_sync_progress_margin
+        bar_rect.bottom = (
+            preview_rect.bottom - self.gui.ratios.document_sync_progress_margin
+        )
 
-        preview, edge_rounding = self.render_document_preview(state,
-                                                              preview_rect.size)  # Get the preview for the document
+        preview, edge_rounding = self.render_document_preview(
+            state, preview_rect.size
+        )  # Get the preview for the document
 
-        invert_key = '_inverted' if state.render_info.selected else ''
-        text = getattr(state.render_info, f't_title{invert_key}')  # Get the title text for the document
-        sub_text = getattr(state.render_info, f't_description{invert_key}')  # Get the description text for the document
-        star_icon = self.gui.icons['star' + invert_key]
-        cloud_icon = self.gui.icons['cloud']
-        export_icon = self.gui.icons['export']
-        spinner_icon = self.gui.icons['rotate']
+        invert_key = "_inverted" if state.render_info.selected else ""
+        text = getattr(
+            state.render_info, f"t_title{invert_key}"
+        )  # Get the title text for the document
+        sub_text = getattr(
+            state.render_info, f"t_description{invert_key}"
+        )  # Get the description text for the document
+        star_icon = self.gui.icons["star" + invert_key]
+        cloud_icon = self.gui.icons["cloud"]
+        export_icon = self.gui.icons["export"]
+        spinner_icon = self.gui.icons["rotate"]
 
         corner_icon_rect = pe.Rect(0, 0, *export_icon.size)
         corner_icon_rect.topright = preview_rect.topright
@@ -98,40 +127,66 @@ class GridDocInfoDisplay(DocInfoDisplay):
         bottom = self.viewer.document_height
 
         if text:
-            text.rect.top = self.viewer.document_height + self.gui.ratios.main_menu_document_title_height_margin
+            text.rect.top = (
+                self.viewer.document_height
+                + self.gui.ratios.main_menu_document_title_height_margin
+            )
             text.rect.left = 0
 
             if sub_text:
-                sub_text.rect.top = text.rect.bottom + self.gui.ratios.main_menu_document_title_padding
+                sub_text.rect.top = (
+                    text.rect.bottom + self.gui.ratios.main_menu_document_title_padding
+                )
                 sub_text.rect.left = 0
                 bottom = sub_text.rect.bottom
             else:
                 bottom = text.rect.bottom
 
-        state.set_trim_text_size('t_title', surface.width - (
-            star_icon.width + self.gui.ratios.main_menu_document_margin if state.current_state['pinned'] else 0))
+        state.set_trim_text_size(
+            "t_title",
+            surface.width
+            - (
+                star_icon.width + self.gui.ratios.main_menu_document_margin
+                if state.current_state["pinned"]
+                else 0
+            ),
+        )
 
         with surface:
             if state.render_info.selected:
                 pe.fill.full(Defaults.SELECTED)
             elif state.button.hovered:
-                pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, (0, 0, surface.width, bottom), edge_rounding=edge_rounding,
-                             edge_rounding_bottomleft=0)
+                pe.draw.rect(
+                    Defaults.BUTTON_ACTIVE_COLOR,
+                    (0, 0, surface.width, bottom),
+                    edge_rounding=edge_rounding,
+                    edge_rounding_bottomleft=0,
+                )
 
             pe.display.blit(preview, preview_rect.topleft)
 
             # Handle drawing the tag texts on top of the preview area
             y = preview_rect.bottom - self.gui.ratios.main_menu_document_margin
-            available_width = preview_rect.width - self.gui.ratios.main_menu_document_margin * 2
-            tags_end = preview_rect.top if self.gui.config.doc_view_more_tags else preview_rect.centery
-            for i, tag in enumerate(tag_names := [tag.name for tag in state.current_state['tags']], start=1):
-                tag_text = getattr(state.render_info, f't_tag_{tag}')
+            available_width = (
+                preview_rect.width - self.gui.ratios.main_menu_document_margin * 2
+            )
+            tags_end = (
+                preview_rect.top
+                if self.gui.config.doc_view_more_tags
+                else preview_rect.centery
+            )
+            for i, tag in enumerate(
+                tag_names := [tag.name for tag in state.current_state["tags"]], start=1
+            ):
+                tag_text = getattr(state.render_info, f"t_tag_{tag}")
 
                 if not tag_text:
                     continue
 
                 # Align the tag and display it
-                tag_text.rect.x = preview_rect.left + self.gui.ratios.main_menu_document_margin
+                tag_text.rect.x = (
+                    preview_rect.left + self.gui.ratios.main_menu_document_margin
+                )
                 tag_text.rect.bottom = y
                 self.display_tag(tag_text)
 
@@ -139,49 +194,74 @@ class GridDocInfoDisplay(DocInfoDisplay):
                 y -= tag_text.rect.height + self.gui.ratios.main_menu_document_margin
 
                 # Ensure the next tag can fit in the designated space safely
-                if y - tag_text.rect.height - self.gui.ratios.main_menu_document_margin <= tags_end:
-                    state.extra_tags_count = len(state.current_state['tags']) - i  # Remaining tags if any
+                if (
+                    y - tag_text.rect.height - self.gui.ratios.main_menu_document_margin
+                    <= tags_end
+                ):
+                    state.extra_tags_count = (
+                        len(state.current_state["tags"]) - i
+                    )  # Remaining tags if any
                     break
             else:
                 state.extra_tags_count = 0  # No extra tags, reset the count
             if state.extra_tags_count > 0:
                 available_width /= 2
-                extra_tags_text = getattr(state.render_info, 't_extra_tags')
+                extra_tags_text = getattr(state.render_info, "t_extra_tags")
                 if extra_tags_text:
                     extra_tags_text.rect.bottomright = preview_rect.bottomright
-                    extra_tags_text.rect.move_ip(-self.gui.ratios.main_menu_document_margin,
-                                                 -self.gui.ratios.main_menu_document_margin)
+                    extra_tags_text.rect.move_ip(
+                        -self.gui.ratios.main_menu_document_margin,
+                        -self.gui.ratios.main_menu_document_margin,
+                    )
                     self.display_tag(extra_tags_text)
-                    state.set_trim_text_size('t_extra_tags', available_width)
+                    state.set_trim_text_size("t_extra_tags", available_width)
             for tag in tag_names:
-                state.set_trim_text_size(f't_tag_{tag}', available_width)
+                state.set_trim_text_size(f"t_tag_{tag}", available_width)
 
             # Fix corner icon colors
-            expanded_corner_rect = corner_icon_rect.inflate(self.gui.ratios.main_menu_document_corner_margin,
-                                                            self.gui.ratios.main_menu_document_corner_margin)
+            expanded_corner_rect = corner_icon_rect.inflate(
+                self.gui.ratios.main_menu_document_corner_margin,
+                self.gui.ratios.main_menu_document_corner_margin,
+            )
 
             def draw_icon(icon):
-                pe.draw.rect(Defaults.BACKGROUND, expanded_corner_rect,
-                             edge_rounding=self.gui.ratios.main_menu_document_corner_margin)
+                pe.draw.rect(
+                    Defaults.BACKGROUND,
+                    expanded_corner_rect,
+                    edge_rounding=self.gui.ratios.main_menu_document_corner_margin,
+                )
                 icon.display(corner_icon_rect.topleft)
 
             # Render progress bar for sync operation if it exists
-            if state.current_state.get('sync_operation'):
-                done, total = state.current_state['done'], state.current_state['total']
+            if state.current_state.get("sync_operation"):
+                done, total = state.current_state["done"], state.current_state["total"]
                 progress = done / total if total > 0 else 0
-                inflated_rect = bar_rect.inflate(self.gui.ratios.document_sync_progress_outline,
-                                                 self.gui.ratios.document_sync_progress_outline)
-                pe.draw.rect(Defaults.LINE_GRAY_LIGHT, inflated_rect,
-                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)
+                inflated_rect = bar_rect.inflate(
+                    self.gui.ratios.document_sync_progress_outline,
+                    self.gui.ratios.document_sync_progress_outline,
+                )
+                pe.draw.rect(
+                    Defaults.LINE_GRAY_LIGHT,
+                    inflated_rect,
+                    edge_rounding=self.gui.ratios.document_sync_progress_rounding,
+                )
                 progress_rect = bar_rect.copy()
                 progress_rect.width *= progress
-                progress_rect.width = max(progress_rect.width,
-                                          progress_rect.height)  # Ensure the progress bar is always visible
-                pe.draw.rect(Defaults.SELECTED, progress_rect, 0,
-                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)
-                pe.draw.rect(Defaults.LINE_GRAY_LIGHT, inflated_rect,
-                             self.gui.ratios.document_sync_progress_outline,
-                             edge_rounding=self.gui.ratios.document_sync_progress_rounding)  # Outline
+                progress_rect.width = max(
+                    progress_rect.width, progress_rect.height
+                )  # Ensure the progress bar is always visible
+                pe.draw.rect(
+                    Defaults.SELECTED,
+                    progress_rect,
+                    0,
+                    edge_rounding=self.gui.ratios.document_sync_progress_rounding,
+                )
+                pe.draw.rect(
+                    Defaults.LINE_GRAY_LIGHT,
+                    inflated_rect,
+                    self.gui.ratios.document_sync_progress_outline,
+                    edge_rounding=self.gui.ratios.document_sync_progress_rounding,
+                )  # Outline
 
                 draw_icon(spinner_icon)
             elif state.document.provision:
@@ -194,7 +274,9 @@ class GridDocInfoDisplay(DocInfoDisplay):
                 if state.document.metadata.pinned:
                     icon_rect = pe.Rect(0, 0, *star_icon.size)
                     icon_rect.centery = text.rect.centery
-                    icon_rect.left = text.rect.right + self.gui.ratios.main_menu_document_margin
+                    icon_rect.left = (
+                        text.rect.right + self.gui.ratios.main_menu_document_margin
+                    )
                     star_icon.display(icon_rect.topleft)
             if sub_text:
                 sub_text.display()
@@ -207,14 +289,17 @@ class GridDocInfoDisplay(DocInfoDisplay):
         return surface
 
     def _document_rect(self) -> pe.Rect:
-        return pe.Rect(0, 0, self.viewer.document_width, self.viewer.full_document_height)
+        return pe.Rect(
+            0, 0, self.viewer.document_width, self.viewer.full_document_height
+        )
 
     def _collection_rect(self) -> pe.Rect:
-        icon_height = self.gui.icons['folder'].height
-        rect = pe.Rect(
-            0, 0, self.viewer.document_width, icon_height
+        icon_height = self.gui.icons["folder"].height
+        rect = pe.Rect(0, 0, self.viewer.document_width, icon_height)
+        rect.inflate_ip(
+            self.gui.ratios.main_menu_folder_inflate_x,
+            self.gui.ratios.main_menu_folder_inflate_y,
         )
-        rect.inflate_ip(self.gui.ratios.main_menu_folder_inflate_x, self.gui.ratios.main_menu_folder_inflate_y)
         return rect
 
     def _document_margin(self) -> int:

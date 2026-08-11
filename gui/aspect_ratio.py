@@ -19,7 +19,9 @@ class Ratios:
         self.bottom_bar_height = int(40 * scale)
         self.bottom_loading_bar_height = int(10 * scale)
         self.bottom_bar_size = int(15 * scale)
-        self.bottom_loading_bar_padding = (self.bottom_bar_height - self.bottom_loading_bar_height) / 2
+        self.bottom_loading_bar_padding = (
+            self.bottom_bar_height - self.bottom_loading_bar_height
+        ) / 2
         self.bottom_loading_bar_rounding = int(5 * scale)
         self.bottom_loading_bar_width = int(100 * scale)
 
@@ -77,7 +79,9 @@ class Ratios:
         self.main_menu_my_files_size = int(24 * scale)
         self.main_menu_document_title_height_margin = int(8 * scale)
         self.main_menu_document_title_padding = int(4 * scale)
-        self.main_menu_document_cloud_padding = int(20 * scale)  # 10 on each size (left and right) / (top and bottom)
+        self.main_menu_document_cloud_padding = int(
+            20 * scale
+        )  # 10 on each size (left and right) / (top and bottom)
         self.main_menu_path_size = int(15.8 * scale)
         self.main_menu_bar_size = self.main_menu_path_size
         self.main_menu_bar_padding = int(20 * scale)
@@ -92,7 +96,9 @@ class Ratios:
         self.document_tree_view_list_text_height = int(60 * scale)
 
         # Document Viewer
-        self.document_viewer_top_draggable_height = int(48 * scale)  # Accurate to device
+        self.document_viewer_top_draggable_height = int(
+            48 * scale
+        )  # Accurate to device
         self.document_viewer_top_arrow_rounding = int(20 * scale)
         self.document_viewer_loading_square = int(100 * scale)
         self.document_viewer_loading_circle_radius = int(5 * scale)
@@ -108,7 +114,9 @@ class Ratios:
 
         # Import Screen
         self.import_screen_button_padding = int(20 * scale)
-        self.import_screen_button_margin = int(20 * scale) + self.import_screen_button_padding
+        self.import_screen_button_margin = (
+            int(20 * scale) + self.import_screen_button_padding
+        )
         self.import_screen_button_size = int(18 * scale)
 
         # Name Field Screen
@@ -153,8 +161,12 @@ class Ratios:
         self.xml_toggle_margin = int(12 * scale)
         self.xml_toggle_padding = int(5 * scale)
 
-        self.xml_toggle_inner_height = self.xml_toggle_outer_height - self.xml_toggle_padding * 2
-        self.xml_toggle_inner_width = self.xml_toggle_outer_width - self.xml_toggle_padding * 2
+        self.xml_toggle_inner_height = (
+            self.xml_toggle_outer_height - self.xml_toggle_padding * 2
+        )
+        self.xml_toggle_inner_width = (
+            self.xml_toggle_outer_width - self.xml_toggle_padding * 2
+        )
 
         self.xml_toggle_outer_edge_rounding = self.xml_toggle_outer_height // 2
         self.xml_toggle_inner_edge_rounding = self.xml_toggle_inner_height // 2

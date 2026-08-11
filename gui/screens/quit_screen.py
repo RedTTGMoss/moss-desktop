@@ -21,16 +21,21 @@ class QuitScreen(pe.ChildContext, LogoMixin):
         self.initialize_logo_and_line()
         self.quit_text = pe.Text(
             t("quit.quitting"),
-            Defaults.CUSTOM_FONT, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR)
+            Defaults.CUSTOM_FONT,
+            self.ratios.pixel(20),
+            colors=Defaults.TEXT_COLOR,
+        )
         self.love_text = pe.Text(
             t("quit.thanks"),
-            Defaults.CUSTOM_FONT_BOLD, self.ratios.pixel(20), colors=Defaults.TEXT_COLOR
+            Defaults.CUSTOM_FONT_BOLD,
+            self.ratios.pixel(20),
+            colors=Defaults.TEXT_COLOR,
         )
         self.quit_text.rect.midtop = self.line_rect.midbottom
         self.love_text.rect.midtop = self.quit_text.rect.midbottom
         self.love_text.rect.top += self.ratios.pixel(20)
 
-        self.icon = parent.icons.get('heart')
+        self.icon = parent.icons.get("heart")
         if self.icon:
             self.icon_rect = pe.Rect(0, 0, *self.icon.size)
             self.icon_rect.midleft = self.love_text.rect.midright

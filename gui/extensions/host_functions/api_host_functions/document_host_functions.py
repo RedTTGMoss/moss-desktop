@@ -15,12 +15,16 @@ from .. import definitions as d
 def moss_api_document_new_notebook(value: Annotated[DocumentNewNotebook, Json]) -> str:
     _ = Box(value)
     document = Document.new_notebook(
-        d.api, _.name, _.parent, _.accessor['uuid'],
-        _.page_count, d.get_data_from_box(_, 'notebook', True),
+        d.api,
+        _.name,
+        _.parent,
+        _.accessor["uuid"],
+        _.page_count,
+        d.get_data_from_box(_, "notebook", True),
         d.extension_manager.metadata_objects[_.metadata_id] if _.metadata_id else None,
         d.extension_manager.content_objects[_.content_id] if _.content_id else None,
     )
-    if (accessor_type := _.accessor['type']) == AccessorTypes.APIDocument.value:
+    if (accessor_type := _.accessor["type"]) == AccessorTypes.APIDocument.value:
         d.api.documents[document.uuid] = document
     elif accessor_type == AccessorTypes.StandaloneDocument.value:
         d.extension_manager.document_objects[document.uuid] = document
@@ -33,9 +37,9 @@ def moss_api_document_new_notebook(value: Annotated[DocumentNewNotebook, Json]) 
 def moss_api_document_new_pdf(value: Annotated[DocumentNewPDF, Json]) -> str:
     _ = Box(value)
     document = Document.new_pdf(
-        d.api, _.name, d.get_data_from_box(_, 'pdf'), _.parent, _.accessor['uuid']
+        d.api, _.name, d.get_data_from_box(_, "pdf"), _.parent, _.accessor["uuid"]
     )
-    if (accessor_type := _.accessor['type']) == AccessorTypes.APIDocument.value:
+    if (accessor_type := _.accessor["type"]) == AccessorTypes.APIDocument.value:
         d.api.documents[document.uuid] = document
     elif accessor_type == AccessorTypes.StandaloneDocument.value:
         d.extension_manager.document_objects[document.uuid] = document
@@ -48,9 +52,9 @@ def moss_api_document_new_pdf(value: Annotated[DocumentNewPDF, Json]) -> str:
 def moss_api_document_new_epub(value: Annotated[DocumentNewEPUB, Json]) -> str:
     _ = Box(value)
     document = Document.new_epub(
-        d.api, _.name, d.get_data_from_box(_, 'epub'), _.parent, _.accessor['uuid']
+        d.api, _.name, d.get_data_from_box(_, "epub"), _.parent, _.accessor["uuid"]
     )
-    if (accessor_type := _.accessor['type']) == AccessorTypes.APIDocument.value:
+    if (accessor_type := _.accessor["type"]) == AccessorTypes.APIDocument.value:
         d.api.documents[document.uuid] = document
     elif accessor_type == AccessorTypes.StandaloneDocument.value:
         d.extension_manager.document_objects[document.uuid] = document
@@ -74,7 +78,9 @@ def moss_api_document_duplicate(item: Document, accessor: AccessorInstanceBox) -
 
 @d.host_fn()
 @document_wrapper()
-def moss_api_document_randomize_uuids(item: Document, accessor: AccessorInstanceBox) -> str:
+def moss_api_document_randomize_uuids(
+    item: Document, accessor: AccessorInstanceBox
+) -> str:
     if accessor.type == AccessorTypes.APIDocument.value:
         d.api.documents.pop(item.uuid)
         item.randomize_uuids()

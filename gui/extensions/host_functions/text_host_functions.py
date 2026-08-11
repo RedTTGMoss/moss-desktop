@@ -5,15 +5,18 @@ import pygameextra as pe
 from extism import Json
 
 from . import definitions as d
-from ..shared_types import TTextColors, text_colors_to_tuple, TRect, rect_to_pe_rect, rect_from_pe_rect
+from ..shared_types import (
+    TTextColors,
+    text_colors_to_tuple,
+    TRect,
+    rect_to_pe_rect,
+    rect_from_pe_rect,
+)
 
 
 def text_wrap(fn):
-    fn.__annotations__.pop('t')
-    fn.__annotations__ = {
-        'text_id': int,
-        **fn.__annotations__
-    }
+    fn.__annotations__.pop("t")
+    fn.__annotations__ = {"text_id": int, **fn.__annotations__}
 
     @wraps(fn)
     def wrapped(text_id: int, *args, **kwargs):
@@ -24,7 +27,9 @@ def text_wrap(fn):
 
 @d.host_fn()
 @d.transform_to_json
-def moss_text_make(text: str, font: str, font_size: int, colors: Annotated[TTextColors, Json]) -> int:
+def moss_text_make(
+    text: str, font: str, font_size: int, colors: Annotated[TTextColors, Json]
+) -> int:
     text = pe.Text(text, font, font_size, colors=text_colors_to_tuple(colors))
     d.extension_manager.texts[id(text)] = text
     return id(text)

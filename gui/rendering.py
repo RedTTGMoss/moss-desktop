@@ -19,24 +19,35 @@ if TYPE_CHECKING:
     from queue import Queue
 
 
-def render_full_collection_title(gui: 'GUI', texts, collection_uuid: str, rect):
+def render_full_collection_title(gui: "GUI", texts, collection_uuid: str, rect):
     pe.draw.rect(Defaults.OUTLINE_COLOR, rect, gui.ratios.outline)
     text = texts[collection_uuid]
-    text_full = texts[collection_uuid + '_full']
+    text_full = texts[collection_uuid + "_full"]
     if text.text != text_full.text:
         FullTextPopup.create(gui, text_full, text)()
 
 
-def render_full_text(gui: 'GUI', text: pe.Text, referral_text: Optional[pe.Text] = None):
+def render_full_text(
+    gui: "GUI", text: pe.Text, referral_text: Optional[pe.Text] = None
+):
     FullTextPopup.create(gui, text, referral_text or text)()
 
 
-def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[str, pe.Text], callback, x, y, width,
-                      select_collection=None, selected=False):
-    icon_key = 'folder' if collection.has_items else 'folder_empty'
-    invert_icon_key = ('_inverted' if selected else '')
+def render_collection(
+    gui: "GUI",
+    collection: "DocumentCollection",
+    texts: Dict[str, pe.Text],
+    callback,
+    x,
+    y,
+    width,
+    select_collection=None,
+    selected=False,
+):
+    icon_key = "folder" if collection.has_items else "folder_empty"
+    invert_icon_key = "_inverted" if selected else ""
     if selected:
-        icon_key += '_inverted'
+        icon_key += "_inverted"
     icon = gui.icons[icon_key]
 
     try:
@@ -48,18 +59,17 @@ def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[
     text.rect.y += icon.height // 1.5
 
     extra_x = text.rect.right + gui.ratios.main_menu_folder_margin
-    star_icon = gui.icons['star' + invert_icon_key]
-    tag_icon = gui.icons['tag' + invert_icon_key]
+    star_icon = gui.icons["star" + invert_icon_key]
+    tag_icon = gui.icons["tag" + invert_icon_key]
 
-    rect = pe.rect.Rect(
-        x, y,
-        width -
-        gui.ratios.main_menu_folder_margin,
-        icon.height
+    rect = pe.rect.Rect(x, y, width - gui.ratios.main_menu_folder_margin, icon.height)
+    rect.inflate_ip(
+        gui.ratios.main_menu_folder_margin_x, gui.ratios.main_menu_folder_margin_y
     )
-    rect.inflate_ip(gui.ratios.main_menu_folder_margin_x, gui.ratios.main_menu_folder_margin_y)
     if selected:
-        pe.draw.rect(Defaults.SELECTED, rect.inflate(gui.ratios.main_menu_x_padding * 0.75, 0))
+        pe.draw.rect(
+            Defaults.SELECTED, rect.inflate(gui.ratios.main_menu_x_padding * 0.75, 0)
+        )
 
     icon.display((x, y))
     text.display()
@@ -73,26 +83,22 @@ def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[
         extra_x += tag_icon.width + gui.ratios.main_menu_folder_margin
 
     render_button_using_text(
-        gui, text,
-        Defaults.TRANSPARENT_COLOR, Defaults.TRANSPARENT_COLOR,
-        name=collection.uuid + '_title_hover',
+        gui,
+        text,
+        Defaults.TRANSPARENT_COLOR,
+        Defaults.TRANSPARENT_COLOR,
+        name=collection.uuid + "_title_hover",
         action=None,
         data=None,
         action_set={
-            'l_click': {
-                'action': callback,
-                'args': collection.uuid
+            "l_click": {"action": callback, "args": collection.uuid},
+            "r_click": {"action": select_collection, "args": collection.uuid},
+            "hover_draw": {
+                "action": render_full_collection_title,
+                "args": (gui, texts, collection.uuid, rect),
             },
-            'r_click': {
-                'action': select_collection,
-                'args': collection.uuid
-            },
-            'hover_draw': {
-                'action': render_full_collection_title,
-                'args': (gui, texts, collection.uuid, rect)
-            }
         },
-        rect=rect
+        rect=rect,
     )
     # pe.button.rect(
     #     rect,
@@ -103,14 +109,14 @@ def render_collection(gui: 'GUI', collection: 'DocumentCollection', texts: Dict[
     # )
 
 
-def render_full_document_title(gui: 'GUI', texts, document_uuid: str):
+def render_full_document_title(gui: "GUI", texts, document_uuid: str):
     text = texts[document_uuid]
-    text_full = texts[document_uuid + '_full']
+    text_full = texts[document_uuid + "_full"]
     if text.text != text_full.text:
         FullTextPopup.create(gui, text_full, text)()
 
 
-def open_document(gui: 'GUI', document_uuid: str):
+def open_document(gui: "GUI", document_uuid: str):
     if document_uuid in DocumentViewer.PROBLEMATIC_DOCUMENTS:
         return
     document = gui.api.documents.get(document_uuid)
@@ -122,39 +128,47 @@ def open_document(gui: 'GUI', document_uuid: str):
         pass
 
 
-def open_document_debug_menu(gui: 'GUI', document: 'Document', position):
+def open_document_debug_menu(gui: "GUI", document: "Document", position):
     DocumentDebugPopup.create(gui, document, position)()
 
 
-def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
-                    document_sync_operation: DocumentSyncProgress = None, scale=1, select_document=None,
-                    selected: bool = False):
+def render_document(
+    gui: "GUI",
+    rect: pe.Rect,
+    texts,
+    document: "Document",
+    document_sync_operation: DocumentSyncProgress = None,
+    scale=1,
+    select_document=None,
+    selected: bool = False,
+):
     # Prepare edge rounding and all the texts
     edge_rounding = int(gui.ratios.main_menu_document_rounding * rect.width)
-    inverse_key = '_inverted' if selected else ''
+    inverse_key = "_inverted" if selected else ""
     title_text = texts.get(document.uuid + inverse_key)
     if not title_text:
         return
     sub_text: Optional[pe.Text]
-    if document.content.file_type == 'notebook':
+    if document.content.file_type == "notebook":
         page_count = document.get_page_count()
         if page_count < 0:
-            sub_text = texts.get('page_info_unknown')
+            sub_text = texts.get("page_info_unknown")
         else:
-            sub_text = texts.get(f'page_count_{page_count}{inverse_key}')
-    elif document.content.file_type == 'pdf':
+            sub_text = texts.get(f"page_count_{page_count}{inverse_key}")
+    elif document.content.file_type == "pdf":
         page_count = document.get_page_count()
         if page_count < 0:
-            sub_text = texts.get('page_info_unknown')
+            sub_text = texts.get("page_info_unknown")
         else:
             sub_text = texts.get(
-                f'page_of_{document.metadata.last_opened_page + 1}_{page_count}{inverse_key}')
-    elif document.content.file_type == 'epub':
+                f"page_of_{document.metadata.last_opened_page + 1}_{page_count}{inverse_key}"
+            )
+    elif document.content.file_type == "epub":
         read_percent = document.get_read()
         if read_percent < 0:
-            sub_text = texts.get('page_info_unknown')
+            sub_text = texts.get("page_info_unknown")
         else:
-            sub_text = texts.get(f'page_read_{read_percent}{inverse_key}')
+            sub_text = texts.get(f"page_read_{read_percent}{inverse_key}")
     else:
         sub_text = None
 
@@ -163,20 +177,18 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
     title_text.rect.top += gui.ratios.main_menu_document_title_height_margin
     if sub_text:
         sub_text.rect.left = title_text.rect.left
-        sub_text.rect.top = title_text.rect.bottom + gui.ratios.main_menu_document_title_padding
+        sub_text.rect.top = (
+            title_text.rect.bottom + gui.ratios.main_menu_document_title_padding
+        )
 
     # Prepare the action set if the document is clicked
     action = document.ensure_download_and_callback
-    data = lambda: PreviewHandler.clear_for(document.uuid, lambda: open_document(gui, document.uuid))
+    data = lambda: PreviewHandler.clear_for(
+        document.uuid, lambda: open_document(gui, document.uuid)
+    )
     action_set = {
-        'l_click': {
-            'action': action,
-            'args': data
-        },
-        'r_click': {
-            'action': select_document,
-            'args': document.uuid
-        }
+        "l_click": {"action": action, "args": data},
+        "r_click": {"action": select_document, "args": document.uuid},
     }
     disabled = document.downloading
 
@@ -189,8 +201,14 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
 
     # Draw black outline if selected
     if selected:
-        selection_rect = rect.inflate(gui.ratios.main_menu_x_padding, gui.ratios.main_menu_x_padding)
-        selection_rect.height += title_text.rect.height + gui.ratios.main_menu_x_padding + gui.ratios.line * 2
+        selection_rect = rect.inflate(
+            gui.ratios.main_menu_x_padding, gui.ratios.main_menu_x_padding
+        )
+        selection_rect.height += (
+            title_text.rect.height
+            + gui.ratios.main_menu_x_padding
+            + gui.ratios.line * 2
+        )
         pe.draw.rect(Defaults.SELECTED, selection_rect)
 
     # Draw a background behind the document
@@ -198,19 +216,21 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
 
     # Render the title text
     render_button_using_text(
-        gui, title_text,
-        Defaults.TRANSPARENT_COLOR, Defaults.TRANSPARENT_COLOR,
-        name=document.uuid + '_title_hover',
+        gui,
+        title_text,
+        Defaults.TRANSPARENT_COLOR,
+        Defaults.TRANSPARENT_COLOR,
+        name=document.uuid + "_title_hover",
         action=None,
         data=None,
         action_set={
             **action_set,
-            'hover_draw': {
-                'action': render_full_document_title,
-                'args': (gui, texts, document.uuid)
-            }
+            "hover_draw": {
+                "action": render_full_document_title,
+                "args": (gui, texts, document.uuid),
+            },
         },
-        disabled=document.provision or disabled
+        disabled=document.provision or disabled,
     )
 
     # Render the sub text if it exists
@@ -220,7 +240,7 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
     # Render the notebook icon if there is no preview
     preview = None
     if not preview:
-        notebook_large: pe.Image = gui.icons['notebook_large'].copy()
+        notebook_large: pe.Image = gui.icons["notebook_large"].copy()
         notebook_large.resize(tuple(v * scale for v in notebook_large.size))
         notebook_large_rect = pe.Rect(0, 0, *notebook_large.size)
         notebook_large_rect.center = rect.center
@@ -229,48 +249,54 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
         preview.display(rect.topleft)
 
     # Render the availability cloud icon
-    is_problematic = not document.content.usable or document.uuid in DocumentViewer.PROBLEMATIC_DOCUMENTS
+    is_problematic = (
+        not document.content.usable
+        or document.uuid in DocumentViewer.PROBLEMATIC_DOCUMENTS
+    )
     cloud_icon: Optional[pe.Image] = None
     if is_problematic or not document.available or document.provision:
         if document_sync_operation and document.downloading:
             if document_sync_operation.done == 0:
-                cloud_icon = gui.icons['cloud_download']
+                cloud_icon = gui.icons["cloud_download"]
         elif document.provision:
-            cloud_icon = gui.icons['export']
+            cloud_icon = gui.icons["export"]
         elif is_problematic:
-            cloud_icon = gui.icons['warning_circle']
+            cloud_icon = gui.icons["warning_circle"]
         else:
-            cloud_icon = gui.icons['cloud']
+            cloud_icon = gui.icons["cloud"]
     if cloud_icon:
         cloud_icon_rect = pe.Rect(0, 0, *cloud_icon.size)
 
         # Add padding
-        cloud_icon_padded_rect = cloud_icon_rect.inflate(gui.ratios.main_menu_document_cloud_padding,
-                                                         gui.ratios.main_menu_document_cloud_padding)
+        cloud_icon_padded_rect = cloud_icon_rect.inflate(
+            gui.ratios.main_menu_document_cloud_padding,
+            gui.ratios.main_menu_document_cloud_padding,
+        )
 
-        cloud_icon_padded_rect.scale_by_ip(1, .75)  # The icon itself is square, but the padded box is not
+        cloud_icon_padded_rect.scale_by_ip(
+            1, 0.75
+        )  # The icon itself is square, but the padded box is not
         cloud_icon_padded_rect.bottomright = rect.bottomright
 
         cloud_icon_rect.center = cloud_icon_padded_rect.center
 
-        pe.draw.rect(Defaults.DOCUMENT_BACKGROUND,
-                     cloud_icon_padded_rect)  # Give the cloud icon a white background with padding
+        pe.draw.rect(
+            Defaults.DOCUMENT_BACKGROUND, cloud_icon_padded_rect
+        )  # Give the cloud icon a white background with padding
         cloud_icon.display(cloud_icon_rect.topleft)
 
     # Render the passive outline
     pe.draw.rect(
         Defaults.DOCUMENT_GRAY,
-        rect, gui.ratios.pixel(2),
+        rect,
+        gui.ratios.pixel(2),
         edge_rounding_topright=edge_rounding,
-        edge_rounding_bottomright=edge_rounding
+        edge_rounding_bottomright=edge_rounding,
     )
     # Render the passive spine
     spine_rect = rect.scale_by(0.07, 1)
     spine_rect.left = rect.left
-    pe.draw.rect(
-        Defaults.DOCUMENT_GRAY,
-        spine_rect
-    )
+    pe.draw.rect(Defaults.DOCUMENT_GRAY, spine_rect)
 
     # Render the button
     pe.button.action(
@@ -278,25 +304,31 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
         name=document.uuid,
         action_set={
             **action_set,
-            'hover_draw': {
-                'action': pe.draw.rect,
-                'args': (Defaults.BUTTON_ACTIVE_COLOR, rect.copy()),
-                'kwargs': {'edge_rounding_topright': edge_rounding, 'edge_rounding_bottomright': edge_rounding}
-            }
+            "hover_draw": {
+                "action": pe.draw.rect,
+                "args": (Defaults.BUTTON_ACTIVE_COLOR, rect.copy()),
+                "kwargs": {
+                    "edge_rounding_topright": edge_rounding,
+                    "edge_rounding_bottomright": edge_rounding,
+                },
+            },
         },
-        disabled=document.provision or disabled
+        disabled=document.provision or disabled,
     )
 
     if gui.config.debug:
         popup_exists = DocumentDebugPopup.EXISTING.get(id(document)) is not None
-        debug_text = gui.main_menu.texts['debug']
+        debug_text = gui.main_menu.texts["debug"]
 
         # Inflate a rect around the debug text
-        inflated_rect = debug_text.rect.inflate(gui.ratios.pixel(20), gui.ratios.pixel(20))
+        inflated_rect = debug_text.rect.inflate(
+            gui.ratios.pixel(20), gui.ratios.pixel(20)
+        )
         inflated_rect.topright = rect.topright
         debug_text.rect.center = inflated_rect.center
 
         if not popup_exists:
+
             def draw_debug_background():
                 # Draw the original_background
                 pe.draw.rect(Defaults.BUTTON_ACTIVE_COLOR, rect)
@@ -306,15 +338,19 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
             pe.button.action(
                 inflated_rect,
                 hover_draw_action=draw_debug_background,
-                name=document.uuid + '_debug',
+                name=document.uuid + "_debug",
                 action=open_document_debug_menu,
-                data=(gui, document, inflated_rect.topleft)
+                data=(gui, document, inflated_rect.topleft),
             )
             debug_text.display()
         else:
             open_document_debug_menu(gui, document, inflated_rect.topleft)
 
-    if document_sync_operation and (document.provision or document.downloading) and document_sync_operation.done > 0:
+    if (
+        document_sync_operation
+        and (document.provision or document.downloading)
+        and document_sync_operation.done > 0
+    ):
         progress_rect = rect.copy()
         progress_rect.width -= gui.ratios.document_sync_progress_margin * 2
         progress_rect.height = gui.ratios.document_sync_progress_height
@@ -323,28 +359,44 @@ def render_document(gui: 'GUI', rect: pe.Rect, texts, document: 'Document',
 
         pe.draw.rect(
             Defaults.BACKGROUND,
-            progress_rect.inflate(gui.ratios.document_sync_progress_outline * 2,
-                                  gui.ratios.document_sync_progress_outline * 2),
-            edge_rounding=gui.ratios.document_sync_progress_rounding + gui.ratios.document_sync_progress_outline
+            progress_rect.inflate(
+                gui.ratios.document_sync_progress_outline * 2,
+                gui.ratios.document_sync_progress_outline * 2,
+            ),
+            edge_rounding=gui.ratios.document_sync_progress_rounding
+            + gui.ratios.document_sync_progress_outline,
         )
-        pe.draw.rect(Defaults.BUTTON_DISABLED_COLOR, progress_rect,
-                     edge_rounding=gui.ratios.document_sync_progress_rounding)
+        pe.draw.rect(
+            Defaults.BUTTON_DISABLED_COLOR,
+            progress_rect,
+            edge_rounding=gui.ratios.document_sync_progress_rounding,
+        )
         # left = progress_rect.left
         if document_sync_operation and document_sync_operation.total > 0:
-            progress_rect.width *= document_sync_operation.done / document_sync_operation.total
-        pe.draw.rect(Defaults.SELECTED, progress_rect, edge_rounding=gui.ratios.document_sync_progress_rounding)
+            progress_rect.width *= (
+                document_sync_operation.done / document_sync_operation.total
+            )
+        pe.draw.rect(
+            Defaults.SELECTED,
+            progress_rect,
+            edge_rounding=gui.ratios.document_sync_progress_rounding,
+        )
 
 
 def render_button_using_text(
-        gui: 'GUI', text: pe.Text,
-        inactive_color: Tuple[int, ...] = None, active_color: Tuple[int, ...] = None,
-        *args,
-        name: str = None, action=None, data=None,
-        rect: pe.Rect = None,
-        outline: int = None,
-        text_infront: bool = False,
-        outline_color: Tuple[int, ...] = None,
-        **kwargs
+    gui: "GUI",
+    text: pe.Text,
+    inactive_color: Tuple[int, ...] = None,
+    active_color: Tuple[int, ...] = None,
+    *args,
+    name: str = None,
+    action=None,
+    data=None,
+    rect: pe.Rect = None,
+    outline: int = None,
+    text_infront: bool = False,
+    outline_color: Tuple[int, ...] = None,
+    **kwargs,
 ):
     if not outline_color:
         outline_color = Defaults.OUTLINE_COLOR
@@ -358,12 +410,13 @@ def render_button_using_text(
         rect = gui.ratios.pad_button_rect(text.rect)
     pe.button.rect(
         rect,
-        inactive_color, active_color,
+        inactive_color,
+        active_color,
         *args,
         name=name,
         action=action,
         data=data,
-        **kwargs
+        **kwargs,
     )
     if outline is not None and outline > 0:
         pe.draw.rect(outline_color, rect, outline)
@@ -372,10 +425,12 @@ def render_button_using_text(
     return rect
 
 
-def render_header(gui: 'GUI', texts: Dict[str, pe.Text], callback, path_queue: 'Queue'):
+def render_header(gui: "GUI", texts: Dict[str, pe.Text], callback, path_queue: "Queue"):
     menu_location = gui.main_menu.menu_location
 
-    render_button_using_text(gui, texts[menu_location], action=callback, name='main_menu.header')
+    render_button_using_text(
+        gui, texts[menu_location], action=callback, name="main_menu.header"
+    )
 
     x = texts[menu_location].rect.right + gui.ratios.main_menu_path_padding
     y = texts[menu_location].rect.centery
@@ -385,8 +440,8 @@ def render_header(gui: 'GUI', texts: Dict[str, pe.Text], callback, path_queue: '
 
     # Calculate the width of the path
     for item in path_queue.queue:
-        text_key = f'path_{item}'
-        width += gui.icons['chevron_right'].width + texts[text_key].rect.width
+        text_key = f"path_{item}"
+        width += gui.icons["chevron_right"].width + texts[text_key].rect.width
 
     # Calculate the number of items to skip in the path, this results in the > > you see in the beginning
     while width > gui.width - (x + 200):
@@ -394,63 +449,85 @@ def render_header(gui: 'GUI', texts: Dict[str, pe.Text], callback, path_queue: '
         if len(path_queue.queue) - skips <= 0:
             # window is too small to render the path
             return
-        width -= texts[f'path_{path_queue.queue[-skips]}'].rect.width
+        width -= texts[f"path_{path_queue.queue[-skips]}"].rect.width
 
     # Draw the path
     for i, item in enumerate(reversed(path_queue.queue)):
-        text_key = f'path_{item}'
+        text_key = f"path_{item}"
 
         # Draw the arrow
-        if i >= skips or i < 1:  # Making sure to render the arrow only for the first skip, making sure to avoid > > > >
-            gui.icons['chevron_right'].display((x, y - gui.icons['chevron_right'].height // 2))
+        if (
+            i >= skips or i < 1
+        ):  # Making sure to render the arrow only for the first skip, making sure to avoid > > > >
+            gui.icons["chevron_right"].display(
+                (x, y - gui.icons["chevron_right"].height // 2)
+            )
 
-            x += gui.icons['chevron_right'].width
+            x += gui.icons["chevron_right"].width
             if i == 0:
                 x += gui.ratios.main_menu_path_first_padding
 
         # Draw the text only if it's not skipped
         if i >= skips:
             texts[text_key].rect.midleft = (x, y)
-            render_button_using_text(gui, texts[text_key], action=callback, data=item, name=f'main_menu.path={item}')
+            render_button_using_text(
+                gui,
+                texts[text_key],
+                action=callback,
+                data=item,
+                name=f"main_menu.path={item}",
+            )
             x += texts[text_key].rect.width
 
 
 @lru_cache
-def get_bottom_bar_rect(gui: 'GUI'):
-    return pe.Rect(0, gui.height - gui.ratios.bottom_bar_height, gui.width, gui.ratios.bottom_bar_height)
-
-
-def draw_bottom_bar(gui: 'GUI', rect=None):
-    # The entire lower bar
-    pe.draw.rect(
-        Defaults.SELECTED,
-        rect or get_bottom_bar_rect(gui)
+def get_bottom_bar_rect(gui: "GUI"):
+    return pe.Rect(
+        0,
+        gui.height - gui.ratios.bottom_bar_height,
+        gui.width,
+        gui.ratios.bottom_bar_height,
     )
 
 
+def draw_bottom_bar(gui: "GUI", rect=None):
+    # The entire lower bar
+    pe.draw.rect(Defaults.SELECTED, rect or get_bottom_bar_rect(gui))
+
+
 def draw_bottom_loading_bar(
-        gui: 'GUI',
-        current: int, total: int,
-        previous_t: float = 0,
-        finish: bool = False, stage: int = STAGE_SYNC,
-        is_bytes: bool = False,
+    gui: "GUI",
+    current: int,
+    total: int,
+    previous_t: float = 0,
+    finish: bool = False,
+    stage: int = STAGE_SYNC,
+    is_bytes: bool = False,
 ):
     bottom_bar_rect = get_bottom_bar_rect(gui)
     draw_bottom_bar(gui, bottom_bar_rect)
 
-    loading_bar_rect = pe.Rect(0, 0, gui.ratios.bottom_loading_bar_width, gui.ratios.bottom_loading_bar_height)
+    loading_bar_rect = pe.Rect(
+        0, 0, gui.ratios.bottom_loading_bar_width, gui.ratios.bottom_loading_bar_height
+    )
     loading_bar_rect.midright = bottom_bar_rect.midright
     loading_bar_rect.x -= gui.ratios.bottom_loading_bar_padding
 
     # Draw the loading bar background
-    pe.draw.rect(Defaults.BUTTON_DISABLED_LIGHT_COLOR, loading_bar_rect, 0,
-                 edge_rounding=gui.ratios.bottom_loading_bar_rounding)
+    pe.draw.rect(
+        Defaults.BUTTON_DISABLED_LIGHT_COLOR,
+        loading_bar_rect,
+        0,
+        edge_rounding=gui.ratios.bottom_loading_bar_rounding,
+    )
 
     t = (current / total) if total else 0
     if t == 0 or t == 1:
         smooth_t = t
     elif abs(t - previous_t) > 0.05:
-        smooth_t = previous_t + (t - previous_t) * pe.settings.game_context.delta_time * 10
+        smooth_t = (
+            previous_t + (t - previous_t) * pe.settings.game_context.delta_time * 10
+        )
     else:
         smooth_t = t
     smooth_t = min(1, max(0, smooth_t))
@@ -463,23 +540,31 @@ def draw_bottom_loading_bar(
         elif loading_bar_rect.width < loading_bar_rect.height:
             loading_bar_rect.width = loading_bar_rect.height
 
-    pe.draw.rect(Defaults.BACKGROUND, loading_bar_rect, 0, edge_rounding=gui.ratios.bottom_loading_bar_rounding)
+    pe.draw.rect(
+        Defaults.BACKGROUND,
+        loading_bar_rect,
+        0,
+        edge_rounding=gui.ratios.bottom_loading_bar_rounding,
+    )
 
     # Make and show text of current / total
     if not finish:
         prepend_text = gui.main_menu.texts.get(
-            f'rm_api_stage_{stage or STAGE_SYNC}',
-            gui.main_menu.texts[f'rm_api_stage_{STAGE_SYNC}']
+            f"rm_api_stage_{stage or STAGE_SYNC}",
+            gui.main_menu.texts[f"rm_api_stage_{STAGE_SYNC}"],
         )
 
-        icon_key = f'{SYNC_STAGE_ICONS.get(stage or STAGE_SYNC, SYNC_STAGE_ICONS[STAGE_SYNC])}'
+        icon_key = (
+            f"{SYNC_STAGE_ICONS.get(stage or STAGE_SYNC, SYNC_STAGE_ICONS[STAGE_SYNC])}"
+        )
         base_icon: pe.Image = gui.icons[icon_key]
         base_icon_rect = pe.Rect(0, 0, *base_icon.size)
 
-        if icon_key == 'rotate_inverted':
+        if icon_key == "rotate_inverted":
             icon = pe.Image(
                 pe.pygame.transform.rotate(
-                    base_icon.surface.surface, 360 - gui.main_menu.rotate_angle  # Make it rotate clockwise
+                    base_icon.surface.surface,
+                    360 - gui.main_menu.rotate_angle,  # Make it rotate clockwise
                 )
             )
             icon_rect = pe.Rect(0, 0, *icon.size)
@@ -491,8 +576,12 @@ def draw_bottom_loading_bar(
             text_str = f"{naturalsize(current)} / {naturalsize(total)}"
         else:
             text_str = f"{current} / {total}"
-        text = pe.Text(text_str, Defaults.MAIN_MENU_PROGRESS_FONT, gui.ratios.bottom_bar_size,
-                       colors=Defaults.TEXT_COLOR_H)
+        text = pe.Text(
+            text_str,
+            Defaults.MAIN_MENU_PROGRESS_FONT,
+            gui.ratios.bottom_bar_size,
+            colors=Defaults.TEXT_COLOR_H,
+        )
 
         # Position the texts and icon
         text.rect.midright = loading_bar_rect.midleft
@@ -510,7 +599,7 @@ def draw_bottom_loading_bar(
         prepend_text.display()
         icon.display(icon_rect.topleft)
     else:
-        icon: pe.Image = gui.icons['cloud_synced_inverted']
+        icon: pe.Image = gui.icons["cloud_synced_inverted"]
         icon_rect = pe.Rect(0, 0, *icon.size)
         icon_rect.midright = loading_bar_rect.midleft
         icon_rect.right -= gui.ratios.bottom_loading_bar_padding

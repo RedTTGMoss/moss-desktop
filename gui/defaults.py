@@ -11,7 +11,7 @@ from gui import USER_DATA_DIR
 
 def get_asset_path():
     # Check if we are running in a Nuitka bundle
-    if '__compiled__' in globals():
+    if "__compiled__" in globals():
         if pe.settings.config.debug:
             print("Running as a Nuitka bundle")
         base_asset_dir = os.path.dirname(__main__.__file__)
@@ -32,11 +32,11 @@ def get_asset_path():
 
 class DefaultsMeta(type):
     def __setattr__(self, key, value):
-        if key == 'BACKGROUND':
+        if key == "BACKGROUND":
             remarkable_palette[2] = list(value[:3])
-        if key == 'SELECTED':
+        if key == "SELECTED":
             remarkable_palette[0] = list(value[:3])
-        if key == 'LINE_GRAY':
+        if key == "LINE_GRAY":
             remarkable_palette[1] = list(value[:3])
             remarkable_palette[8] = remarkable_palette[1]
         super().__setattr__(key, value)
@@ -45,33 +45,33 @@ class DefaultsMeta(type):
 class Defaults(metaclass=DefaultsMeta):
     # Figure out where Moss is located and check if it is installed
     BASE_ASSET_DIR, SCRIPT_DIR = get_asset_path()
-    ASSET_DIR = os.path.join(BASE_ASSET_DIR, 'assets')
-    INSTALLED = os.path.exists(os.path.join(BASE_ASSET_DIR, 'installed'))
+    ASSET_DIR = os.path.join(BASE_ASSET_DIR, "assets")
+    INSTALLED = os.path.exists(os.path.join(BASE_ASSET_DIR, "installed"))
 
     # Get asset directories
-    XML_DIR = os.path.join(ASSET_DIR, 'xml')
-    ICON_DIR = os.path.join(ASSET_DIR, 'icons')
-    IMAGES_DIR = os.path.join(ASSET_DIR, 'images')
-    DATA_DIR = os.path.join(ASSET_DIR, 'data')
-    FONT_DIR = os.path.join(ASSET_DIR, 'fonts')
-    TRANSLATIONS_DIR = os.path.join(ASSET_DIR, 'translations')
+    XML_DIR = os.path.join(ASSET_DIR, "xml")
+    ICON_DIR = os.path.join(ASSET_DIR, "icons")
+    IMAGES_DIR = os.path.join(ASSET_DIR, "images")
+    DATA_DIR = os.path.join(ASSET_DIR, "data")
+    FONT_DIR = os.path.join(ASSET_DIR, "fonts")
+    TRANSLATIONS_DIR = os.path.join(ASSET_DIR, "translations")
 
     if INSTALLED:
         SCRIPT_DIR = USER_DATA_DIR
 
     # Get API storage file paths
-    TOKEN_FILE_PATH = os.path.join(SCRIPT_DIR, 'token')
+    TOKEN_FILE_PATH = os.path.join(SCRIPT_DIR, "token")
     CONFIG_FILE_PATH = pe.settings.config_file_path  # The GUI handles the path for this
-    SYNC_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync')
-    SYNC_EXPORTS_FILE_PATH = os.path.join(SCRIPT_DIR, 'sync_exports')
-    THUMB_FILE_PATH = os.path.join(SCRIPT_DIR, 'thumbnails')
-    LOG_FILE = os.path.join(SCRIPT_DIR, 'moss.log')
+    SYNC_FILE_PATH = os.path.join(SCRIPT_DIR, "sync")
+    SYNC_EXPORTS_FILE_PATH = os.path.join(SCRIPT_DIR, "sync_exports")
+    THUMB_FILE_PATH = os.path.join(SCRIPT_DIR, "thumbnails")
+    LOG_FILE = os.path.join(SCRIPT_DIR, "moss.log")
 
     # Get user data directories
-    CONTENT_DIR = os.path.join(SCRIPT_DIR, 'content')
-    TEMP_DIR = os.path.join(CONTENT_DIR, '.temporary')
-    EXTENSIONS_DIR = os.path.join(CONTENT_DIR, 'extensions')
-    OPTIONS_DIR = os.path.join(CONTENT_DIR, 'options')
+    CONTENT_DIR = os.path.join(SCRIPT_DIR, "content")
+    TEMP_DIR = os.path.join(CONTENT_DIR, ".temporary")
+    EXTENSIONS_DIR = os.path.join(CONTENT_DIR, "extensions")
+    OPTIONS_DIR = os.path.join(CONTENT_DIR, "options")
 
     # Get font paths
     CUSTOM_FONT = None
@@ -152,26 +152,21 @@ class Defaults(metaclass=DefaultsMeta):
     }
 
     # Get the icon paths
-    APP_ICON = os.path.join(ICON_DIR, 'moss.png')
-    ICO_APP_ICON = os.path.join(ICON_DIR, 'moss.ico')
+    APP_ICON = os.path.join(ICON_DIR, "moss.png")
+    ICO_APP_ICON = os.path.join(ICON_DIR, "moss.ico")
 
     # File select data
-    RM_TYPES_RAW = ['*.pdf', '*.epub']
+    RM_TYPES_RAW = ["*.pdf", "*.epub"]
     RM_TYPES = {
         "PDF & EPUB": RM_TYPES_RAW,
     }
     IMPORT_TYPES = {  # All import
-        "Moss doc format": '*.mossdoc',
-        "RM doc format": '*.rmdoc',
-        **RM_TYPES
+        "Moss doc format": "*.mossdoc",
+        "RM doc format": "*.rmdoc",
+        **RM_TYPES,
     }
-    EXPORT_TYPES = {  # Export
-        "RM doc type": '*.rmdoc',
-        "Render to PDF": '*.pdf'
-    }
-    ALL_TYPES = [  # Debug import
-        *RM_TYPES_RAW, '*.content', '*.metadata', '*.json'
-    ]
+    EXPORT_TYPES = {"RM doc type": "*.rmdoc", "Render to PDF": "*.pdf"}  # Export
+    ALL_TYPES = [*RM_TYPES_RAW, "*.content", "*.metadata", "*.json"]  # Debug import
 
     # TODO: Explain this for multisync operations not yet added
     PROGRESS_ORDER = [
@@ -185,7 +180,7 @@ class Defaults(metaclass=DefaultsMeta):
     def init(cls, config):
         # TODO: Get system default local, and use system fonts by default
         if config.language == "zh":
-            zh_font = os.path.join(cls.FONT_DIR, 'NotoSansSC-VariableFont_wght.ttf')
+            zh_font = os.path.join(cls.FONT_DIR, "NotoSansSC-VariableFont_wght.ttf")
             cls.CUSTOM_FONT = zh_font
             cls.CUSTOM_FONT_BOLD = zh_font
             cls.MONO_FONT = zh_font
@@ -195,16 +190,16 @@ class Defaults(metaclass=DefaultsMeta):
             cls.SUBTITLE_FONT = zh_font
         else:
             if config.language == "en":
-                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Imperator.ttf')
-                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Imperator Bold.ttf')
+                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, "Imperator.ttf")
+                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, "Imperator Bold.ttf")
             else:
-                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Regular.ttf')
-                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, 'Roboto-Medium.ttf')
-            cls.MONO_FONT = os.path.join(cls.FONT_DIR, 'JetBrainsMono-Bold.ttf')
-            cls.ROBOTO_REGULAR_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Regular.ttf')
-            cls.ROBOTO_MEDIUM_FONT = os.path.join(cls.FONT_DIR, 'Roboto-Medium.ttf')
-            cls.TITLE_FONT = os.path.join(cls.FONT_DIR, 'PTM75F.ttf')
-            cls.SUBTITLE_FONT = os.path.join(cls.FONT_DIR, 'PTM55F.ttf')
+                cls.CUSTOM_FONT = os.path.join(cls.FONT_DIR, "Roboto-Regular.ttf")
+                cls.CUSTOM_FONT_BOLD = os.path.join(cls.FONT_DIR, "Roboto-Medium.ttf")
+            cls.MONO_FONT = os.path.join(cls.FONT_DIR, "JetBrainsMono-Bold.ttf")
+            cls.ROBOTO_REGULAR_FONT = os.path.join(cls.FONT_DIR, "Roboto-Regular.ttf")
+            cls.ROBOTO_MEDIUM_FONT = os.path.join(cls.FONT_DIR, "Roboto-Medium.ttf")
+            cls.TITLE_FONT = os.path.join(cls.FONT_DIR, "PTM75F.ttf")
+            cls.SUBTITLE_FONT = os.path.join(cls.FONT_DIR, "PTM55F.ttf")
 
         # Main fonts
         cls.PATH_FONT = cls.ROBOTO_REGULAR_FONT
@@ -236,5 +231,7 @@ class Defaults(metaclass=DefaultsMeta):
             print(f"\n{Fore.MAGENTA}Defaults:{Fore.RESET}")
             for key, value in Defaults.__dict__.items():
                 if not key.startswith("__"):
-                    print(f"{Fore.YELLOW}{key}: {Fore.CYAN}{pformat(value)}{Fore.RESET}")
+                    print(
+                        f"{Fore.YELLOW}{key}: {Fore.CYAN}{pformat(value)}{Fore.RESET}"
+                    )
             print(f"{Fore.MAGENTA}^ Defaults ^{Fore.RESET}\n")

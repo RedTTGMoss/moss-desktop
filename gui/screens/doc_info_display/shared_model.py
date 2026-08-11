@@ -16,8 +16,10 @@ if TYPE_CHECKING:
 class DocInfoState:
     """Represents an item in its current static state."""
 
-    def __init__(self, document: Union[Document, DocumentCollection], manager: 'DocInfoDisplay'):
-        self.gui: 'GUI' = manager.gui
+    def __init__(
+        self, document: Union[Document, DocumentCollection], manager: "DocInfoDisplay"
+    ):
+        self.gui: "GUI" = manager.gui
         self.document = document
         self.render_info: Optional[RenderInfo] = None
         self.manager = manager
@@ -28,26 +30,22 @@ class DocInfoState:
         self.texts = {}
         self.button = pe.Button(
             self.rect,
-            None, None,
+            None,
+            None,
             action_set=pe.button.ButtonActionSet(
                 hover_draw=pe.button.ButtonAction(
                     action=self.manager.update,
-                    kwargs={
-                        'state': self,
-                        'force_update': True
-                    }
+                    kwargs={"state": self, "force_update": True},
                 ),
                 hover=None,
                 l_click=pe.button.ButtonAction(
-                    action=self.manager.info_class.handle_item_open,
-                    args=self
+                    action=self.manager.info_class.handle_item_open, args=self
                 ),
                 r_click=pe.button.ButtonAction(
-                    action=self.manager.info_class.handle_item_context,
-                    args=self
-                )
+                    action=self.manager.info_class.handle_item_context, args=self
+                ),
             ),
-            name=f'doc_info_area_<{document.uuid}>',
+            name=f"doc_info_area_<{document.uuid}>",
         )
         self.frame: Optional[pe.Surface] = None
         self._current_state = None
@@ -56,11 +54,18 @@ class DocInfoState:
         if self.trim_text_sizes.get(key, 0) == size:
             return
         self.trim_text_sizes[key] = size
-        if self.render_info and (text := getattr(self.render_info, key, None)) is not None:  # Find the text object
+        if (
+            self.render_info
+            and (text := getattr(self.render_info, key, None)) is not None
+        ):  # Find the text object
             if text.rect.width > size:  # Check if the text is larger the trim size
-                self.manager.viewer.need_to_handle_texts = True  # Mark that we need to handle trimming the text
+                self.manager.viewer.need_to_handle_texts = (
+                    True  # Mark that we need to handle trimming the text
+                )
             if text.text != self.current_state.get(key, text.text):
-                self.manager.viewer.need_to_handle_texts = True  # Mark that we need to handle untrimming the text
+                self.manager.viewer.need_to_handle_texts = (
+                    True  # Mark that we need to handle untrimming the text
+                )
 
     @property
     def current_state(self):
@@ -72,8 +77,10 @@ class DocInfoState:
     def current_state(self, value: dict):
         # Update texts if applicable
         self._current_state = value
-        for key, value in [(key, value) for key, value in value.items() if key.startswith('t_')]:
-            identifiable_key = f'{self.document.uuid}|{key}'
+        for key, value in [
+            (key, value) for key, value in value.items() if key.startswith("t_")
+        ]:
+            identifiable_key = f"{self.document.uuid}|{key}"
             current_text = self.manager.viewer.text_information.get(identifiable_key)
             if current_text is not None and current_text == value:
                 continue
@@ -102,7 +109,7 @@ class DocInfoState:
             return self.manager.info_class.get_collection_state_info(self)
 
     def dirty(self):
-        self.current_state['dirty'] = True
+        self.current_state["dirty"] = True
 
 
 @dataclass
@@ -111,6 +118,7 @@ class RenderInfo:
     Represents generic information about the item to be rendered.
     This is shared between different items.
     """
+
     state: DocInfoState
     preview: Optional[pe.Sprite] = None
     icon: Optional[str] = None
@@ -118,8 +126,10 @@ class RenderInfo:
     selected: bool = False
 
     def __getattr__(self, item):
-        if item.startswith('t_'):
-            return self.state.manager.viewer.texts.get(f'{self.state.document.uuid}|{item}')
+        if item.startswith("t_"):
+            return self.state.manager.viewer.texts.get(
+                f"{self.state.document.uuid}|{item}"
+            )
         return super().__getattr__(item)
 
 
@@ -128,23 +138,19 @@ class DocInfoManager(ABC):
 
     @classmethod
     @abstractmethod
-    def get_document_render_info(cls, state: DocInfoState) -> RenderInfo:
-        ...
+    def get_document_render_info(cls, state: DocInfoState) -> RenderInfo: ...
 
     @classmethod
     @abstractmethod
-    def get_collection_render_info(cls, state: DocInfoState) -> RenderInfo:
-        ...
+    def get_collection_render_info(cls, state: DocInfoState) -> RenderInfo: ...
 
     @classmethod
     @abstractmethod
-    def get_document_state_info(cls, state: DocInfoState) -> dict:
-        ...
+    def get_document_state_info(cls, state: DocInfoState) -> dict: ...
 
     @classmethod
     @abstractmethod
-    def get_collection_state_info(cls, state: DocInfoState) -> dict:
-        ...
+    def get_collection_state_info(cls, state: DocInfoState) -> dict: ...
 
     @classmethod
     def get_required_state_info(cls, state: DocInfoState) -> dict:
@@ -153,49 +159,53 @@ class DocInfoManager(ABC):
         This can be overridden to add more fields.
         """
         return {
-            'hovered': state.button.hovered,
-            'rect_size': state.rect.size,
-            'pinned': False,
-            'tags': [],
-
+            "hovered": state.button.hovered,
+            "rect_size": state.rect.size,
+            "pinned": False,
+            "tags": [],
             # ONE OF THESE IS REQUIRED, NOT BOTH TITLES
-            't_title': 'Title',  # The title of the document
-            't_title_folder': 'Title Folder',  # The title of the collection
-
-            't_description': 'Description',  # The subtext aka page count, read progress or item count
+            "t_title": "Title",  # The title of the document
+            "t_title_folder": "Title Folder",  # The title of the collection
+            "t_description": "Description",  # The subtext aka page count, read progress or item count
             # If the tags are too many this text is shown to indicate extra tags that are not displayed
-            't_extra_tags': f'+{state.extra_tags_count}',
-            't_filesize': '0 Bytes',  # The size of the document
+            "t_extra_tags": f"+{state.extra_tags_count}",
+            "t_filesize": "0 Bytes",  # The size of the document
         }
 
     @classmethod
     @abstractmethod
-    def is_document(cls, item: Any) -> bool:
-        ...
+    def is_document(cls, item: Any) -> bool: ...
 
     @classmethod
     @abstractmethod
-    def handle_item_open(cls, state: DocInfoState):
-        ...
+    def handle_item_open(cls, state: DocInfoState): ...
 
     @classmethod
     @abstractmethod
-    def handle_item_context(cls, state: DocInfoState):
-        ...
+    def handle_item_context(cls, state: DocInfoState): ...
 
 
 class DocInfoDisplay(ABC):
     """Represents the handler for rendering the static item information into a visual frame."""
 
-    def __init__(self, gui: 'GUI', info_class: Type[DocInfoManager],
-                 doc_tree_view: 'DocumentTreeViewer'):
-        self.gui: 'GUI' = gui
+    def __init__(
+        self,
+        gui: "GUI",
+        info_class: Type[DocInfoManager],
+        doc_tree_view: "DocumentTreeViewer",
+    ):
+        self.gui: "GUI" = gui
         self.info_class = info_class
         self.viewer = doc_tree_view
         self._cache: Dict[str, DocInfoState] = {}
 
-    def handle(self, item: Union[Document, DocumentCollection], area: pe.Rect, offset_x: Optional[int] = None,
-               offset_y: Optional[int] = None):
+    def handle(
+        self,
+        item: Union[Document, DocumentCollection],
+        area: pe.Rect,
+        offset_x: Optional[int] = None,
+        offset_y: Optional[int] = None,
+    ):
         """
         Handles the item state and frame rendering.
         """
@@ -207,7 +217,9 @@ class DocInfoDisplay(ABC):
         if offset_x is not None and offset_y is not None:
             self.render(state, area, offset_x, offset_y)
 
-    def update(self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False) -> bool:
+    def update(
+        self, state: DocInfoState, area: pe.Rect = None, force_update: bool = False
+    ) -> bool:
         if not area:
             area = pe.Rect(*self.viewer.AREA)
         if state.needs_refresh() or state.scale != self.viewer.scale or force_update:
@@ -221,7 +233,9 @@ class DocInfoDisplay(ABC):
         else:
             state.frame = self.render_collection(state, area)
         if state.frame is not None:
-            state.rect.size = state.frame.size  # Update the area of the button to match the rendered size
+            state.rect.size = (
+                state.frame.size
+            )  # Update the area of the button to match the rendered size
         return True
 
     def render(self, state: DocInfoState, area: pe.Rect, offset_x: int, offset_y: int):
@@ -231,8 +245,12 @@ class DocInfoDisplay(ABC):
         rect = state.rect.copy()
         rect.topleft = (offset_x, offset_y)
         if not state.frame:
-            pe.draw.rect(Defaults.BACKGROUND_ERROR, rect, 0,
-                         edge_rounding=self.gui.ratios.error_edge_rounding)
+            pe.draw.rect(
+                Defaults.BACKGROUND_ERROR,
+                rect,
+                0,
+                edge_rounding=self.gui.ratios.error_edge_rounding,
+            )
         else:
             pe.display.blit(state.frame, rect.topleft)  # Clip the frame to an area
             # Check if the title is long
@@ -249,7 +267,9 @@ class DocInfoDisplay(ABC):
                     render_full_text(state.gui, full)
 
         # Properly handle button contexting so everything works as expected
-        self.gui.buttons_with_names[state.button.name] = state.button  # Register the button
+        self.gui.buttons_with_names[state.button.name] = (
+            state.button
+        )  # Register the button
         self.gui.buttons.append(state.button)  # Add the button to the buttons list
         pe.button.check_hover(state.button)
 
@@ -257,12 +277,10 @@ class DocInfoDisplay(ABC):
         state.button.area = rect.clip(pe.Rect(0, 0, *area.size))
 
     @abstractmethod
-    def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
-        ...
+    def render_document(self, state: DocInfoState, area: pe.Rect) -> pe.Surface: ...
 
     @abstractmethod
-    def render_collection(self, state: DocInfoState, area: pe.Rect) -> pe.Surface:
-        ...
+    def render_collection(self, state: DocInfoState, area: pe.Rect) -> pe.Surface: ...
 
     def get_render_info(self, state: DocInfoState) -> RenderInfo:
         if state.is_document:
@@ -270,8 +288,12 @@ class DocInfoDisplay(ABC):
         else:
             return self.info_class.get_collection_render_info(state)
 
-    def render_document_preview(self, state: DocInfoState, size: Tuple[int, int]) -> Tuple[Optional[pe.Sprite], int]:
-        edge_rounding = int(state.gui.ratios.main_menu_document_rounding * self.viewer.scale)
+    def render_document_preview(
+        self, state: DocInfoState, size: Tuple[int, int]
+    ) -> Tuple[Optional[pe.Sprite], int]:
+        edge_rounding = int(
+            state.gui.ratios.main_menu_document_rounding * self.viewer.scale
+        )
         mask = pe.Surface(size)
         preview_masked = pe.Surface(size)
         preview_rect = (0, 0, *size)
@@ -284,7 +306,7 @@ class DocInfoDisplay(ABC):
                 pe.colors.white,
                 preview_rect,
                 edge_rounding_topright=edge_rounding,
-                edge_rounding_bottomright=edge_rounding
+                edge_rounding_bottomright=edge_rounding,
             )
 
         if state.render_info.preview:
@@ -294,34 +316,53 @@ class DocInfoDisplay(ABC):
                 state.render_info.preview.display()
 
         # Apply mask to the preview
-        preview_masked.surface.blit(mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT)
+        preview_masked.surface.blit(
+            mask.surface, (0, 0), special_flags=pe.BLEND_RGBA_MULT
+        )
 
         with preview_masked:
             pe.draw.rect(  # Draw the notebook spine
-                Defaults.DOCUMENT_GRAY,
-                (0, 0, spine_width := size[0] * 0.07, size[1])
+                Defaults.DOCUMENT_GRAY, (0, 0, spine_width := size[0] * 0.07, size[1])
             )
 
             if state.button.hovered:
-                pe.draw.line(Defaults.SELECTED, (spine_width, 0), (spine_width, size[1]), state.gui.ratios.outline)
+                pe.draw.line(
+                    Defaults.SELECTED,
+                    (spine_width, 0),
+                    (spine_width, size[1]),
+                    state.gui.ratios.outline,
+                )
 
             pe.draw.rect(  # Draw the rounded outline around the preview
                 Defaults.SELECTED if state.button.hovered else Defaults.DOCUMENT_GRAY,
-                preview_rect, state.gui.ratios.outline if state.button.hovered else state.gui.ratios.line,
+                preview_rect,
+                (
+                    state.gui.ratios.outline
+                    if state.button.hovered
+                    else state.gui.ratios.line
+                ),
                 edge_rounding_topright=edge_rounding,
-                edge_rounding_bottomright=edge_rounding
+                edge_rounding_bottomright=edge_rounding,
             )
 
         return preview_masked, edge_rounding
 
     def display_tag(self, tag_text):
         # Make rects that surround the tag text
-        expanded_rect = self.gui.ratios.pad_button_rect(tag_text.rect, self.gui.ratios.main_menu_tag_padding)
-        outline_rect = expanded_rect.inflate(self.gui.ratios.outline, self.gui.ratios.outline)
+        expanded_rect = self.gui.ratios.pad_button_rect(
+            tag_text.rect, self.gui.ratios.main_menu_tag_padding
+        )
+        outline_rect = expanded_rect.inflate(
+            self.gui.ratios.outline, self.gui.ratios.outline
+        )
 
         # Draw the background and outline for the tag
-        pe.draw.rect(Defaults.SELECTED, outline_rect, 0, edge_rounding=outline_rect.height)
-        pe.draw.rect(Defaults.BACKGROUND, expanded_rect, 0, edge_rounding=expanded_rect.height)
+        pe.draw.rect(
+            Defaults.SELECTED, outline_rect, 0, edge_rounding=outline_rect.height
+        )
+        pe.draw.rect(
+            Defaults.BACKGROUND, expanded_rect, 0, edge_rounding=expanded_rect.height
+        )
 
         tag_text.display()  # Display the tag text
 
@@ -349,21 +390,16 @@ class DocInfoDisplay(ABC):
         return self._separation_distance()
 
     @abstractmethod
-    def _document_rect(self) -> pe.Rect:
-        ...
+    def _document_rect(self) -> pe.Rect: ...
 
     @abstractmethod
-    def _collection_rect(self) -> pe.Rect:
-        ...
+    def _collection_rect(self) -> pe.Rect: ...
 
     @abstractmethod
-    def _document_margin(self) -> int:
-        ...
+    def _document_margin(self) -> int: ...
 
     @abstractmethod
-    def _collection_margin(self) -> int:
-        ...
+    def _collection_margin(self) -> int: ...
 
     @abstractmethod
-    def _separation_distance(self) -> int:
-        ...
+    def _separation_distance(self) -> int: ...

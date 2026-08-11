@@ -13,7 +13,7 @@ class FullTextPopup(pe.ChildContext):
 
     rect: pe.Rect
 
-    def __init__(self, parent: 'GUI', text: pe.Text, referral_text: pe.Text = None):
+    def __init__(self, parent: "GUI", text: pe.Text, referral_text: pe.Text = None):
         self.text = text
         self.offset = pe.display.display_reference.pos or (0, 0)
         self.referral_text = referral_text
@@ -33,7 +33,7 @@ class FullTextPopup(pe.ChildContext):
 
         # Make sure the text is inside the screen
         screen_rect = pe.Rect(0, 0, *self.size)
-        screen_rect.scale_by_ip(.98, .98)
+        screen_rect.scale_by_ip(0.98, 0.98)
         self.rect.x += self.offset[0]
         self.rect.y += self.offset[1]
         self.rect.clamp_ip(screen_rect)
@@ -51,11 +51,11 @@ class FullTextPopup(pe.ChildContext):
         self.used_at = time.time()
 
     @classmethod
-    def create(cls, parent: 'GUI', text: pe.Text, referral_text: pe.Text = None):
+    def create(cls, parent: "GUI", text: pe.Text, referral_text: pe.Text = None):
         if cls.EXISTING.get(id(text)) is None:
             cls.EXISTING[id(text)] = cls(parent, text, referral_text)
             return cls.EXISTING[id(text)]
-        if time.time() - cls.EXISTING[id(text)].used_at < .05:
+        if time.time() - cls.EXISTING[id(text)].used_at < 0.05:
             cls.EXISTING[id(text)].align_in_screen()
             return cls.EXISTING[id(text)]
         else:
@@ -63,5 +63,5 @@ class FullTextPopup(pe.ChildContext):
             return cls.create(parent, text, referral_text)
 
     @classmethod
-    def fetch(cls, text: pe.Text) -> Optional['FullTextPopup']:
+    def fetch(cls, text: pe.Text) -> Optional["FullTextPopup"]:
         return cls.EXISTING.get(id(text), None)

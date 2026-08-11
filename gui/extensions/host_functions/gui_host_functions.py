@@ -16,18 +16,16 @@ def moss_gui_register_context_menu(menu: Annotated[TContextMenu, Json]):
     class CustomContextMenu(ContextMenu):
         KEY = context_menu.key
         EXTENSION_NAME = d.extension_manager.current_extension
-        BUTTONS = tuple(
-            context_button_clean(button)
-            for button in context_menu.buttons
-        )
+        BUTTONS = tuple(context_button_clean(button) for button in context_menu.buttons)
         ACTIONS = tuple(
-            value for button in context_menu.buttons
+            value
+            for button in context_menu.buttons
             for key, value in button.items()
-            if key == 'action' and value is not None
+            if key == "action" and value is not None
         )
-        PRE_LOOP = context_menu.get('pre_loop', None)
-        POST_LOOP = context_menu.get('post_loop', None)
-        INVERT = context_menu.get('invert', False)
+        PRE_LOOP = context_menu.get("pre_loop", None)
+        POST_LOOP = context_menu.get("post_loop", None)
+        INVERT = context_menu.get("invert", False)
 
         def pre_loop(self):
             if self.PRE_LOOP:
@@ -44,7 +42,9 @@ def moss_gui_register_context_menu(menu: Annotated[TContextMenu, Json]):
                 return d.extension_manager.action(item, self.EXTENSION_NAME)
             return super().__getattr__(item)
 
-    d.extension_manager.log(f"Registered context menu {d.extension_manager.current_extension}.{context_menu.key}")
+    d.extension_manager.log(
+        f"Registered context menu {d.extension_manager.current_extension}.{context_menu.key}"
+    )
 
     d.extension_manager.context_menus[context_menu.key] = CustomContextMenu
 

@@ -4,7 +4,11 @@ from typing import TypedDict, Type, get_origin, Annotated, List
 from box import Box
 from extism import Json
 
-from .accessor_handlers import document_inferred, file_sync_progress_inferred, event_inferred
+from .accessor_handlers import (
+    document_inferred,
+    file_sync_progress_inferred,
+    event_inferred,
+)
 from .shared_types import AccessorInstance
 
 
@@ -12,9 +16,9 @@ def check_ref(func):
     """
     Check if the function accepts a reference to the document or collection.
     """
-    has_ref = 'ref' in func.__annotations__
+    has_ref = "ref" in func.__annotations__
     if has_ref:
-        func.__annotations__.pop('ref')
+        func.__annotations__.pop("ref")
     return has_ref
 
 
@@ -52,14 +56,17 @@ def check_is_dict(_t: Type[TypedDict]):
 @accept_change_accessor_field("accessor")
 def document_wrapper(accessor_field, func):
     """
-        This wrapper is for documents.
-        Takes in accessor.
+    This wrapper is for documents.
+    Takes in accessor.
     """
-    func.__annotations__.pop('item')
+    func.__annotations__.pop("item")
     needs_accessor = accessor_field in func.__annotations__
     if needs_accessor:
         func.__annotations__.pop(accessor_field)
-    func.__annotations__ = {accessor_field: Annotated[AccessorInstance, Json], **func.__annotations__}
+    func.__annotations__ = {
+        accessor_field: Annotated[AccessorInstance, Json],
+        **func.__annotations__,
+    }
 
     @wraps(func)
     def wrapper(accessor: Annotated[AccessorInstance, Json], *args, **kwargs):
@@ -74,14 +81,17 @@ def document_wrapper(accessor_field, func):
 @accept_change_accessor_field("accessors")
 def many_document_wrapper(accessor_field, func):
     """
-        This wrapper is for documents.
-        Takes in accessors.
+    This wrapper is for documents.
+    Takes in accessors.
     """
-    func.__annotations__.pop('items')
+    func.__annotations__.pop("items")
     needs_accessors = accessor_field in func.__annotations__
     if needs_accessors:
         func.__annotations__.pop(accessor_field)
-    func.__annotations__ = {accessor_field: Annotated[List[AccessorInstance], Json], **func.__annotations__}
+    func.__annotations__ = {
+        accessor_field: Annotated[List[AccessorInstance], Json],
+        **func.__annotations__,
+    }
 
     @wraps(func)
     def wrapper(accessors: Annotated[List[AccessorInstance], Json], *args, **kwargs):
@@ -97,14 +107,17 @@ def many_document_wrapper(accessor_field, func):
 @accept_change_accessor_field("accessor")
 def file_sync_progress_wrapper(accessor_field, func):
     """
-        This wrapper is for FileSyncProgress.
-        Takes in accessor.
+    This wrapper is for FileSyncProgress.
+    Takes in accessor.
     """
-    func.__annotations__.pop('item')
+    func.__annotations__.pop("item")
     needs_accessor = accessor_field in func.__annotations__
     if needs_accessor:
         func.__annotations__.pop(accessor_field)
-    func.__annotations__ = {accessor_field: Annotated[AccessorInstance, Json], **func.__annotations__}
+    func.__annotations__ = {
+        accessor_field: Annotated[AccessorInstance, Json],
+        **func.__annotations__,
+    }
 
     @wraps(func)
     def wrapper(accessor: Annotated[AccessorInstance, Json], *args, **kwargs):
@@ -119,14 +132,17 @@ def file_sync_progress_wrapper(accessor_field, func):
 @accept_change_accessor_field("accessor")
 def event_wrapper(accessor_field, func):
     """
-        This wrapper is for API notifactions / events
-        Takes in accessor.
+    This wrapper is for API notifactions / events
+    Takes in accessor.
     """
-    func.__annotations__.pop('item')
+    func.__annotations__.pop("item")
     needs_accessor = accessor_field in func.__annotations__
     if needs_accessor:
         func.__annotations__.pop(accessor_field)
-    func.__annotations__ = {accessor_field: Annotated[AccessorInstance, Json], **func.__annotations__}
+    func.__annotations__ = {
+        accessor_field: Annotated[AccessorInstance, Json],
+        **func.__annotations__,
+    }
 
     @wraps(func)
     def wrapper(accessor: Annotated[AccessorInstance, Json], *args, **kwargs):

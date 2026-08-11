@@ -14,7 +14,7 @@ class PDF_AbstractRenderer(AbstractRenderer, ABC):
     @lru_cache
     def pdf_raw(self):
         try:
-            return self.document.content_data[f'{self.document.uuid}.pdf']
+            return self.document.content_data[f"{self.document.uuid}.pdf"]
         except KeyError:
-            self.error = 'PDF file missing'
+            self.error = "PDF file missing"
             return None

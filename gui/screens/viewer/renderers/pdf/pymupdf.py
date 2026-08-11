@@ -2,8 +2,8 @@ from functools import lru_cache
 from typing import Optional, Any
 
 import pygameextra as pe
-
 from rm_api.defaults import RM_SCREEN_SIZE, ZoomModes
+
 from . import PDF_AbstractRenderer
 from ..shared_model import LoadTask
 
@@ -29,7 +29,7 @@ class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
 
     def load(self):
         if self.pdf_raw:
-            self.pdf = pymupdf.open(stream=self.pdf_raw, filetype='pdf')
+            self.pdf = pymupdf.open(stream=self.pdf_raw, filetype="pdf")
         self.document_renderer.loading -= 1
 
     def render(self, page_uuid: str):
@@ -40,8 +40,12 @@ class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
             return
 
         # Calculate the scale and remarkable scale of the page
-        acceptable_width = RM_SCREEN_SIZE[0] * self.gui.ratios.rm_scaled(RM_SCREEN_SIZE[0])
-        base_scale = self.document_renderer.zoom * self.gui.ratios.rm_scaled(RM_SCREEN_SIZE[0])
+        acceptable_width = RM_SCREEN_SIZE[0] * self.gui.ratios.rm_scaled(
+            RM_SCREEN_SIZE[0]
+        )
+        base_scale = self.document_renderer.zoom * self.gui.ratios.rm_scaled(
+            RM_SCREEN_SIZE[0]
+        )
 
         page_index = page.redirect.value
         pdf_zoom_enhance = self.get_enhance_scale()
@@ -54,19 +58,37 @@ class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
             sprite = task.sprite
 
         # Scale the PDF to the screen
-        scale = (base_scale * PDF_SCALING) / (pdf_zoom_enhance + self.extra_scale.get(page_index, 0))
+        scale = (base_scale * PDF_SCALING) / (
+            pdf_zoom_enhance + self.extra_scale.get(page_index, 0)
+        )
 
         # Set the scale of the sprite
         sprite.scale = (scale, scale)
 
-        if task.loaded and self.previous_page != page_uuid and self.extra_scale.get(page_index, None) is not None:
+        if (
+            task.loaded
+            and self.previous_page != page_uuid
+            and self.extra_scale.get(page_index, None) is not None
+        ):
             # Automatically zoom the PDF to the width of the screen
-            best_zoom = tuple(screen / pdf for screen, pdf in zip(self.gui.maintain_aspect_size, sprite.size))
-            if self.document_renderer.document.content.zoom.zoom_mode == ZoomModes.BestFit:
+            best_zoom = tuple(
+                screen / pdf
+                for screen, pdf in zip(self.gui.maintain_aspect_size, sprite.size)
+            )
+            if (
+                self.document_renderer.document.content.zoom.zoom_mode
+                == ZoomModes.BestFit
+            ):
                 self.document_renderer.base_zoom *= min(*best_zoom)
-            elif self.document_renderer.document.content.zoom.zoom_mode == ZoomModes.FitToWidth:
+            elif (
+                self.document_renderer.document.content.zoom.zoom_mode
+                == ZoomModes.FitToWidth
+            ):
                 self.document_renderer.base_zoom *= best_zoom[0]
-            elif self.document_renderer.document.content.zoom.zoom_mode == ZoomModes.FitToHeight:
+            elif (
+                self.document_renderer.document.content.zoom.zoom_mode
+                == ZoomModes.FitToHeight
+            ):
                 self.document_renderer.base_zoom *= best_zoom[1]
             self.document_renderer.align_top()
             self.previous_page = page_uuid
@@ -93,7 +115,9 @@ class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
         sprite.display(rect.topleft, clipped_area)
 
     @lru_cache()
-    def get_page(self, page, scale: float = 1, acceptable_width: int = None) -> pe.Sprite:
+    def get_page(
+        self, page, scale: float = 1, acceptable_width: int = None
+    ) -> pe.Sprite:
         pdf_page: pymupdf.Page = self.pdf[page]
 
         if acceptable_width:
@@ -108,11 +132,17 @@ class PDF_PyMuPDF_Viewer(PDF_AbstractRenderer):
         pix = pdf_page.get_pixmap(matrix=matrix)
         mode = "RGBA" if pix.alpha else "RGB"
         # noinspection PyTypeChecker
-        sprite = pe.Sprite(sprite_reference=pe.pygame.image.frombuffer(pix.samples, (pix.width, pix.height), mode))
+        sprite = pe.Sprite(
+            sprite_reference=pe.pygame.image.frombuffer(
+                pix.samples, (pix.width, pix.height), mode
+            )
+        )
         return sprite
 
     @lru_cache()
-    def task_get_page(self, page, scale: float = 1, acceptable_width: int = None) -> LoadTask:
+    def task_get_page(
+        self, page, scale: float = 1, acceptable_width: int = None
+    ) -> LoadTask:
         return LoadTask(self.get_page, page, scale, acceptable_width)
 
     def close(self):

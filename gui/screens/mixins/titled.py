@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class TitledMixin:
     TITLE = "Title"
-    ratios: 'Ratios'
+    ratios: "Ratios"
     TITLE_COLORS = None
     title: pe.Text
 
@@ -20,12 +20,16 @@ class TitledMixin:
         return self.TITLE_COLORS or Defaults.TEXT_COLOR
 
     def handle_title(self, title: str = None, **kwargs):
-        self.title = pe.Text(t(title, kwargs=kwargs) or self.TITLE, Defaults.MAIN_MENU_FONT, self.ratios.titled_mixin_title_size,
-                             colors=self.title_colors)
+        self.title = pe.Text(
+            t(title, kwargs=kwargs) or self.TITLE,
+            Defaults.MAIN_MENU_FONT,
+            self.ratios.titled_mixin_title_size,
+            colors=self.title_colors,
+        )
 
         self.title.rect.topleft = (
             self.ratios.titled_mixin_title_padding,
-            self.ratios.titled_mixin_title_padding
+            self.ratios.titled_mixin_title_padding,
         )
 
     @property

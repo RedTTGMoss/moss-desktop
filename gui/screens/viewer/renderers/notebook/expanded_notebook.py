@@ -15,9 +15,18 @@ class ExpandedNotebook(ABC):
         self.frame_size = (self.frame_width, self.frame_height)
         self.track_xy = track_xy
         if settings.config.debug:
-            print(f'Expanded notebook debug, frame size: {track_xy.frame_width}, {track_xy.frame_height} {track_xy}')
+            print(
+                f"Expanded notebook debug, frame size: {track_xy.frame_width}, {track_xy.frame_height} {track_xy}"
+            )
 
-    def get_frames(self, area_x: int, area_y: int, area_width: int, area_height: int, scale: float = 1):
+    def get_frames(
+        self,
+        area_x: int,
+        area_y: int,
+        area_width: int,
+        area_height: int,
+        scale: float = 1,
+    ):
 
         visible_frames = []
 
@@ -42,12 +51,17 @@ class ExpandedNotebook(ABC):
                 frame_top = frame_y * frame_height_scaled
                 frame_bottom = frame_top + frame_height_scaled
 
-                if (frame_right > area_x and frame_left < area_x + area_width and
-                        frame_bottom > area_y and frame_top < area_y + area_height):
+                if (
+                    frame_right > area_x
+                    and frame_left < area_x + area_width
+                    and frame_bottom > area_y
+                    and frame_top < area_y + area_height
+                ):
                     if self.track_xy.validate_visible_portion(
-                            frame_x * self.frame_width - self.track_xy.offset_x,
-                            frame_y * self.frame_height - self.track_xy.offset_y,
-                            self.frame_width, self.frame_height
+                        frame_x * self.frame_width - self.track_xy.offset_x,
+                        frame_y * self.frame_height - self.track_xy.offset_y,
+                        self.frame_width,
+                        self.frame_height,
                     ):
                         visible_frames.append((frame_x, frame_y))
 
@@ -59,14 +73,17 @@ class ExpandedNotebook(ABC):
         return frames
 
     @abstractmethod
-    def update_scales(self, frames, scale: float):
-        ...
+    def update_scales(self, frames, scale: float): ...
 
     @abstractmethod
-    def get_frame_from_initial(self, frame_x, frame_y, final_width: int = None, final_height: int = None) -> pe.Sprite:
-        ...
+    def get_frame_from_initial(
+        self, frame_x, frame_y, final_width: int = None, final_height: int = None
+    ) -> pe.Sprite: ...
 
     @lru_cache()
-    def task_frame_from_initial(self, frame_x, frame_y, final_width: int = None,
-                                final_height: int = None) -> LoadTask:
-        return LoadTask(self.get_frame_from_initial, frame_x, frame_y, final_width, final_height)
+    def task_frame_from_initial(
+        self, frame_x, frame_y, final_width: int = None, final_height: int = None
+    ) -> LoadTask:
+        return LoadTask(
+            self.get_frame_from_initial, frame_x, frame_y, final_width, final_height
+        )

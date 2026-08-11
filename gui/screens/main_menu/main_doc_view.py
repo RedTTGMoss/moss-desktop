@@ -7,9 +7,9 @@ if TYPE_CHECKING:
 
 
 class MainMenuDocView(DocumentTreeViewer):
-    main_menu: 'MainMenu'
+    main_menu: "MainMenu"
 
-    def __init__(self, gui: 'GUI'):
+    def __init__(self, gui: "GUI"):
         self.gui = gui
         pos, size = self.area_within_main_menu
         super().__init__(gui, (*pos, *size))
@@ -21,13 +21,13 @@ class MainMenuDocView(DocumentTreeViewer):
 
     @property
     def area_within_main_menu(self):
-        return (pos := (
-            0,
-            self.gui.main_menu.texts['my_files'].rect.bottom + self.gui.ratios.main_menu_top_padding,
-        )), (
-            self.gui.width,
-            self.gui.height - pos[1]
-        )
+        return (
+            pos := (
+                0,
+                self.gui.main_menu.texts["my_files"].rect.bottom
+                + self.gui.ratios.main_menu_top_padding,
+            )
+        ), (self.gui.width, self.gui.height - pos[1])
 
     @property
     def documents(self):

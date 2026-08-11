@@ -19,18 +19,18 @@ if TYPE_CHECKING:
 def parse_menu_xml(data: bytes):
     tree: Element = etree.fromstring(data)
     root_tag = tree.tag
-    if root_tag == 'menu':
+    if root_tag == "menu":
         menu_items = []
-        for item in tree.findall('item'):
+        for item in tree.findall("item"):
             menu_item = {
-                'text': item.findtext('text'),
-                'icon': item.findtext('icon'),
-                'action': item.findtext('action') or 'moss',
-                'data': item.findtext('data')
+                "text": item.findtext("text"),
+                "icon": item.findtext("icon"),
+                "action": item.findtext("action") or "moss",
+                "data": item.findtext("data"),
             }
             menu_items.append(menu_item)
         return menu_items, root_tag
-    elif root_tag == 'view':
+    elif root_tag == "view":
         return tree, root_tag
 
 
@@ -38,14 +38,10 @@ class BackButton(FixedSizeContextBar, ContextMenu):
     ENABLE_OUTLINE = False
 
     BUTTONS = (
-        {
-            'text': t("menu.settings.back"),
-            'icon': 'chevron_left',
-            'action': 'back'
-        },
+        {"text": t("menu.settings.back"), "icon": "chevron_left", "action": "back"},
     )
 
-    def __init__(self, settings: 'Settings'):
+    def __init__(self, settings: "Settings"):
         self.settings = settings
         super().__init__(settings, (0, 0))
 
@@ -65,25 +61,25 @@ class BackButton(FixedSizeContextBar, ContextMenu):
             button.area.top = y
             y += button.area.height
 
-        self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, self.ratios.main_menu_top_height)
+        self.rect = pe.Rect(
+            self.left,
+            self.top,
+            self.ratios.main_menu_side_bar_width,
+            self.ratios.main_menu_top_height,
+        )
 
 
 def generate_missing_menu(data, menu_id):
-    return data.get('xml_missing_menu_template').decode().format(menu_id).encode()
+    return data.get("xml_missing_menu_template").decode().format(menu_id).encode()
 
 
 class SettingsContextMenu(FixedSizeContextBar, ContextMenu):
     ENABLE_OUTLINE = False
 
-    def __init__(self, settings: 'Settings', menu: List[TContextButton]):
+    def __init__(self, settings: "Settings", menu: List[TContextButton]):
         self.settings = settings
         # noinspection PyTypeChecker
-        self.BUTTONS = [
-            {
-                **item,
-                'inverted_id': item['data']
-            } for item in menu
-        ]
+        self.BUTTONS = [{**item, "inverted_id": item["data"]} for item in menu]
         # Add space for the back button and initialize the buttons
         super().__init__(settings, (0, 0))
 
@@ -100,7 +96,9 @@ class SettingsContextMenu(FixedSizeContextBar, ContextMenu):
 
             # button.display_reference = self.settings.sidebar.surface
 
-        self.rect = pe.Rect(self.left, self.top, self.ratios.main_menu_side_bar_width, y)
+        self.rect = pe.Rect(
+            self.left, self.top, self.ratios.main_menu_side_bar_width, y
+        )
 
     def open_sub(self, item):
         if self.settings.sidebar.transitioning:  # Prevent accidental double menu clicks
@@ -110,15 +108,15 @@ class SettingsContextMenu(FixedSizeContextBar, ContextMenu):
             xml, root_tag = parse_menu_xml(menu)
         else:
             xml, root_tag = parse_menu_xml(generate_missing_menu(self.data, item))
-        if root_tag == 'menu':
+        if root_tag == "menu":
             self.settings.sidebar.transitioning = True
             self.settings.sidebar.transitioning_time = time.time()
-            self.settings.sidebar.append(
-                SettingsContextMenu(self.settings, xml)
-            )
+            self.settings.sidebar.append(SettingsContextMenu(self.settings, xml))
         else:
             self.currently_inverted = item
-            self.settings.xml_interactor = SettingsView(self.settings, xml, self.settings)
+            self.settings.xml_interactor = SettingsView(
+                self.settings, xml, self.settings
+            )
 
     @property
     def currently_inverted(self):
@@ -129,7 +127,7 @@ class SettingsContextMenu(FixedSizeContextBar, ContextMenu):
         self.settings.sidebar.currently_inverted = value
 
     def __getattr__(self, item):
-        if item == 'moss':
+        if item == "moss":
             return self.open_sub
         return super().__getattr__(item)
 
@@ -138,7 +136,7 @@ class SettingsSidebarChain(ScrollableView):
     LAYER = pe.BEFORE_LOOP_LAYER
     TRANSITION_TIME = 0.2
 
-    def __init__(self, settings: 'Settings'):
+    def __init__(self, settings: "Settings"):
         self.stack: List[Union[SettingsContextMenu, ContextMenu]] = []
         self.settings = settings
 
@@ -149,9 +147,10 @@ class SettingsSidebarChain(ScrollableView):
         self.currently_inverted = None
 
         self.AREA = (
-            0, self.settings.ratios.main_menu_top_height,
+            0,
+            self.settings.ratios.main_menu_top_height,
             self.settings.ratios.main_menu_side_bar_width,
-            self.settings.height - self.settings.ratios.main_menu_top_height
+            self.settings.height - self.settings.ratios.main_menu_top_height,
         )
 
         super().__init__(settings.parent_context)
@@ -159,7 +158,9 @@ class SettingsSidebarChain(ScrollableView):
         self.append(SettingsContextMenu(settings, self.settings.MENUS))
         #     add other menus here if needed (extensions)
 
-    def get_surface(self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)):
+    def get_surface(
+        self, context_menu: ContextMenu, position: Tuple[int, int] = (0, 0)
+    ):
         context_menu.check_hover = self.in_focus
         surface = pe.Surface(context_menu.rect.size)
         with surface:
@@ -201,10 +202,15 @@ class SettingsSidebarChain(ScrollableView):
                     self.transitioning_back = False
 
             # Calculate the positions of the two context menus
-            pos1 = (-self.settings.ratios.main_menu_side_bar_width * t, 0 if self.transitioning_back else self.top)
+            pos1 = (
+                -self.settings.ratios.main_menu_side_bar_width * t,
+                0 if self.transitioning_back else self.top,
+            )
             pos2 = (
-                self.settings.ratios.main_menu_side_bar_width - self.settings.ratios.main_menu_side_bar_width * t,
-                self.top if self.transitioning_back else 0)
+                self.settings.ratios.main_menu_side_bar_width
+                - self.settings.ratios.main_menu_side_bar_width * t,
+                self.top if self.transitioning_back else 0,
+            )
 
             # Prepare both context menus
             surface1 = self.get_surface(previous, pos1)
@@ -219,10 +225,12 @@ class SettingsSidebarChain(ScrollableView):
             pe.display.blit(surface2, (pos2[0], 0))
 
     def handle_resize(self):
-        self.resize((
-            self.settings.ratios.main_menu_side_bar_width,
-            self.settings.height - self.settings.ratios.main_menu_top_height
-        ))
+        self.resize(
+            (
+                self.settings.ratios.main_menu_side_bar_width,
+                self.settings.height - self.settings.ratios.main_menu_top_height,
+            )
+        )
 
     def handle_event(self, event):
         super().handle_event(event)
